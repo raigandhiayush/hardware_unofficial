@@ -1,0 +1,2 @@
+TEST_PASS rs_array 63
+ooo_tests/tb_rs_array.v:402: $finish called at 726000 (1ps)

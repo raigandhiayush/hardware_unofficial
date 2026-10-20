@@ -1,0 +1,12 @@
+# test: tb_rat (rat.v)
+# date: 2026-10-15T00:15:04+05:30
+# cwd: repo root (tomasulo-rv)
+# command: iverilog -g2012 -Wall -I ooo_rtl -o build/tb_rat ooo_rtl/rat.v ooo_tests/tb_rat.v && vvp build/tb_rat
+# tool: Icarus Verilog version 12.0 (stable) ()
+# commit: none (no commits yet; files uncommitted)
+# sha256 ooo_rtl/rat.v: 40c7c1f1b390ec673eb4dad3bbd8d0d84d058ccc278399d174f036a8133d8d7c
+# sha256 ooo_tests/tb_rat.v: a0e2a26b8b7e9327c7bb219e91408b80e5d569a2938495723ac21ce7a43e369c
+# sha256 ooo_rtl/ooo_defs.vh: 5a9be443be5e9a222d261dcbbd7e94a86cf01ecd394512b03469e27b1a9f150d
+TEST_PASS rat 5144
+ooo_tests/tb_rat.v:288: $finish called at 50353000 (1ps)
+# exit: 0

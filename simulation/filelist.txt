@@ -1,0 +1,6 @@
+../modules/pipeline.v
+../modules/tb_pipeline.v
+../modules/memory.v
+../modules/IF_ID.v
+../modules/execute.v
+../modules/wb.v

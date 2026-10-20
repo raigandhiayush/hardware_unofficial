@@ -1,0 +1,2 @@
+TEST_PASS alu_fu 2067
+ooo_tests/tb_alu_fu.v:246: $finish called at 2067000 (1ps)

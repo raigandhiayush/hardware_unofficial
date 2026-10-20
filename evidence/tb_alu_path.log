@@ -1,0 +1,2 @@
+TEST_PASS alu_path 25
+ooo_tests/tb_alu_path.v:286: $finish called at 266000 (1ps)
