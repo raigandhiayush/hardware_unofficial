@@ -3,6 +3,7 @@
 Testbench: `ooo_tests/tb_div_unit.v` (ported by B on 20 Oct 2026 to the SIGNALS v0.3 §2.12 ports). Result on 20 Oct 2026 (Icarus Verilog 12.0): **`TEST_PASS div_unit 24146`**, 0 failures, latency min 33 / max 33. Log: `evidence/20261020_e_div_unit_tb_div_unit.log`.
 Every operation is also checked for latency = 33 (t+33), `busy` = 1 in every cycle between start and done, `busy` = 0 in the done cycle, correct `done_tag`, `done` lasting one cycle, and `result` held after done. Operands on `a`/`b`/`funct3` are scrambled right after start to prove they were latched.
 E's original run (16 Oct, earlier variant with `done` at T+34) cross-checked 3446 results against a separate Python RV32M model: 0 mismatches.
+Section A values are also kept as a separate vector list, `ooo_tests/vectors/div_unit_vectors.mem` (made by `tools/gen_div_vectors.py`, its own RV32M model, fixed seed), run by `ooo_tests/tb_div_unit_vectors.v`: **`TEST_PASS div_unit 4852`** on 21 Oct 2026, log `evidence/20261021_e_div_unit_vectors_tb_div_unit_vectors.log`. The vector file is generated: edit the script, not the `.mem`.
 
 ## A. Arithmetic corner cases (all four ops: DIV, DIVU, REM, REMU)
 

@@ -54,6 +54,32 @@ xor : $(SRC_XOR)
 	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
 	cd imem_dmem && python3 bin2hex.py
 
+#//////////////////////////////////////////////////////
+#///// D8 workloads (PROJECT_BLUEPRINT.md 6.17; owner D, reviewer E)
+#///// make <prog>_d8     : -march=rv32i  (baseline and OoO, comparison D17)
+#///// make <prog>_d8_im  : -march=rv32im (OoO only; RV32M workloads)
+#///// -mno-relax lets the assembler resolve local branches, so the object
+#///// has no relocations; tools/check_elf.py rejects the build otherwise (F3).
+#///// Only .text goes into imem (the core starts at pc 0 = main).
+D8_PROGS  = addition sort negative xor
+D8_CFLAGS = -mabi=ilp32 -mno-relax -O0
+CHECK_ELF = python3 ../tools/check_elf.py
+
+define D8_BUILD
+	$(CC) -c $(1) -o $(TARGET) -march=$(2) $(D8_CFLAGS)
+	$(CHECK_ELF) $(TARGET)
+	$(OBJCOPY) -O binary -j .text $(TARGET) ./imem_dmem/imem.bin
+	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
+	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
+	cd imem_dmem && python3 bin2hex.py
+endef
+
+%_d8_im: code_%_d8.c
+	$(call D8_BUILD,$<,rv32im)
+
+%_d8: code_%_d8.c
+	$(call D8_BUILD,$<,rv32i)
+
 # /////clean function
 clean:
 	$(RM) $(TARGET) ./imem_dmem/imem.bin ./imem_dmem/imem.hex ./imem_dmem/dmem.bin ./imem_dmem/dmem.hex ./imem_dmem/code.dis

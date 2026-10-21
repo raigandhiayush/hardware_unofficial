@@ -1,0 +1,18 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-21 16:49:24 IST
+Owner (module): A   Run by: A
+Module: ooo_dispatch
+Specification: blueprint 6.13, rule 3, D11-D16
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_ooo_dispatch ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_tests/tb_ooo_dispatch.v && (cd simulation && vvp -n build/tb_ooo_dispatch)
+Working directory: tomasulo-rv
+Commit: 09b0d4b +uncommitted changes
+Exit status: 0
+Simulated time: 66000 ps (10 ns clock => 6 cycles)
+Wall time: 0s
+Test result: PASS
+Summary: TEST_PASS ooo_dispatch 52
+---
+TEST_PASS ooo_dispatch 52
+ooo_tests/tb_ooo_dispatch.v:287: $finish called at 66000 (1ps)
+---

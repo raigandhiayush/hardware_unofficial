@@ -2,19 +2,24 @@
 # run_unit_tests.sh - build and run every unit testbench with Icarus Verilog
 # and save one evidence log per test in tomasulo-rv/evidence/.
 # Owner: B (build/run logs).  Usage, from anywhere:
-#     bash simulation/run_unit_tests.sh [owner-letter]
+#     bash simulation/run_unit_tests.sh [owner-letter] [test-name ...]
+# With test names, only those tests run (default: all).
+# Entries whose sources start with "py:" run a Python self-test instead of iverilog.
 # Exit status is non-zero if any test does not print TEST_PASS.
 set -u
 cd "$(dirname "$0")/.."                      # tomasulo-rv/
 EVID="evidence"
 mkdir -p simulation/build "$EVID"
 WHO="${1:-b}"
+shift $(( $# > 0 ? 1 : 0 ))
+ONLY=" $* "
 DATE="$(date +%Y%m%d)"
 TOOL="$(iverilog -V 2>&1 | head -1)"
 COMMIT="$(git -C . rev-parse --short HEAD 2>/dev/null || echo 'none (uncommitted working tree)')"
 DIRTY="$(git -C . status --porcelain 2>/dev/null | head -1 | grep -q . && echo ' +uncommitted changes' || true)"
 
 CORE_SRCS="ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v"
+TOP_SRCS="ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v $CORE_SRCS modules/memory.v"
 
 # name | owner | spec | sources
 TESTS=(
@@ -24,6 +29,8 @@ TESTS=(
   "tb_ooo_frontend|c|blueprint 6.4, rule 12|ooo_rtl/instr_queue.v ooo_rtl/ooo_frontend.v ooo_tests/tb_ooo_frontend.v"
   "tb_regfile_2r1w|e|blueprint 6.5|ooo_rtl/regfile_2r1w.v ooo_tests/tb_regfile_2r1w.v"
   "tb_div_unit|e|blueprint 6.11, rule 6|ooo_rtl/div_unit.v ooo_tests/tb_div_unit.v"
+  "tb_div_unit_vectors|e|blueprint 6.11, div_unit_test_cases.md section A (ooo_tests/vectors)|ooo_rtl/div_unit.v ooo_tests/tb_div_unit_vectors.v"
+  "tb_perf_counters|e|blueprint 6.15, SIGNALS 2.16|ooo_rtl/perf_counters.v ooo_tests/tb_perf_counters.v"
   "tb_instr_queue|d|blueprint 6.3|ooo_rtl/instr_queue.v ooo_tests/tb_instr_queue.v"
   "tb_instr_queue_d8|d|blueprint 6.3 at DEPTH=8 (count width fix)|-Ptb_instr_queue.DEPTH=8 ooo_rtl/instr_queue.v ooo_tests/tb_instr_queue.v"
   "tb_mul_unit|d|blueprint 6.10, rule 6|ooo_rtl/mul_unit.v ooo_tests/tb_mul_unit.v"
@@ -36,14 +43,24 @@ TESTS=(
   "tb_ooo_dispatch|a|blueprint 6.13, rule 3, D11-D16|ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_tests/tb_ooo_dispatch.v"
   "tb_ooo_core|a|blueprint 6.14, section 3.6 (directed + random RV32IM vs ISA model)|$CORE_SRCS modules/memory.v ooo_tests/tb_ooo_core.v"
   "tb_ooo_system|a|blueprint 6.14, pipe_ooo vs baseline pipe on imem.hex|-I modules $CORE_SRCS modules/pipeline.v modules/memory.v modules/IF_ID.v modules/execute.v modules/wb.v ooo_tests/tb_ooo_system.v"
+  "tb_top_fpga_ooo|e|blueprint 6.16, D8, D20-D22, MMIO test plan T1-T9|-DTOMA_SIM $TOP_SRCS ooo_tests/tb_top_fpga_ooo.v"
+  "tb_commit_trace|e|blueprint 6.17 reference model + commit-trace compare|-DTOMA_SIM $TOP_SRCS ooo_tests/tb_commit_trace.v"
+  "tb_ooo_event_trace|c|TASKS 19 Oct: ooo_event, non-head completion per bus, 2+ bus cycles|-DTOMA_SIM $TOP_SRCS ooo_tests/tb_ooo_event_trace.v"
+  "check_elf|e|blueprint 6.17 tools/check_elf.py (synthetic ELFs + ooo_decode cross-check)|py:tools/test_check_elf.py"
+  "rvasm|a|tools/rvasm.py encodings vs gcc (code.dis)|py:tools/rvasm.py --selftest"
 )
 
 fail=0
 for t in "${TESTS[@]}"; do
   IFS='|' read -r name owner spec srcs <<< "$t"
+  [ "$ONLY" != "  " ] && [[ "$ONLY" != *" $name "* ]] && continue
   log="$EVID/${DATE}_${owner}_${name#tb_}_${name}.log"
   rm -f simulation/pipeline.vcd simulation/pipeline_output.txt
-  cmd="iverilog -g2012 -I ooo_rtl -o simulation/build/$name $srcs && (cd simulation && vvp -n build/$name)"
+  if [[ "$srcs" == py:* ]]; then
+    cmd="python3 -I ${srcs#py:}"
+  else
+    cmd="iverilog -g2012 -I ooo_rtl -o simulation/build/$name $srcs && (cd simulation && vvp -n build/$name)"
+  fi
   start=$(date +%s)
   out="$(eval "$cmd" 2>&1)"; rc=$?
   secs=$(( $(date +%s) - start ))
