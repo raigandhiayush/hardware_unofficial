@@ -3,7 +3,7 @@
 One line per saved log. Regenerate the unit-test rows with
 `bash simulation/run_unit_tests.sh <your-letter>` (from `tomasulo-rv/`).
 Every log carries date, tool version, exact command, commit, exit status, simulated cycles and PASS/FAIL.
-No synthesis, timing or FPGA evidence exists yet (no Vivado run; `ooo_fpga/synth_vivado.tcl` is ready for B).
+No synthesis, timing or FPGA evidence exists yet (no Vivado run). Board flow: `vivado -mode batch -source ooo_fpga/synth_vivado.tcl -tclargs bit [prog.hex]` (default program `ooo_tests/programs/top_mmio.hex`, staged under `ooo_fpga/build/`, so the baseline `imem.hex` is untouched; stops on a missing hex, an inferred latch or negative slack), then `vivado -mode batch -source ooo_fpga/program_board.tcl`.
 
 Baseline notes (imported 20 Oct from `RISCV_Three_Stage.zip`, byte-identical, `modules/` untouched):
 - Only the xor program's `imem.hex` is present; no RISC-V compiler on the importing machine, so addition/sort/negative were not rebuilt.
