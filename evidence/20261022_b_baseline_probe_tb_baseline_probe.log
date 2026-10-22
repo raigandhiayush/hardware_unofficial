@@ -1,0 +1,56 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-22 11:55:29 IST
+Owner (module): B   Run by: A
+Module: baseline_probe
+Specification: blueprint 1.3 baseline (xor program in imem.hex)
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_baseline_probe -I modules modules/pipeline.v modules/memory.v modules/IF_ID.v modules/execute.v modules/wb.v simulation/tb_baseline_probe.v && (cd simulation && vvp -n build/tb_baseline_probe)
+Working directory: tomasulo-rv
+Commit: e01a870 +uncommitted changes
+Exit status: 0
+Simulated time: 2096000 ps (10 ns clock => 209 cycles)
+Wall time: 1s
+Test result: PASS
+Summary: TEST_PASS baseline_xor 50
+---
+cycle   55  store addr=ffffffc4 data=00000009 (9) strb=1111
+cycle   65  store addr=ffffffdc data=00000000 (0) strb=1111
+cycle   66  store addr=ffffffd8 data=00000000 (0) strb=1111
+cycle   69  store addr=ffffffcc data=0000000a (10) strb=1111
+cycle   71  store addr=ffffffc8 data=00000003 (3) strb=1111
+cycle   75  store addr=ffffffc4 data=00000009 (9) strb=1111
+cycle   85  store addr=ffffffdc data=00000000 (0) strb=1111
+cycle   86  store addr=ffffffd8 data=00000000 (0) strb=1111
+cycle   89  store addr=ffffffcc data=0000000a (10) strb=1111
+cycle   91  store addr=ffffffc8 data=00000003 (3) strb=1111
+cycle   95  store addr=ffffffc4 data=00000009 (9) strb=1111
+cycle  105  store addr=ffffffdc data=00000000 (0) strb=1111
+cycle  106  store addr=ffffffd8 data=00000000 (0) strb=1111
+cycle  109  store addr=ffffffcc data=0000000a (10) strb=1111
+cycle  111  store addr=ffffffc8 data=00000003 (3) strb=1111
+cycle  115  store addr=ffffffc4 data=00000009 (9) strb=1111
+cycle  125  store addr=ffffffdc data=00000000 (0) strb=1111
+cycle  126  store addr=ffffffd8 data=00000000 (0) strb=1111
+cycle  129  store addr=ffffffcc data=0000000a (10) strb=1111
+cycle  131  store addr=ffffffc8 data=00000003 (3) strb=1111
+cycle  135  store addr=ffffffc4 data=00000009 (9) strb=1111
+cycle  145  store addr=ffffffdc data=00000000 (0) strb=1111
+cycle  146  store addr=ffffffd8 data=00000000 (0) strb=1111
+cycle  149  store addr=ffffffcc data=0000000a (10) strb=1111
+cycle  151  store addr=ffffffc8 data=00000003 (3) strb=1111
+cycle  155  store addr=ffffffc4 data=00000009 (9) strb=1111
+cycle  165  store addr=ffffffdc data=00000000 (0) strb=1111
+cycle  166  store addr=ffffffd8 data=00000000 (0) strb=1111
+cycle  169  store addr=ffffffcc data=0000000a (10) strb=1111
+cycle  171  store addr=ffffffc8 data=00000003 (3) strb=1111
+cycle  175  store addr=ffffffc4 data=00000009 (9) strb=1111
+cycle  185  store addr=ffffffdc data=00000000 (0) strb=1111
+cycle  186  store addr=ffffffd8 data=00000000 (0) strb=1111
+cycle  189  store addr=ffffffcc data=0000000a (10) strb=1111
+cycle  191  store addr=ffffffc8 data=00000003 (3) strb=1111
+cycle  195  store addr=ffffffc4 data=00000009 (9) strb=1111
+note: baseline exception pulsed 18 times (squashed fetch of 0x00000000 after ret; F10)
+stores: 50 in 200 cycles; loop period: 20 cycles for 18 instructions (CPI 1.11)
+TEST_PASS baseline_xor 50
+simulation/tb_baseline_probe.v:78: $finish called at 2096000 (1ps)
+---

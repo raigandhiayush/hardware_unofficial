@@ -77,6 +77,15 @@ endef
 %_d8_im: code_%_d8.c
 	$(call D8_BUILD,$<,rv32im)
 
+#///// RV32M workloads: make mul_d8_im, div_d8_im, rv32m_d8_im (OoO only).
+#///// They have no rv32i build: gcc would call __mulsi3/__divsi3 (F2/F3),
+#///// so the explicit rules below stop make <prog>_d8 before the pattern rule.
+D8_M_PROGS = mul div rv32m
+.PHONY: $(addsuffix _d8,$(D8_M_PROGS))
+
+$(addsuffix _d8,$(D8_M_PROGS)):
+	@echo "$@: RV32M workload, no rv32i build (gcc would call libgcc). Use: make $@_im"; exit 1
+
 %_d8: code_%_d8.c
 	$(call D8_BUILD,$<,rv32i)
 
