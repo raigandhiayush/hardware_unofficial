@@ -1,7 +1,7 @@
 # --- Variables ---
-INC_DIR  = ../modules
+INC_DIR  = ../ooo_rtl
 BFLAGS   = -i $(INC_DIR) -f filelist.txt
-TOP_MOD  = tb_pipeline
+TOP_MOD  = top_fpga_ooo
 SNAPSHOT = riscv_sim
 MEM_GEN  = ../mem_generator
 
@@ -16,7 +16,7 @@ help:
 	@echo "Usage: make <program_name> (e.g. make addition)"
 
 # Generic Rule for all programs
-xor sort addition negative:
+xor sort addition negative div:
 	# 1. Generate Hex Files
 	$(MAKE) clean -C $(MEM_GEN)
 	$(MAKE) $@ -C $(MEM_GEN)

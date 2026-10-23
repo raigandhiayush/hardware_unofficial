@@ -1,0 +1,29 @@
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Fri Oct 23 12:02:47 2026
+# Process ID         : 11980
+# Current directory  : C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/simulation
+# Command line       : xsim.exe -log stdout -mode tcl -source {xsim.dir/riscv_sim/xsim_script.tcl}
+# Log file           : C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/simulation/stdout
+# Journal file       : C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/simulation\xsim.jou
+# Running On         : Arhams-Laptop
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26220
+# Processor Detail   : Intel(R) Core(TM) i3-7100U CPU @ 2.40GHz
+# CPU Frequency      : 2400 MHz
+# CPU Physical cores : 2
+# CPU Logical cores  : 4
+# Host memory        : 8452 MB
+# Swap memory        : 8053 MB
+# Total Virtual      : 16505 MB
+# Available Virtual  : 5014 MB
+#-----------------------------------------------------------
+source xsim.dir/riscv_sim/xsim_script.tcl
+# xsim {riscv_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 12:02:58 2026...

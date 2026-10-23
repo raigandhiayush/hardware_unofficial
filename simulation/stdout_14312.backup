@@ -1,0 +1,56 @@
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Oct 22 11:55:47 2026
+# Process ID         : 14312
+# Current directory  : C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/simulation
+# Command line       : xsim.exe -log stdout -mode tcl -source {xsim.dir/riscv_sim/xsim_script.tcl}
+# Log file           : C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/simulation/stdout
+# Journal file       : C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/simulation\xsim.jou
+# Running On         : Arhams-Laptop
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26220
+# Processor Detail   : Intel(R) Core(TM) i3-7100U CPU @ 2.40GHz
+# CPU Frequency      : 2400 MHz
+# CPU Physical cores : 2
+# CPU Logical cores  : 4
+# Host memory        : 8452 MB
+# Swap memory        : 9133 MB
+# Total Virtual      : 17585 MB
+# Available Virtual  : 1562 MB
+#-----------------------------------------------------------
+source xsim.dir/riscv_sim/xsim_script.tcl
+# xsim {riscv_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+time:                    0 ,result =            0
+next_pc = 00000000
+next_pc = 00000004
+next_pc = 00000008
+next_pc = 0000000c
+next_pc = 00000010
+time:             470000 ,result =            0
+next_pc = 00000014
+time:             490000 ,result =            0
+next_pc = 00000018
+next_pc = 0000001c
+next_pc = 00000020
+time:             550000 ,result =            10
+next_pc = 00000024
+next_pc = 00000028
+time:             590000 ,result =            3
+next_pc = 0000002c
+next_pc = 00000030
+next_pc = 00000034
+next_pc = 00000038
+time:             670000 ,result =            9
+next_pc = 0000003c
+next_pc = 00000040
+next_pc = 00000044
+All instructions are Fetched
+next_pc = 00000000
+$finish called at time : 285 ns : File "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/modules/tb_pipeline.v" Line 134
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 11:55:51 2026...
