@@ -3,6 +3,11 @@
 #   vivado -mode batch -source ooo_fpga/synth_vivado.tcl -tclargs synth [prog.hex]  (synthesis only)
 #   vivado -mode batch -source ooo_fpga/synth_vivado.tcl -tclargs impl  [prog.hex]  (+ place/route)
 #   vivado -mode batch -source ooo_fpga/synth_vivado.tcl -tclargs bit   [prog.hex]  (+ bitstream)
+# Optional third argument, the core (D24): ooo (default, top_fpga_ooo), pipe_m or pipe
+# (baseline_fpga/top_fpga_base with CORE = 1 / 0, same pins and xdc). Pass "" as prog.hex
+# for the default program, e.g. -tclargs bit "" pipe_m. Each core builds in its own
+# directory: ooo_fpga/build (ooo), ooo_fpga/build_pipe_m, ooo_fpga/build_pipe.
+# pipe runs RV32I only: give it an RV32I program (the default top_mmio.hex uses MUL/DIV).
 # prog.hex (1024 lines, one 32-bit word each) is the program in instr_mem; it defaults
 # to ooo_tests/programs/top_mmio.hex (the program tb_top_fpga_ooo runs). Expected on
 # the board after CPU_RESET: led[15] (done) on, display = 00000003 with sw[15:14]=00,
@@ -21,11 +26,16 @@ set here  [file dirname [file normalize [info script]]]
 set repo  [file dirname $here]
 set part  xc7a100tcsg324-1
 set stage [expr {[llength $argv] > 0 ? [lindex $argv 0] : "bit"}]
-set hex   [file normalize [expr {[llength $argv] > 1 ? [lindex $argv 1] : "$repo/ooo_tests/programs/top_mmio.hex"}]]
-set out   $here/build
+set hexa  [expr {[llength $argv] > 1 ? [lindex $argv 1] : ""}]
+set hex   [file normalize [expr {$hexa ne "" ? $hexa : "$repo/ooo_tests/programs/top_mmio.hex"}]]
+set core  [expr {[llength $argv] > 2 ? [lindex $argv 2] : "ooo"}]
+set out   [expr {$core eq "ooo" ? "$here/build" : "$here/build_$core"}]
 
 if {[lsearch -exact {synth impl bit} $stage] < 0} {
 	error "stage must be synth, impl or bit (got '$stage')"
+}
+if {[lsearch -exact {ooo pipe_m pipe} $core] < 0} {
+	error "core must be ooo, pipe_m or pipe (got '$core')"
 }
 
 # ---- program image ----------------------------------------------------------
@@ -46,25 +56,49 @@ if {[llength $words] < 1 || [llength $words] > 1024} {
 file mkdir $out/mem_generator/imem_dmem $out/run
 file copy -force $hex $out/mem_generator/imem_dmem/imem.hex
 cd $out/run
-puts "instr_mem image: $hex ([llength $words] words)"
+puts "instr_mem image: $hex ([llength $words] words), core $core"
 
 # missing $readmem file or an inferred latch is fatal
 set_msg_config -id {Synth 8-4445} -new_severity ERROR
 set_msg_config -id {Synth 8-327}  -new_severity ERROR
 
 # ---- synthesis --------------------------------------------------------------
-set rtl {
-	ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v ooo_rtl/pipe_ooo.v
-	ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v
-	ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v
-	ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v
-	ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v
-	modules/memory.v
+switch $core {
+	ooo {
+		set top     top_fpga_ooo
+		set generic {}
+		set rtl {
+			ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v ooo_rtl/pipe_ooo.v
+			ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v
+			ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v
+			ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v
+			ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v
+			modules/memory.v
+		}
+	}
+	pipe_m {
+		set top     top_fpga_base
+		set generic {-generic CORE=1}
+		set rtl {
+			baseline_fpga/top_fpga_base.v ooo_rtl/perf_counters.v
+			baseline_m/pipeline_m.v baseline_m/IF_ID_m.v baseline_m/execute_m.v modules/wb.v
+			ooo_rtl/mul_unit.v ooo_rtl/div_unit.v modules/memory.v
+		}
+	}
+	pipe {
+		set top     top_fpga_base
+		set generic {-generic CORE=0}
+		set rtl {
+			baseline_fpga/top_fpga_base.v ooo_rtl/perf_counters.v
+			modules/pipeline.v modules/IF_ID.v modules/execute.v modules/wb.v
+			modules/memory.v
+		}
+	}
 }
 foreach f $rtl { read_verilog $repo/$f }
 read_xdc $here/top_fpga_ooo.xdc
 
-synth_design -top top_fpga_ooo -part $part -include_dirs $repo/ooo_rtl
+synth_design -top $top -part $part -include_dirs [list $repo/ooo_rtl $repo/modules] {*}$generic
 write_checkpoint -force $out/post_synth.dcp
 report_utilization    -file $out/post_synth_utilization.rpt
 report_timing_summary -file $out/post_synth_timing.rpt
@@ -87,4 +121,4 @@ if {$wns eq "" || $whs eq "" || $wns < 0 || $whs < 0} {
 }
 if {$stage eq "impl"} { exit }
 
-write_bitstream -force $out/top_fpga_ooo.bit
+write_bitstream -force $out/$top.bit

@@ -5,6 +5,7 @@
 ../modules/execute.v
 ../modules/wb.v
 ../ooo_rtl/top_fpga_ooo.v
+../baseline_fpga/top_fpga_base.v
 ../ooo_rtl/perf_counters.v
 ../ooo_rtl/pipe_ooo.v
 ../ooo_rtl/ooo_core.v

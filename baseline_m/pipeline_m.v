@@ -15,6 +15,9 @@
 // Also fixed (timing unchanged): sub-word loads pick their byte/halfword with
 // the load's own registered offset (wb_read_address); the baseline passes
 // dmem_read_address[1:0], the address of the instruction now in EX.
+// dbg_retire (after the baseline ports, like pipe_ooo's dbg_*): one pulse per
+// instruction that leaves EX on the correct path (counted by perf_counters as
+// retired on the board, top_fpga_base). Not part of the baseline interface.
 // Also fixed (timing unchanged): the ID-stage pc is id_pc, which follows
 // fetch_pc like instr_mem does. The baseline's inst_fetch_pc (wb.v) is held
 // during wb_stall, so the first two instructions at a taken-branch target got
@@ -42,7 +45,10 @@
 	output              dmem_write_ready,
 	output      [31: 0] dmem_write_address,
 	output      [31: 0] dmem_write_data,
-	output      [3: 0] dmem_write_byte
+	output      [3: 0] dmem_write_byte,
+
+	// debug (not in the baseline pipe)
+	output              dbg_retire
 );
     
 	//Declaring Wires and Registers
@@ -403,5 +409,37 @@ wb wb_stage (
 );
 
 assign pc_out = fetch_pc;
+
+// retire = the cycle a correct-path instruction leaves WB (its register write and
+// store happen at the end of that cycle, so the done store is counted on the edge
+// that latches done, D21). ex_real: the instruction now in EX is on the correct
+// path, is not an empty ID/EX slot (reset value, all flags 0) and is not the
+// baseline's duplicate of the first instruction: the first ID slot after the
+// reset stall repeats word 0 (kept as in pipe, so cycles stay equal; not counted).
+reg  stall_read_q, dup_in_ex;
+wire ex_real = !branch_stall && !dup_in_ex &&
+               (alu || lui || jal || jalr || branch || mem_write || mem_to_reg || illegal_inst);
+reg  wb_real;
+
+always @(posedge clk or negedge reset) begin
+	if (!reset) begin
+    	stall_read_q <= 1'b1;
+    	dup_in_ex    <= 1'b0;
+	end
+	else begin
+    	stall_read_q <= stall_read;
+    	if (!stall_all)
+        	dup_in_ex <= stall_read_q;
+	end
+end
+
+always @(posedge clk or negedge reset) begin
+	if (!reset)
+    	wb_real <= 1'b0;
+	else if (!stall_all)
+    	wb_real <= ex_real;
+end
+
+assign dbg_retire = wb_real && !stall_all;
 
 endmodule

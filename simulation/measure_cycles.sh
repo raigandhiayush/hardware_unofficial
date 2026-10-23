@@ -17,7 +17,7 @@ python3 -I tools/ref_model.py "$HEX" --sw "0x$SW" -o "$TRACE"
 
 CORE="ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v"
 iverilog -g2012 -DTOMA_SIM -I ooo_rtl -I modules -o simulation/build/tb_baseline_counters \
-  ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v $CORE modules/memory.v \
+  ooo_rtl/top_fpga_ooo.v baseline_fpga/top_fpga_base.v ooo_rtl/perf_counters.v $CORE modules/memory.v \
   modules/pipeline.v modules/IF_ID.v modules/execute.v modules/wb.v \
   baseline_m/pipeline_m.v baseline_m/IF_ID_m.v baseline_m/execute_m.v \
   simulation/tb_baseline_counters.v

@@ -16,3 +16,5 @@ __pycache__/
 # Kept on purpose (evidence): *.log in evidence/, *.rpt (timing/utilization),
 # *.vcd waveforms used as evidence, *.hex images used by a logged run.
 ooo_fpga/build/
+ooo_fpga/build_pipe_m/
+ooo_fpga/build_pipe/

@@ -6,22 +6,23 @@
 //    pipe_m    baseline + in-order MUL/DIV, pipeline frozen while a unit runs
 //              (baseline_m/); identical to pipe on RV32I code
 //    pipe_ooo  the Tomasulo core
-//  plus top_fpga_ooo itself, whose U_PERF.cycles must equal the pipe_ooo copy's:
-//  that proves this testbench counts exactly like the board (D21: edges from the
-//  first edge after reset release up to and including the done-store edge).
+//  plus the board tops themselves, top_fpga_ooo and top_fpga_base (CORE 0 and 1),
+//  whose U_PERF counters, result and done must equal the matching copy's: that
+//  proves this testbench counts exactly like the board (D21: edges from the first
+//  edge after reset release up to and including the done-store edge).
 //
 //  Checks, per program and core: the store stream (data, byte lanes, strobes and
 //  address; RAM addresses may differ by one constant offset, the baseline's
 //  stack quirk, evidence/INDEX.md) and the end result against the ref_model
-//  trace; done reached; pipe_ooo retired = trace commits; pipe_m cycles = pipe
+//  trace; done reached; pipe_m and pipe_ooo retired = trace commits; pipe_m cycles = pipe
 //  cycles on RV32I-only programs. pipe is skipped (N/A) on programs with RV32M.
 //  Known baseline bug (modules/ is never edited): after a taken branch the
 //  second wrong-path instruction still writes its register, and JAL/JALR lose
 //  their link. pipe_m fixes it (cycle-neutral, baseline_m/execute_m.v). A wrong
 //  result or store from pipe is reported as BASELINE_BUG, not TEST_FAIL, and the
 //  pipe_m = pipe cycle check is then skipped.
-//  The baseline cores have no commit signal: their retired count is the trace's
-//  (instruction count is a property of the program). Baseline `exception` is
+//  pipe has no commit signal: its retired count is the trace's (instruction
+//  count is a property of the program); pipe_m counts dbg_retire. Baseline `exception` is
 //  only reported (known spurious pulse, tb_baseline_probe).
 //
 //  Programs: ooo_tests/programs/{base_rv32i,top_mmio,ooo_trace,rv32m_edge,
@@ -73,9 +74,9 @@ module tbc_sys #(
 				.dmem_read_data_temp(dmem_rdata), .dmem_write_valid(1'b1), .dmem_read_valid(1'b1),
 				.dmem_read_ready(dmem_re), .dmem_read_address(dmem_raddr),
 				.dmem_write_ready(dmem_we), .dmem_write_address(dmem_waddr),
-				.dmem_write_data(dmem_wdata), .dmem_write_byte(dmem_wstrb)
+				.dmem_write_data(dmem_wdata), .dmem_write_byte(dmem_wstrb),
+				.dbg_retire(commit_valid)
 			);
-			assign commit_valid = 1'b0;
 			assign ooo_event    = 1'b0;
 		end else begin : g_core
 			pipe_ooo U_CORE (
@@ -164,6 +165,11 @@ module tb_baseline_counters;
 	wire    [15: 0]     led;
 	wire    [ 7: 0]     seg, an;
 	top_fpga_ooo #(.REFRESH_W(2)) TOP (.clk(clk), .reset(reset), .sw(sw), .led(led), .seg(seg), .an(an));
+
+	wire    [15: 0]     led_b0, led_b1;
+	wire    [ 7: 0]     seg_b0, an_b0, seg_b1, an_b1;
+	top_fpga_base #(.CORE(0), .REFRESH_W(2)) TOPB0 (.clk(clk), .reset(reset), .sw(sw), .led(led_b0), .seg(seg_b0), .an(an_b0));
+	top_fpga_base #(.CORE(1), .REFRESH_W(2)) TOPB1 (.clk(clk), .reset(reset), .sw(sw), .led(led_b1), .seg(seg_b1), .an(an_b1));
 
 	// ---- program list ------------------------------------------------------
 	reg     [8*256-1:0] p_hex   [0:NPROG-1];
@@ -334,6 +340,8 @@ module tb_baseline_counters;
 			$readmemh(p_hex[p], S1.U_IMEM.imem);
 			$readmemh(p_hex[p], S2.U_IMEM.imem);
 			$readmemh(p_hex[p], TOP.U_IMEM.imem);
+			$readmemh(p_hex[p], TOPB0.U_IMEM.imem);
+			$readmemh(p_hex[p], TOPB1.U_IMEM.imem);
 			for (c = 0; c < NCORE; c = c + 1) begin
 				en[c] = (c != 0) || !has_m;
 				st_idx[c] = 0; st_off[c] = 32'd0; off_set[c] = 1'b0;
@@ -342,7 +350,7 @@ module tb_baseline_counters;
 			active = 1;
 			reset  = 1'b1;
 			cyc = 0;
-			while (cyc < TIMEOUT && !((S0.done || !en[0]) && S1.done && S2.done && TOP.done)) begin
+			while (cyc < TIMEOUT && !((S0.done || !en[0]) && (TOPB0.done || !en[0]) && S1.done && S2.done && TOP.done && TOPB1.done)) begin
 				@(negedge clk);
 				cyc = cyc + 1;
 			end
@@ -352,7 +360,7 @@ module tb_baseline_counters;
 			c_result[0] = S0.result; c_done[0] = S0.done; c_exc[0] = S0.exception; c_cycles[0] = S0.U_PERF.cycles;
 			c_result[1] = S1.result; c_done[1] = S1.done; c_exc[1] = S1.exception; c_cycles[1] = S1.U_PERF.cycles;
 			c_result[2] = S2.result; c_done[2] = S2.done; c_exc[2] = S2.exception; c_cycles[2] = S2.U_PERF.cycles;
-			c_ret[0] = n_commit; c_ret[1] = n_commit; c_ret[2] = S2.U_PERF.retired;
+			c_ret[0] = n_commit; c_ret[1] = S1.U_PERF.retired; c_ret[2] = S2.U_PERF.retired;
 
 			for (c = 0; c < NCORE; c = c + 1) begin
 				if (!en[c]) begin
@@ -365,10 +373,10 @@ module tb_baseline_counters;
 					if (st_idx[c] != n_st)               fail("store count differs from trace", c);
 					if (c == 0 && bug0 != 0)             fail("store stream differs from trace", c);
 					if (c == 2 && c_exc[c] !== end_exc)  fail("exception differs from trace", c);
-					if (c == 2 && c_ret[c] != n_commit)  fail("retired differs from trace commits", c);
+					if (c != 0 && c_ret[c] != n_commit)  fail("retired differs from trace commits", c);
 					$display("PERF %0s core=%0s result=%h done=%b exception=%b cycles=%0d retired=%0d%0s CPI=%0.3f",
 					         p_hex[p], c_name[c], c_result[c], c_done[c], c_exc[c], c_cycles[c], c_ret[c],
-					         c == 2 ? "" : "(trace)", $itor(c_cycles[c]) / $itor(c_ret[c]));
+					         c == 0 ? "(trace)" : "", $itor(c_cycles[c]) / $itor(c_ret[c]));
 					n_checks = n_checks + 1;
 				end
 			end
@@ -377,12 +385,24 @@ module tb_baseline_counters;
 				$display("TEST_FAIL baseline_counters %0s: tb count %0d != top_fpga_ooo counter %0d (counting rule differs from the board)",
 				         p_hex[p], c_cycles[2], TOP.U_PERF.cycles);
 			end
+			if (TOPB1.U_PERF.cycles !== c_cycles[1] || TOPB1.U_PERF.retired !== c_ret[1] ||
+			    TOPB1.result !== c_result[1] || TOPB1.done !== c_done[1]) begin
+				n_fail = n_fail + 1;
+				$display("TEST_FAIL baseline_counters %0s: top_fpga_base(pipe_m) cycles=%0d retired=%0d result=%h done=%b != tb copy %0d %0d %h %b",
+				         p_hex[p], TOPB1.U_PERF.cycles, TOPB1.U_PERF.retired, TOPB1.result, TOPB1.done,
+				         c_cycles[1], c_ret[1], c_result[1], c_done[1]);
+			end
+			if (en[0] && (TOPB0.U_PERF.cycles !== c_cycles[0] || TOPB0.result !== c_result[0] || TOPB0.done !== c_done[0])) begin
+				n_fail = n_fail + 1;
+				$display("TEST_FAIL baseline_counters %0s: top_fpga_base(pipe) cycles=%0d result=%h done=%b != tb copy %0d %h %b",
+				         p_hex[p], TOPB0.U_PERF.cycles, TOPB0.result, TOPB0.done, c_cycles[0], c_result[0], c_done[0]);
+			end
 			if (!has_m && !bad0 && c_cycles[1] !== c_cycles[0]) begin
 				n_fail = n_fail + 1;
 				$display("TEST_FAIL baseline_counters %0s: pipe_m %0d cycles != pipe %0d on RV32I code",
 				         p_hex[p], c_cycles[1], c_cycles[0]);
 			end
-			n_checks = n_checks + 2;
+			n_checks = n_checks + 4;
 		end
 		if (n_fail == 0) $display("TEST_PASS baseline_counters %0d", n_checks);
 		else             $display("TEST_FAIL baseline_counters %0d failures", n_fail);
