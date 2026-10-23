@@ -12,6 +12,8 @@ done
 python3 -I tools/ref_model.py "$P/top_mmio.hex"   --sw 0xA5A5 -o "$P/top_mmio.trace"
 python3 -I tools/ref_model.py "$P/ooo_trace.hex"  -o "$P/ooo_trace.trace"
 python3 -I tools/ref_model.py "$P/rv32m_edge.hex" -o "$P/rv32m_edge.trace"
+python3 -I tools/ref_model.py "$P/base_rv32i.hex"  -o "$P/base_rv32i.trace"
+python3 -I tools/ref_model.py "$P/pipe_m_edge.hex" -o "$P/pipe_m_edge.trace"
 python3 -I tools/ref_model.py mem_generator/imem_dmem/imem.hex --max 200 -o "$P/xor_baseline.trace"
 
 # RV32M C workloads (mem_generator/code_<p>_d8.c, OoO only): built with make <p>_d8_im

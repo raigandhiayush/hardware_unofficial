@@ -1,0 +1,19 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-23 12:02:58 IST
+Owner (module): B   Run by: A
+Module: lsu
+Specification: blueprint 6.12, rules 7,11, D10, D13
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_lsu ooo_rtl/lsu.v ooo_tests/tb_lsu.v && (cd simulation && vvp -n build/tb_lsu)
+Working directory: tomasulo-rv
+Commit: 0239f48 +uncommitted changes
+Exit status: 0
+Simulated time: 301316000 ps (10 ns clock => 30131 cycles)
+Wall time: 3s
+Test result: PASS
+Summary: TEST_PASS lsu 46413
+---
+T13: 4096 ops, 2013 loads started, 2083 store completions, 787 store SRs right after a load's LW
+TEST_PASS lsu 46413
+ooo_tests/tb_lsu.v:537: $finish called at 301316000 (1ps)
+---

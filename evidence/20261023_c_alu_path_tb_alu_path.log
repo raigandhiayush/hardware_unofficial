@@ -1,0 +1,18 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-23 12:01:27 IST
+Owner (module): C   Run by: A
+Module: alu_path
+Specification: blueprint 3.6 rules 4,5; 6.8+6.9
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_alu_path ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_tests/tb_alu_path.v && (cd simulation && vvp -n build/tb_alu_path)
+Working directory: tomasulo-rv
+Commit: 0239f48 +uncommitted changes
+Exit status: 0
+Simulated time: 266000 ps (10 ns clock => 26 cycles)
+Wall time: 0s
+Test result: PASS
+Summary: TEST_PASS alu_path 25
+---
+TEST_PASS alu_path 25
+ooo_tests/tb_alu_path.v:286: $finish called at 266000 (1ps)
+---

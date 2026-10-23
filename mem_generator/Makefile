@@ -20,6 +20,9 @@ SRC_XOR = code_xor.c
 
 TARGET   = code.elf
 
+# python3 on Linux, python on Windows (override: make PY=...)
+PY      ?= $(if $(filter Windows_NT,$(OS)),python,python3)
+
 .PHONY: all clean
 
 #/// generating .text file of code cross-compiled from highlevel-c code to risc-v code
@@ -31,28 +34,28 @@ addition: $(SRC_ADDITION)
 	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
 	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
 	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python3 bin2hex.py
+	cd imem_dmem && $(PY) bin2hex.py
 
 sort: $(SRC_SORT)
 	$(CC) -c  $(SRC_SORT) -o $(TARGET) $(CFLAGS)
 	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
 	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
 	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python3 bin2hex.py
+	cd imem_dmem && $(PY) bin2hex.py
 
 negative: $(SRC_NEGATIVE)
 	$(CC) -c  $(SRC_NEGATIVE) -o $(TARGET) $(CFLAGS)
 	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
 	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
 	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python3 bin2hex.py
+	cd imem_dmem && $(PY) bin2hex.py
 
 xor : $(SRC_XOR)
 	$(CC) -c $(SRC_XOR) -o $(TARGET) $(CFLAGS)
 	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
 	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
 	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python3 bin2hex.py
+	cd imem_dmem && $(PY) bin2hex.py
 
 #//////////////////////////////////////////////////////
 #///// D8 workloads (PROJECT_BLUEPRINT.md 6.17; owner D, reviewer E)
@@ -63,7 +66,7 @@ xor : $(SRC_XOR)
 #///// Only .text goes into imem (the core starts at pc 0 = main).
 D8_PROGS  = addition sort negative xor
 D8_CFLAGS = -mabi=ilp32 -mno-relax -O0
-CHECK_ELF = python3 ../tools/check_elf.py
+CHECK_ELF = $(PY) ../tools/check_elf.py
 
 define D8_BUILD
 	$(CC) -c $(1) -o $(TARGET) -march=$(2) $(D8_CFLAGS)
@@ -71,7 +74,7 @@ define D8_BUILD
 	$(OBJCOPY) -O binary -j .text $(TARGET) ./imem_dmem/imem.bin
 	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
 	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python3 bin2hex.py
+	cd imem_dmem && $(PY) bin2hex.py
 endef
 
 %_d8_im: code_%_d8.c
