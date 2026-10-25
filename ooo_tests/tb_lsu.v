@@ -1,34 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// ---------------------------------------------------------------------------
-// tb_lsu.v  --  self-checking testbench for lsu
-// Owner: B   |   Reviewer: C   |   blueprint v0.3 sec. 6.12
-//
-// Memory: compile with -DREAL_DMEM modules/memory.v to use the real baseline
-// data_mem (blueprint 6.12 requires it). Without it, a model written from
-// SIGNALS_REFERENCE sec. 1.3 is used: 1024 x 32, byte strobes, registered
-// read valid one cycle after re (rdata holds when re = 0), same-cycle write
-// forwarding.
-//
-// Inputs change just after a rising edge; checks look between edges.
-//   T1  reset: empty, not full, no bus, no memory access
-//   T2  LW timing: allocated in c, LA in c+1, LW (cdb_lsu) in c+2
-//   T3  LB/LH/LW/LBU/LHU at every legal alignment, negative bytes
-//   T4  SB/SH/SW at every legal alignment: SR broadcast, no write before
-//       commit, write exactly in the commit cycle, byte lanes in memory
-//   T5  store -> load same address: load waits for the commit, starts in
-//       commit+1, returns the stored value
-//   T6  load -> store -> load
-//   T7  queue full: 5th allocation ignored; freed slot reusable next cycle
-//   T8  D13: store ready in the LW cycle of a load is delayed one cycle
-//   T9  back-to-back loads, one LA per cycle
-//   T10 wake-up on every bus; base and data released together from two buses
-//   T11 a non-store commit and a store commit for another tag are ignored
-//   T12 asynchronous reset mid-run
-//   T13 random program-order traffic vs a reference memory and mini-ROB
-//
-// Ends with  TEST_PASS lsu <n>  or  TEST_FAIL ...
-// ---------------------------------------------------------------------------
+// Self-checking testbench for lsu verifying load/store ordering, alignment, and memory access.
 module tb_lsu;
 
     localparam W = `ROB_W;

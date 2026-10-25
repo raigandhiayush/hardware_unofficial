@@ -1,11 +1,4 @@
-//  rat - register alias table (owner: A, reviewer: B)
-//  PROJECT_BLUEPRINT.md 6.6, SIGNALS_REFERENCE.md 2.7.
-//
-//  31 entries for x1-x31, each {busy, tag}. x0 is never renamed.
-//  Lookups are combinational from the state at the start of the cycle.
-//  At the clock edge: commit clears an entry only if it still holds cm_tag;
-//  a same-edge allocate on the same register wins (cycle rule 10).
-//  ooo_core drives cm_valid = ROB cm_valid & cm_has_rd.
+// Register Alias Table (RAT) tracking in-flight renames for x1-x31.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 
@@ -46,8 +39,7 @@ module rat
 	assign lk_busy2 = (lk_rs2 != 5'd0) & busy[lk_rs2];
 	assign lk_tag2  = (lk_rs2 != 5'd0) ? tag[lk_rs2] : {ROB_W{1'b0}};
 
-	// The only block that writes RAT state. Clear first, then allocate, so a
-	// same-edge allocate on the same register overrides the clear.
+	// Synchronous update: commit clears older tags; allocate sets new tags.
 	always @(posedge clk or negedge reset_n) begin
 		if (!reset_n) begin
 			busy <= 31'd0;

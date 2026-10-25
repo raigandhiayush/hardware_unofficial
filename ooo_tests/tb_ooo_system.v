@@ -1,11 +1,4 @@
-//  tb_ooo_system - pipe_ooo against the baseline pipe on the same program (owner: A)
-//  Both cores run mem_generator/imem_dmem/imem.hex with their own instr_mem and
-//  data_mem; the sequence of data-memory writes (data, byte lanes, address)
-//  must match, with one constant address offset allowed: the baseline runs its
-//  first instruction twice after reset, so its stack sits 0x20 lower than the
-//  architectural value (sp = 0 at reset, blueprint F8). pipe_ooo must not
-//  raise exception.
-//  Run from simulation/. Prints TEST_PASS ooo_system <n_stores> or TEST_FAIL lines.
+// System-level testbench comparing pipe_ooo memory writes against baseline pipe execution.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

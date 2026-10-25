@@ -1,28 +1,5 @@
 #!/usr/bin/env python3
-"""ref_model.py - instruction-level RV32IM reference model for TOMA-RV (owner: E, reviewer: A).
-
-PROJECT_BLUEPRINT.md 6.17: spec semantics (shift amounts masked to [4:0], JALR
-clears target bit 0, RISC-V divide-by-zero and INT_MIN/-1 results) and the
-system around the core as top_fpga_ooo builds it:
-  * instr_mem / data_mem: 4 KB each, indexed by address bits [11:2] (F8 aliasing);
-    data_mem has no reset and no initializer, so reading a word never written
-    is reported (D22: workloads write before they read).
-  * MMIO (D8, D20, D22) on word address [31:2]: 0x1000_0000 result (byte lanes),
-    0x1000_0004 done (any store), 0x1000_0008 -> {16'd0, sw}; other addresses
-    with [31:28] = 4'h1 drop stores and read 0. MMIO never writes data_mem.
-  * Illegal instructions (outside the 44 that ooo_decode accepts) retire as NOPs
-    and set the sticky exception flag (D12).
-  * x0..x31 and pc start at 0 (sp = 0, F8).
-
-Commit trace: one line per retired instruction, fields in hex:
-    kind pc rd value addr lanes strb
-  kind 0 = no register write, 1 = register write (rd != 0), 2 = store
-  (addr = byte address as driven on dmem_write_address, lanes = data masked by strb).
-The last line is "3 0 0 result done exception 0 0" (kind 3 = end state).
-The model stops at the done store (included) or after --max commits.
-
-Usage: python3 tools/ref_model.py prog.hex [--sw 0xA5A5] [--max N] [-o prog.trace]
-"""
+"""Instruction-level RV32IM reference model and commit-trace generator for TOMA-RV."""
 import argparse, sys
 
 M32 = 0xFFFFFFFF

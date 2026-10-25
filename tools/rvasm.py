@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
-"""rvasm.py - minimal RV32IM assembler for TOMA-RV test programs.
-
-Stand-in for testbench programs while no RISC-V toolchain is installed (risk 13).
-It is NOT the workload flow: C workloads still go through mem_generator/Makefile
-and tools/check_elf.py. Accepts exactly the 44 instructions ooo_decode supports
-(no AUIPC, FENCE, ECALL) plus the pseudo-instructions nop, li, mv, j, jr, ret,
-beqz, bnez, and the directive .word.
-
-Syntax: one instruction per line; labels "name:"; comments start with # or //.
-Registers x0..x31 or ABI names. Branch/jump targets are labels or byte offsets.
-Output: imem.hex format of mem_generator/imem_dmem/bin2hex.py (one word per
-line, "// 32'h<addr>" comment, zero-filled to 4 KB).
-
-Usage: python3 tools/rvasm.py prog.s -o prog.hex
-       python3 tools/rvasm.py --selftest   (assembles code.dis, compares with gcc)
-"""
+"""Minimal RV32IM assembler emitting memory hex files for test programs."""
 import re, sys, os
 
 ABI = ["zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2", "s0", "s1"] + \

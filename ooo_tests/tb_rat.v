@@ -1,7 +1,4 @@
-//  tb_rat - self-checking testbench for rat.v (owner: A)
-//  Cases: PROJECT_BLUEPRINT.md 6.6 and Person A guide v0.3 section 3.2,
-//  plus asynchronous reset and a random run against a model.
-//  Prints TEST_PASS rat <n_vectors> or TEST_FAIL lines.
+// Self-checking testbench for rat verifying renaming lookups, allocations, and commits.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

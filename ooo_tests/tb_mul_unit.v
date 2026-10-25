@@ -1,12 +1,4 @@
-// tb_mul_unit.v -- self-checking testbench for mul_unit (owner D).
-// Blueprint §6.10: all sign combinations of {0,1,-1,2,0x7FFFFFFF,0x80000000,
-// 0xFFFFFFFF,...} for MUL/MULH/MULHSU/MULHU; 100,000 random pairs; back-to-back
-// starts on consecutive cycles with different tags; latency start t -> done t+2.
-//
-// Golden model is independent of the RTL's 33x33 trick: operands are
-// extended to 64 bits (sign- or zero-) and multiplied mod 2^64, which gives
-// the exact low 64 bits of the true product.
-// Prints TEST_PASS mul_unit <n> or TEST_FAIL ... with cycle/expected/actual.
+// Self-checking testbench for mul_unit verifying RV32M multiply variants and latency.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

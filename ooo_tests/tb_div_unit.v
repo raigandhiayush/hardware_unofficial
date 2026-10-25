@@ -1,9 +1,4 @@
-// tb_div_unit.v - self-checking testbench for div_unit.v
-// Prints "TEST_PASS div_unit <n>" (n = checks passed) or "TEST_FAIL div_unit <n>".
-// Ported by B on 20 Oct 2026 to the SIGNALS_REFERENCE v0.3 sec. 2.12 ports
-// (reset_n async active-low, funct3, tag, done_tag; done at t+33, no flush
-// port: no speculation in the commitment design, D9). The flush checks of
-// E's original became asynchronous-reset checks.
+// Self-checking testbench for div_unit verifying timing, operations, and corner cases.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 module tb_div_unit;
@@ -29,9 +24,7 @@ module tb_div_unit;
     integer lat_min = 1000, lat_max = 0;
     always @(posedge clk) cyc <= cyc + 1;
 
-    // RISC-V reference model
-    // Signed ops go through signed regs: inside ?: with unsigned operands
-    // Verilog would silently evaluate $signed(x)/$signed(y) as unsigned.
+    // RISC-V signed and unsigned division reference model.
     function [31:0] ref_div;
         input [1:0] f; input [31:0] x, y;
         reg signed [31:0] sx, sy, sq, sr;

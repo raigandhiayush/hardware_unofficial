@@ -1,27 +1,6 @@
 //////////////// Including Stages ////////////////////////////
 `timescale 1ns/1ps
-// pipe_m - the baseline 3-stage pipe (modules/pipeline.v, untouched) plus
-// in-order RV32M: same ports, same behaviour on RV32I code (no freeze ever
-// happens there). A MUL/DIV in EX freezes the pipeline (md_freeze, from
-// execute_m) until its result is back (blueprint 4.3 edit point 3):
-//   - stall_all = stall_read | md_freeze holds fetch_pc, ID/EX, EX/WB and the
-//     WB-stage registers, and blocks the register-file write;
-//   - instr_mem is not frozen, so the instruction that sat in ID when the
-//     freeze began is saved (id_inst_sv) and replayed until ID moves again;
-//   - the store in WB is held for the whole freeze but written only once,
-//     in the cycle the freeze ends (like its register write).
-// Also fixed (timing unchanged, see execute_m): wrong-path register writes are
-// dropped in EX, so the register file and forwarding no longer check wb_stall.
-// Also fixed (timing unchanged): sub-word loads pick their byte/halfword with
-// the load's own registered offset (wb_read_address); the baseline passes
-// dmem_read_address[1:0], the address of the instruction now in EX.
-// dbg_retire (after the baseline ports, like pipe_ooo's dbg_*): one pulse per
-// instruction that leaves EX on the correct path (counted by perf_counters as
-// retired on the board, top_fpga_base). Not part of the baseline interface.
-// Also fixed (timing unchanged): the ID-stage pc is id_pc, which follows
-// fetch_pc like instr_mem does. The baseline's inst_fetch_pc (wb.v) is held
-// during wb_stall, so the first two instructions at a taken-branch target got
-// a stale pc (wrong branch target / link value).
+// 3-stage pipelined RV32IM processor with in-order execution and multi-cycle MUL/DIV stalls.
  module pipe_m
 #(
 	parameter [31:0]         	RESET = 32'h0000_0000
@@ -197,15 +176,7 @@ IF_ID_m IF_ID_stage (
 );
 
 
-////////////////////////////////////////////////////////////
-// TODO: Register File Forwarding
-//
-// - If src register is x0 (5'd0) → return 0
-// - If WB stage writes same register (and not stalled) → forward:
-//    	wb_read_data (for LOAD)
-//    	wb_result	(for ALU)
-// - Else → read from register array (regs)
-////////////////////////////////////////////////////////////
+// Register file read and WB forwarding logic.
 
 assign reg_rdata1 =
 	(src1_select == 5'd0) ? 32'd0:
@@ -221,19 +192,7 @@ assign reg_rdata2 =
     	? (wb_mem_to_reg ? wb_read_data : wb_result)
     	: regs [src2_select];
 
-////////////////////////////////////////////////////////////
-// TODO: Register File Writeback
-//
-// On reset:
-//   - Clear registers x1-x31
-//
-// On valid WB cycle:
-//   - If wb_alu_to_reg asserted
-//   - AND no stall
-//   - Write either:
-//    	wb_read_data (LOAD)
-//    	wb_result	(ALU result)
-////////////////////////////////////////////////////////////
+// Register file writeback logic.
 
 integer i;
 always @(posedge clk or negedge reset) begin
@@ -353,20 +312,7 @@ execute_m execute (
 
 
 
-////////////////////////////////////////////////////////////
-// PC Update Logic
-//
-// On reset:
-// - Set PC = RESET
-//
-// On each clock (if not stalled):
-// - If branch_stall = 1 → hold branch redirect and
-// move sequentially (PC = PC + 4).
-// - Else → update PC with next_pc
-// (this could be normal next or a jump/branch address).
-//
-// stall_read prevents any PC update.
-////////////////////////////////////////////////////////////
+// PC update logic with branch redirection and stall handling.
 
 always @(posedge clk or negedge reset) begin
 	if (!reset)
@@ -410,12 +356,7 @@ wb wb_stage (
 
 assign pc_out = fetch_pc;
 
-// retire = the cycle a correct-path instruction leaves WB (its register write and
-// store happen at the end of that cycle, so the done store is counted on the edge
-// that latches done, D21). ex_real: the instruction now in EX is on the correct
-// path, is not an empty ID/EX slot (reset value, all flags 0) and is not the
-// baseline's duplicate of the first instruction: the first ID slot after the
-// reset stall repeats word 0 (kept as in pipe, so cycles stay equal; not counted).
+// Instruction retirement tracking for performance counters.
 reg  stall_read_q, dup_in_ex;
 wire ex_real = !branch_stall && !dup_in_ex &&
                (alu || lui || jal || jalr || branch || mem_write || mem_to_reg || illegal_inst);

@@ -1,10 +1,4 @@
-// tb_perf_counters.v - self-checking testbench for perf_counters.v
-// Prints "TEST_PASS perf_counters <n>" (n = checks passed) or "TEST_FAIL perf_counters <n>".
-// Covers blueprint 6.15 (each counter against a testbench count over 1,000
-// random cycles; run = 0 freezes all) and TASKS (increment, reset, rollover),
-// plus edge cases: all 64 input combinations, carry into every bit, counters
-// wrapping independently, glitches between edges, reset at a clock edge, a
-// 1 ns reset pulse, no carry-over of events seen while run = 0, long runs.
+// Self-checking testbench for perf_counters verifying event accumulation, freeze, and overflow wrapping.
 `timescale 1ns/1ps
 module tb_perf_counters;
     reg clk = 0, reset_n;           // x until time 0, then 0: a real falling edge

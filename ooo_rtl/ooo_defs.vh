@@ -1,15 +1,4 @@
-// ---------------------------------------------------------------------------
-// ooo_defs.vh  --  shared constants for TOMA-RV
-// Owner: A (interface owner).  Do not edit without telling A.
-//
-// Status: complete against PROJECT_BLUEPRINT v0.3 (sec. 3.1 D1-D20, 3.4, 5)
-// and SIGNALS_REFERENCE v0.3. Prepared by B on 20 Oct 2026 in place of the
-// earlier temporary copy; signed off by A on 20 Oct 2026 (iface-v1 tag pending).
-//
-// Usage:   `include "ooo_defs.vh"     (compile with -I ooo_rtl)
-//          input [`ROB_W-1:0] tag;     bus k tag = cdb_tag[k*`ROB_W +: `ROB_W]
-// Never hard-code 8 / 3 / 4 for these meanings (ROB 8/16 sweep, goal G2).
-// ---------------------------------------------------------------------------
+// Shared architectural and pipeline constants for TOMA-RV.
 `ifndef OOO_DEFS_VH
 `define OOO_DEFS_VH
 

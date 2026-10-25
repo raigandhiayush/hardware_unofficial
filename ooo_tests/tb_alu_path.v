@@ -1,28 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// ---------------------------------------------------------------------------
-// tb_alu_path.v  --  the ALU execution slice:  RS -> alu_fu -> cdb_alu -> RS
-// Owner: C   |   Reviewer: A   |   18 Oct (Gate 1, ALU part)
-//
-// Wires the real rs_array (N = 3) and alu_fu exactly the way ooo_core will:
-//   iss_accept = iss_valid                    (ALU takes one per cycle)
-//   cdb_alu    = {iss_valid, iss_tag, result} (execute + broadcast, rule 5)
-//   br_valid   = iss_valid & is_ctrl, br_taken = taken, br_target = target
-// cdb_alu is fed straight back into the RS, so results wake up dependants.
-// The testbench plays dispatch (allocate port) and drives the other three
-// buses (MUL, DIV, LSU) itself.
-//
-// Tests (exact cycles are checked, not just values):
-//   T1  dependent pair: I2 waits on I1 and executes the very next cycle
-//   T2  three-instruction chain runs at one instruction per cycle
-//   T3  branches through the path: br_valid/taken/target in the issue cycle,
-//       cdb_alu carries 0 for a conditional branch
-//   T4  JALR: cdb_alu carries the link value, target has bit 0 cleared
-//   T5  one operand from cdb_alu and the other from cdb_mul in the SAME
-//       cycle (two buses active at once), both captured
-//
-// Ends with  TEST_PASS alu_path <n>  or  TEST_FAIL ...
-// ---------------------------------------------------------------------------
+// Testbench verifying the ALU execution datapath: RS issue, ALU execution, and CDB wake-up.
 module tb_alu_path;
 
     // op encodings (D16): [2:0] funct3, [3] sub/sra, [4] is_branch, [5] is_jalr

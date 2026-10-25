@@ -4,19 +4,16 @@ module instr_mem (
 	output reg  [31:0] instr
 );
 
-	// 1024 words = 4 KB
-	// Declare instruction memory array (word-addressable, 4 KB total)
+	// Instruction memory array (1024 x 32-bit words, 4 KB).
 	(* ram_style = "block" *)
 	reg [31:0] imem [0:1023];
 
-	// FPGA ROM initialization
-	// Initialize instruction memory from hex file (simulation / FPGA)
+	// Initialize instruction memory from hex file.
 	initial begin
     	$readmemh("../mem_generator/imem_dmem/imem.hex", imem);
 	end
 
-	// Synchronous instruction fetch
-	// Use word-aligned PC (pc[11:2]) to index memory
+	// Synchronous instruction fetch indexed by word address.
 	always @(posedge clk) begin
     	instr <= imem[pc[11:2]];	// word address
 	end
@@ -57,10 +54,7 @@ module data_mem (
 	// WRITE + READ (SYNC)
 	// -------------------------
 
-	// Synchronous write and read logic
-	// - Support byte-wise writes using wstrb
-	// - Provide 1-cycle read latency
-	// - Handle same-cycle read-after-write using byte-level forwarding
+	// Synchronous read/write with byte strobes and forwarding.
 
 	always @(posedge clk) begin
     	// ---- WRITE ----

@@ -1,36 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// ---------------------------------------------------------------------------
-// tb_rs_array.v  --  self-checking testbench for rs_array
-// Owner: C   |   Reviewer: A   |   15 Oct
-//
-// Two copies of the RS are tested:
-//   dut   N = 3  (the ALU station)  -- most of the tests
-//   dut1  N = 1  (the DIV station)  -- iss_accept held low
-//
-// How the timing works in here:
-//   - inputs are set just after a rising edge (posedge + 1 ns)
-//   - 'step' waits for the next rising edge, then clears the one-cycle
-//     pulses (rs_al_valid, cdb_valid)
-//   - every check looks at the outputs between edges, i.e. at the state
-//     the RS holds *now*
-//   So "check, then step, then check" tells us exactly which cycle
-//   something became visible in.
-//
-// Tests:
-//   T1  allocate ready -> issues the NEXT cycle, not the allocation cycle
-//   T2  one operand waiting, woken on each of the four buses (qj and qk)
-//   T3  both operands released in the same cycle from two buses (mandatory)
-//       + two different entries woken by two buses in the same cycle
-//   T4  no wake-up when the tag matches but cdb_valid = 0, or on a wrong tag
-//   T5  oldest first when everything is ready
-//   T6  oldest first when the older entry wakes up late
-//   T7  full: allocate ignored, freed slot only reusable from the next cycle
-//   T8  DIV (N = 1) with iss_accept held low
-//   T9  asynchronous reset in the middle of a test
-//
-// Ends with  TEST_PASS rs_array <n>  or  TEST_FAIL ...
-// ---------------------------------------------------------------------------
+// Self-checking testbench for rs_array verifying operand wake-up, oldest-first issue, and stalls.
 module tb_rs_array;
 
     reg clk, reset_n;

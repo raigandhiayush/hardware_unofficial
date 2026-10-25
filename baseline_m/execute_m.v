@@ -1,16 +1,5 @@
 `timescale 1ns/1ps
-// execute_m - copy of modules/execute.v for pipe_m (baseline + in-order RV32M).
-// Changes (blueprint 4.3 edit point 2): a MUL/DIV in EX starts ooo_rtl/mul_unit
-// or div_unit once and freezes the whole pipeline (md_freeze) until the unit's
-// done cycle, where the unit result replaces the ALU result. Nothing overlaps
-// the operation: MUL holds EX 3 cycles (2 freeze), DIV 34 cycles (33 freeze).
-// A MUL/DIV on the squashed wrong path (branch_stall = 1, the same condition
-// that drops stores) does not start a unit.
-// Squash fix (not a RV32M change, timing unchanged): the baseline drops the
-// register write of the wrong path with wb_stall, which is one cycle early: it
-// blocks the branch's own write (JAL/JALR link) and lets the second wrong-path
-// instruction write its rd. Here alu_to_reg is dropped with !branch_stall, like
-// mem_write, and pipe_m no longer uses wb_stall for the register file.
+// Execution stage for pipe_m supporting ALU operations and in-order MUL/DIV freeze.
 
 ////////////////////////////////////////////////////////////// Stage 2: Execute////////////////////////////////////////////////////////////
 module execute_m
@@ -81,11 +70,7 @@ wire [32:0] ex_result_subu;
 
 ////////////////////////////////////////////////////////////// Operand selection///////////////////////////////////////////////////////
 
-// TODO-EX-1:
-// Select ALU operands
-// - The first operand must come from the first value read from the register file
-// - The second operand must come from the immediate when immediate selection is enabled
-// - Otherwise, the second operand must come from the second value read from the register file
+// Select ALU operands from register file or immediate.
 
 assign alu_operand1 = reg_rdata1;
 assign alu_operand2 = immediate_sel
@@ -94,12 +79,7 @@ assign alu_operand2 = immediate_sel
 ////////////////////////////////////////////////////////////// Subtractions////////////////////////////////////////////////////////////
 
 
-// TODO-EX-2:
-// Generate subtraction results required for branch comparison
-// - One result (ex_result_subs) must treat both operands as signed values
-// - Another result (ex_result_subu) must treat both operands as unsigned values
-// - The results must be wide enough to capture the sign/borrow bit
-// - These results will be used later to evaluate branch conditions
+// Signed and unsigned subtraction results for branch comparisons.
 
 assign ex_result_subs =
 	{alu_operand1[31], alu_operand1} -
@@ -164,18 +144,7 @@ div_unit u_div (
 ////////////////////////////////////////////////////////////// Next PC logic////////////////////////////////////////////////////////////
 
 
-// TODO-EX-3:
-// Compute the next program counter and branch decision
-// Guidelines:
-// - Default next PC advances to the next sequential instruction
-// - For jump instructions:
-// 	* JAL computes the target using the current PC and an immediate
-// 	* JALR computes the target using a register value (first read) and an immediate
-// - For branch instructions:
-// 	* Evaluate the branch condition using comparison/subtraction results
-// 	* If the condition is satisfied, jump to the branch target
-// 	* Otherwise, continue sequential execution
-// - Branch resolution must be suppressed when a branch stall is active
+// Compute next PC and resolve branch/jump targets.
 
 always @(*) begin
 	next_pc  	= fetch_pc + 4;
@@ -242,14 +211,7 @@ end
 
 ////////////////////////////////////////////////////////////// ALU result logic////////////////////////////////////////////////////////////
 
-// TODO-EX-4:
-// Generate the execute-stage result (ex_result)
-// Guidelines:
-// - For store instructions, forward the value that will be written to memory
-// - For jump instructions (JAL/JALR), produce the return address (PC + 4)
-// - LUI must place the immediate value directly into the destination register
-// - For ALU instructions, compute the result based on the decoded ALU operation
-// - The arithmetic subtype signal selects between related operations
+// Compute execute-stage result for ALU, control, and memory operations.
 
 
 always @(*) begin
@@ -346,13 +308,7 @@ module ex_mem_wb_reg_m (
 	output reg [2:0]  ex_mem_alu_operation
 );
 
-// TODO-EX-5:
-// EX/MEM → WB pipeline register
-// Guidelines:
-// - Store all execute-stage data and control signals on the rising clock edge
-// - On reset, clear all stored values to a safe default
-// - When a stall is asserted, prevent unintended updates
-// - All outputs must hold their previous values unless explicitly updated
+// EX/MEM to WB pipeline register.
 
 always @(posedge clk or negedge reset_n) begin
 	if (!reset_n) begin

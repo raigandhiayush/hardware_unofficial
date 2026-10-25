@@ -58,19 +58,13 @@ reg         illegal_inst;
 ////////////////////////////////////////////////////////////// IF stage////////////////////////////////////////////////////////////
 
 
-// TODO-1:
-// Implement IF-stage instruction selection.
-// - On stall_read_i = 1, insert a NOP
-// - Otherwise, pass instruction/data from instruction memory
+// Instruction selection with NOP insertion on stall.
 
 assign instruction_o = stall_read_i ? NOP :inst_mem_read_data;  
 
 ////////////////////////////////////////////////////////////// Exception detection////////////////////////////////////////////////////////////
 
-// TODO-2:
-// Assert exception when:
-// - illegal instruction is detected
-// - instruction fetch is misaligned (inst_mem_offset != 2'b00)
+// Exception detection for illegal or misaligned instructions.
 
 always @(posedge clk or negedge reset) begin 
     if (!reset)
@@ -82,15 +76,7 @@ always @(posedge clk or negedge reset) begin
 end
 ////////////////////////////////////////////////////////////// ID stage: immediate generation///////////////////////////////////////////////////////////
 
-// Generate 32-bit immediates for:
-// JAL, JALR, BRANCH, LOAD, STORE, ARITH-I, LUI
-// For unsupported opcodes, set illegal_inst = 1
-//
-// Definitions:
-// - instruction_i[31] is the sign bit
-// - "Sign-extend" means: replicate instruction_i[31] to fill all unused MSBs
-// - The number of replicated bits is implied by the immediate bit ranges below
-// - All immediates must be exactly 32 bits wide
+// Decode 32-bit immediate values for supported instruction formats.
 
 always @(*) begin
 	immediate	= 32'h0;
@@ -98,38 +84,19 @@ always @(*) begin
 
 	case (instruction_i[`OPCODE])
 
-    	// JALR:
-    	// Lower 12 bits  = instruction_i[31:20]
-    	// Upper 20 bits  = Sign-extend
+    	// JALR immediate.
     	JALR  : immediate = {{20{instruction_i[31]}}, instruction_i[31:20]};
 
-    	// BRANCH:
-    	// immediate[12]   = instruction_i[31]   (sign bit)
-    	// immediate[11]   = instruction_i[7]
-    	// immediate[10:5] = instruction_i[30:25]
-    	// immediate[4:1]  = instruction_i[11:8]
-    	// immediate[0]	= 1'b0
-    	// immediate[31:13]= Sign-extend
+    	// B-type immediate.
     	BRANCH : immediate = {{19{instruction_i[31]}}, instruction_i[31], instruction_i[7],instruction_i[30:25],instruction_i[11:8],1'b0};
 
-    	// LOAD:
-    	// Lower 12 bits  = instruction_i[31:20]
-    	// Upper 20 bits  = Sign-extend
+    	// Load immediate.
     	LOAD  : immediate = {{20{instruction_i[31]}}, instruction_i[31:20]};
 
-    	// STORE:
-    	// Lower 5 bits   = instruction_i[11:7]
-    	// Next 7 bits	= instruction_i[31:25]
-    	// Upper 20 bits  = Sign-extend
+    	// S-type immediate.
     	STORE : immediate = {{20{instruction_i[31]}}, instruction_i[31:25], instruction_i[11:7]};
 
-    	// ARITH-I:
-    	// If FUNC3 is SLL or SR:
-    	//   immediate[4:0]  = instruction_i[24:20]
-    	//   immediate[31:5] = 0
-    	// Else:
-    	//   Lower 12 bits  = instruction_i[31:20]
-    	//   Upper 20 bits  = Sign-extend
+    	// I-type shift and arithmetic immediate.
     	ARITHI: immediate =
     (instruction_i[`FUNC3] == SLL ||
      instruction_i[`FUNC3] == SR)
@@ -137,22 +104,13 @@ always @(*) begin
     : {{20{instruction_i[31]}}, instruction_i[31:20]};
 
 
-    	// ARITH-R:
-    	// No immediate
+    	// R-type: no immediate.
     	ARITHR: immediate = 32'h0;
 
-    	// LUI:
-    	// Upper 20 bits = instruction_i[31:12]
-    	// Lower 12 bits = 0
+    	// U-type immediate.
     	LUI : immediate = {instruction_i[31:12], 12'b0};
 
-    	// JAL:
-    	// immediate[20]	= instruction_i[31]   (sign bit)
-    	// immediate[19:12] = instruction_i[19:12]
-    	// immediate[11]	= instruction_i[20]
-    	// immediate[10:1]  = instruction_i[30:21]
-    	// immediate[0] 	= 1'b0
-    	// immediate[31:21] = Sign-extend
+    	// J-type immediate.
     	JAL : immediate = {{11{instruction_i[31]}}, instruction_i[31], instruction_i[19:12], instruction_i[20], instruction_i[30:21], 1'b0};
 
     	default: illegal_inst = 1'b1;

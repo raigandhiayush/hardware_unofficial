@@ -43,25 +43,16 @@ module wb
 `include "opcode.vh"
 
 
-////////////////////////////////////////////////////////////
-// assigning these variables to read from the instruction memory
-////////////////////////////////////////////////////////////
+// Instruction memory read interface.
 
 assign inst_mem_address_o  = fetch_pc_i;
 assign inst_mem_is_ready_o = !stall_read_i;
 
-////////////////////////////////////////////////////////////
-// wb_stall flag for defining the first and second stall in branch instruction
-////////////////////////////////////////////////////////////
+// Branch stall indicator.
 
 assign wb_stall_o = wb_stall_first_o || wb_stall_second_o;
 
-////////////////////////////////////////////////////////////
-// instruction fetch pc update
-////////////////////////////////////////////////////////////
-
-// Drive instruction memory address using the current fetch PC
-// Instruction fetch must be disabled when a read stall is asserted
+// Instruction fetch PC update logic.
 
 always @(posedge clk or negedge reset) begin
     if (!reset)
@@ -71,14 +62,7 @@ always @(posedge clk or negedge reset) begin
     // else: hold PC unchanged during a read stall OR a branch stall
 end
 
-////////////////////////////////////////////////////////////
-// Branch stall variable declarations
-////////////////////////////////////////////////////////////
-
-// Generate two-cycle stall for branch instructions
-// - First cycle: stall when branch is detected
-// - Second cycle: extend stall by one more cycle
-// - Stall must not advance when a pending load has not completed
+// Two-cycle stall generator for branch instructions.
 
 always @(posedge clk or negedge reset) begin
     if (!reset) begin
@@ -92,14 +76,7 @@ always @(posedge clk or negedge reset) begin
     end
 end
 
-////////////////////////////////////////////////////////////
-// Preparing write data for store type instructions
-////////////////////////////////////////////////////////////
-
-// Prepare data memory write signals for store instructions
-// - Generate write address
-// - Generate write data with proper byte replication
-// - Generate byte-enable signals based on address alignment
+// Data memory write preparation and byte-lane formatting.
 
 always @(posedge clk or negedge reset) begin
     if (!reset) begin
@@ -145,13 +122,7 @@ always @(posedge clk or negedge reset) begin
 //    end
 end
 
-////////////////////////////////////////////////////////////
-// load instruction based on the OPCODES
-////////////////////////////////////////////////////////////
-
-// Format load data based on load type
-// - Apply sign-extension or zero-extension
-// - Select correct byte or halfword using read address bits
+// Load data sign-extension and byte/halfword formatting.
 
 
 always @* begin

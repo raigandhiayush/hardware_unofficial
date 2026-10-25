@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
-# run_unit_tests.sh - build and run every unit testbench with Icarus Verilog
-# and save one evidence log per test in tomasulo-rv/evidence/.
-# Owner: B (build/run logs).  Usage, from anywhere:
-#     bash simulation/run_unit_tests.sh [owner-letter] [test-name ...]
-# With test names, only those tests run (default: all).
-# Entries whose sources start with "py:" run a Python self-test instead of iverilog.
-# Exit status is non-zero if any test does not print TEST_PASS.
+# Builds and runs unit testbenches using Icarus Verilog and Python.
 set -u
 cd "$(dirname "$0")/.."                      # tomasulo-rv/
 EVID="evidence"

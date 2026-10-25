@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# build_test_programs.sh - assemble ooo_tests/programs/*.s with tools/rvasm.py and
-# write the reference-model commit traces used by tb_commit_trace / tb_top_fpga_ooo.
-# Usage (from anywhere): bash tools/build_test_programs.sh [RISCV_PREFIX=riscv64-unknown-elf-]
+# Assembles test programs with rvasm.py and generates reference commit traces.
 set -eu
 cd "$(dirname "$0")/.."                      # tomasulo-rv/
 P=ooo_tests/programs
@@ -16,10 +14,7 @@ python3 -I tools/ref_model.py "$P/base_rv32i.hex"  -o "$P/base_rv32i.trace"
 python3 -I tools/ref_model.py "$P/pipe_m_edge.hex" -o "$P/pipe_m_edge.trace"
 python3 -I tools/ref_model.py mem_generator/imem_dmem/imem.hex --max 200 -o "$P/xor_baseline.trace"
 
-# RV32M C workloads (mem_generator/code_<p>_d8.c, OoO only): built with make <p>_d8_im
-# when a RISC-V gcc exists (RISCV_PREFIX, else riscv-none-elf- or riscv64-unknown-elf-).
-# The build overwrites mem_generator/imem_dmem/, so its files are saved and restored.
-# tb_commit_trace skips a program whose .hex is missing.
+# Optional C workload builds when a RISC-V GCC toolchain is present.
 C_PROGS="mul div rv32m"
 PFX=${RISCV_PREFIX:-}
 if [ -z "$PFX" ]; then

@@ -1,9 +1,4 @@
-//  tb_ooo_dispatch - self-checking testbench for ooo_dispatch.v (owner: A)
-//  Cases: PROJECT_BLUEPRINT.md 6.13 with stub RAT/ROB/RS inputs and the real
-//  ooo_decode on instruction words: every operand source, a value on each of
-//  the four buses, both operands from two buses in one cycle, each class,
-//  each stall cause, and the sticky exception flag (D12).
-//  Prints TEST_PASS ooo_dispatch <n_vectors> or TEST_FAIL lines.
+// Self-checking testbench for ooo_dispatch verifying rename, bypass, operand muxing, and stalls.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

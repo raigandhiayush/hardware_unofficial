@@ -165,15 +165,7 @@ IF_ID IF_ID_stage (
 );
 
 
-////////////////////////////////////////////////////////////
-// TODO: Register File Forwarding
-//
-// - If src register is x0 (5'd0) → return 0
-// - If WB stage writes same register (and not stalled) → forward:
-//    	wb_read_data (for LOAD)
-//    	wb_result	(for ALU)
-// - Else → read from register array (regs)
-////////////////////////////////////////////////////////////
+// Register file read and WB forwarding logic.
 
 assign reg_rdata1 =
 	(src1_select == 5'd0) ? 32'd0:
@@ -189,19 +181,7 @@ assign reg_rdata2 =
     	? (wb_mem_to_reg ? wb_read_data : wb_result)
     	: regs [src2_select];
 
-////////////////////////////////////////////////////////////
-// TODO: Register File Writeback
-//
-// On reset:
-//   - Clear registers x1-x31
-//
-// On valid WB cycle:
-//   - If wb_alu_to_reg asserted
-//   - AND no stall
-//   - Write either:
-//    	wb_read_data (LOAD)
-//    	wb_result	(ALU result)
-////////////////////////////////////////////////////////////
+// Register file writeback logic.
 
 integer i;
 always @(posedge clk or negedge reset) begin
@@ -295,20 +275,7 @@ execute execute (
 
 
 
-////////////////////////////////////////////////////////////
-// PC Update Logic
-//
-// On reset:
-// - Set PC = RESET
-//
-// On each clock (if not stalled):
-// - If branch_stall = 1 → hold branch redirect and
-// move sequentially (PC = PC + 4).
-// - Else → update PC with next_pc
-// (this could be normal next or a jump/branch address).
-//
-// stall_read prevents any PC update.
-////////////////////////////////////////////////////////////
+// PC update logic with branch redirection and stall handling.
 
 always @(posedge clk or negedge reset) begin
 	if (!reset)

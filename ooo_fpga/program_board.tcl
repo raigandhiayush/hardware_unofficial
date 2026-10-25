@@ -1,7 +1,4 @@
-# program_board.tcl - load ooo_fpga/build/top_fpga_ooo.bit into the Nexys A7 over USB-JTAG
-# (volatile: lost at power-off). Run after synth_vivado.tcl, board plugged in and on:
-#   vivado -mode batch -source ooo_fpga/program_board.tcl [-tclargs ooo|pipe_m|pipe]
-# The core argument (default ooo) picks the bitstream synth_vivado.tcl wrote for it (D24).
+# Programs selected bitstream onto the Nexys A7 FPGA over USB-JTAG.
 set here [file dirname [file normalize [info script]]]
 set core [expr {[llength $argv] > 0 ? [lindex $argv 0] : "ooo"}]
 switch $core {

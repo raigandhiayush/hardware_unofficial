@@ -1,21 +1,5 @@
 `timescale 1ns/1ps
-// ---------------------------------------------------------------------------
-// tb_alu_fu.v  --  self-checking testbench for alu_fu
-// Owner: C   |   Reviewer: B   |   14 Oct
-//
-// alu_fu is purely combinational, so every check just drives the inputs,
-// waits 1 ns for things to settle and compares all four outputs.
-//
-// Plan:
-//   1. the 10 register ALU ops, with the usual corner values
-//   2. the 9 immediate forms (the immediate just sits in vk, D16)
-//   3. shifts by 0 / 31 / 32 / 33 -- only vk[4:0] may count (fix F5)
-//   4. all 6 branches: equal, less, greater, and the signed/unsigned edge
-//   5. JALR: link value comes back as result, bit 0 of target cleared (F6)
-//   6. a couple of thousand random ALU vectors against a small model
-//
-// At the end it prints  TEST_PASS alu_fu <n>  or  TEST_FAIL ...
-// ---------------------------------------------------------------------------
+// Self-checking testbench for alu_fu covering ALU operations, branches, and JALR.
 module tb_alu_fu;
 
     reg  [7:0]  op;
@@ -44,9 +28,7 @@ module tb_alu_fu;
 
     integer n_pass, n_fail;
 
-    // -----------------------------------------------------------------------
-    // the one place that actually compares things
-    // -----------------------------------------------------------------------
+    // Output comparison helper.
     task check;
         input [8*24:1] name;
         input [7:0]    t_op;
@@ -94,10 +76,7 @@ module tb_alu_fu;
         end
     endtask
 
-    // -----------------------------------------------------------------------
-    // reference model for the random section. SRA is written differently
-    // from the DUT on purpose (shift + fill mask), so the two don't share a bug.
-    // -----------------------------------------------------------------------
+    // Reference model for randomized testing.
     function [31:0] ref_alu;
         input [7:0]  f_op;
         input [31:0] x, y;

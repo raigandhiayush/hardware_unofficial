@@ -1,5 +1,4 @@
-//  ooo_dispatch - decode glue, rename, allocate (owner: A, reviewer: C)
-//  PROJECT_BLUEPRINT.md 6.13, SIGNALS_REFERENCE.md 2.6, decisions D11-D16, D19.
+// Instruction dispatch, register renaming, and reservation station / ROB allocation.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

@@ -1,14 +1,4 @@
-// tb_instr_queue.v -- self-checking testbench for instr_queue (owner D).
-// Blueprint §6.3: fill to 4, push-when-full ignored (and flagged), empty pop,
-// push+pop at 0..4 entries, flush (+ simultaneous push), no bypass (D5),
-// async reset, and 10,000 random cycles against a software queue model.
-//
-// Model choices (from the spec):
-//   * flush wins over push and pop; queue is empty after the edge.
-//   * "full"/"empty" are judged on start-of-cycle occupancy, so a push at
-//     count==DEPTH is dropped even if a pop happens in the same cycle.
-//   * a pushed entry becomes visible on out_* only in the next cycle.
-// Prints TEST_PASS instr_queue <n> or TEST_FAIL ... with cycle/expected/actual.
+// Self-checking testbench for instr_queue verifying push, pop, flush, and occupancy.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""Extra div_unit vectors for tb/tb_div_unit_vectors.v (edge-case audit, 23 Oct).
-
-Expected values come from an RV32M model written here from the RISC-V M spec,
-separate from tools/gen_div_vectors.py, so the two models cross-check each other.
-Writes into OUT_DIR (not into tb/vectors/, the 1M-op set is ~40 MB):
-  ext_grid.mem   group 25: 40 corner values x 40 x 4 ops = 6400 vectors
-  rnd_NN.mem     group 26: 8000 vectors each (tb_div_unit_vectors.v MAXV = 8192),
-                 1 in 8 each: 8-bit divisor, small negative divisor, a == b,
-                 few-bit quotient, power-of-two divisor, around INT_MIN / -1
-Usage (from toma-rv/): python3 tools/gen_div_vectors_ext.py build/vec_ext 125
-  then: vvp -n build/dv.vvp +vectors=build/vec_ext/<file>.mem  for each file
-"""
-# Independent RV32M model (written fresh from the RISC-V M spec, not copied from tools/gen_div_vectors.py)
+"""Generates extended corner-case and randomized div_unit test vectors."""
 import random,sys,os
 M=(1<<32)-1
 def sx(v): return v-(1<<32) if v>>31 else v

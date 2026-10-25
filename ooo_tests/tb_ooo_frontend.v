@@ -1,43 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// ---------------------------------------------------------------------------
-// tb_ooo_frontend.v  --  self-checking testbench for ooo_frontend
-// Owner: C   |   Reviewer: A   |   16-17 Oct
-//
-// 16 Oct slice (fetch + queue + back-pressure):
-//   T0  reset: imem_addr = 0, queue empty, hold = 0
-//   T1  straight-line fetch, dispatch pops every cycle
-//   T2  dispatch pops only every third cycle
-//   T3  dispatch stops popping: queue fills to exactly 4, fetch stops,
-//       nothing is pushed into a full queue
-//   T4  popping resumes: the PC sequence carries on with no gap or repeat
-//   T5  reset in the middle of a run, then it starts again from 0
-//
-// 17 Oct (branch hold + redirect + flush, blueprint rule 12):
-//   T6  hold_set -> hold = 1 from the next cycle, fetch keeps filling the
-//       queue; a NOT-taken resolve clears hold and flushes nothing
-//   T7  taken branch: queue flushed, target dispatchable at X+3, then the
-//       sequence carries on from the target
-//   T8  JAL: redirect at dispatch (same cycle as the JAL is popped),
-//       target dispatchable at D+3
-//   T9  JALR resolving while the queue is FULL
-//   T10 redirect in the same cycle as a push, with a fetch in flight:
-//       neither wrong-path word may ever reach the queue
-//
-// Exact timing + stress:
-//   T11 straight-line latency: fetched in t, dispatchable in exactly t+2
-//   T12 20,000 random cycles of dispatch / branch / JAL / resolve traffic,
-//       compared EVERY cycle against a cycle-accurate model of the spec
-//
-// The instruction memory is modelled here: like the real BRAM it answers
-// one cycle late, and every word is  pc ^ 32'hABCD_0000 , so the checker can
-// tell from fq_inst alone whether the right word came back with the right PC.
-// 'exp_pc' = the PC the next popped instruction must have; any lost,
-// duplicated, out-of-order or wrong-path instruction shows up as a mismatch.
-//
-// Needs ooo_rtl/instr_queue.v (D's module, or a stand-in with the same ports).
-// Ends with  TEST_PASS ooo_frontend <n>  or  TEST_FAIL ...
-// ---------------------------------------------------------------------------
+// Self-checking testbench for ooo_frontend verifying instruction fetch, branch hold, redirect, and flush.
 module tb_ooo_frontend;
 
     localparam [31:0] KEY = 32'hABCD_0000;   // fake instruction = pc ^ KEY
@@ -80,12 +43,7 @@ module tb_ooo_frontend;
     reg [31:0] pc_a, pc_b;
     reg        hold_must_be_0;   // T0-T5 never drive hold_set
 
-    // ---- cycle-accurate reference model of the spec (used by T12) ----
-    // Rules it follows: fetch only if free_slots > in-flight; data arrives one
-    // cycle late and is pushed with its PC; push into a full queue is ignored;
-    // redirect (JAL, or taken branch/JALR) flushes the queue, drops the
-    // in-flight fetch and loads the target; hold set by hold_set, cleared by
-    // br_valid. Every cycle the DUT's outputs must equal the model's.
+    // Cycle-accurate reference model for verification against frontend DUT.
     reg [31:0] m_q [0:3];        // model queue, m_q[0] = head
     integer    m_cnt;
     reg [31:0] m_fpc, m_ppc;
@@ -132,11 +90,7 @@ module tb_ooo_frontend;
         end
     endtask
 
-    // -----------------------------------------------------------------------
-    // one precisely controlled cycle: drive dispatch / resolve signals for
-    // this cycle, let the clock edge happen, then drop all the pulses again.
-    // Called just after an edge; returns just after the next edge.
-    // -----------------------------------------------------------------------
+    // Steps clock by one cycle and pulses control signals.
     task cyc_ctl;
         input        do_pop;
         input        rv;          // redirect_valid (JAL at dispatch)
@@ -165,10 +119,7 @@ module tb_ooo_frontend;
         end
     endtask
 
-    // -----------------------------------------------------------------------
-    // free-running dispatch for 'ncyc' cycles:
-    //   mode 0 = never pop, 1 = pop every cycle, 3 = pop every third cycle
-    // -----------------------------------------------------------------------
+    // Free-running dispatch helper over n cycles.
     task run;
         input integer mode;
         input integer ncyc;
@@ -375,11 +326,7 @@ module tb_ooo_frontend;
                      fq_valid === 1'b1 && fq_pc === 32'h0 && fq_inst === (32'h0 ^ KEY));
         pass_or_fail("T11 PC 8 fetched in t+2",             imem_addr === 32'h8);
 
-        // ---------------- T12: random stress against a reference model -----
-        // 20,000 cycles of random dispatch / branch / JAL / resolve traffic that
-        // follows the real protocol (no dispatch while hold, branches resolve
-        // only while hold is up). EVERY cycle, imem_addr, fq_valid, fq_pc,
-        // fq_inst and hold must equal the model exactly.
+        // T12: Randomized stress test against reference model.
         do_reset;
         m_cnt = 0;  m_fpc = `RESET_PC;  m_ppc = 32'h0;  m_pend = 1'b0;  m_hold = 1'b0;
         seed = 2026;  fails_shown = 0;

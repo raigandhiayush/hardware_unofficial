@@ -1,24 +1,5 @@
 `timescale 1ns/1ps
-// rob.v - reorder buffer and commit for TOMA-RV (Person B)
-// Spec: PROJECT_BLUEPRINT v0.3 sec. 6.7, rules 2/8/9 of sec. 3.6, D11, D12,
-// D15, D18; ports: SIGNALS_REFERENCE v0.3 sec. 2.8.
-//
-// Contract:
-//   * Allocate: rob_al_valid writes the tail entry and rob_al_tag names it.
-//     Full is judged on the count at the START of the cycle (rule 2), so an
-//     allocate while rob_full is ignored even if the head commits this cycle.
-//     rob_al_pre = 1 (CLS_PRE / CLS_NOP) makes the entry ready at once with
-//     rob_al_value; otherwise it waits for a bus (D11, D12).
-//   * Complete: four write ports, one per CDB. Every bus write is handled the
-//     same way (D15: JALR's link value arrives on cdb_alu like any result).
-//   * Commit: cm_valid = head valid & ready. ready is a register written at
-//     the end of the broadcast cycle W, so commit is never earlier than W+1
-//     (rule 8). The head is freed at the clock edge.
-//   * Read ports are combinational from the state at the start of the cycle;
-//     a value broadcast this cycle is the dispatch bypass's job (rule 3).
-//   * ooo_event (D18): some active bus carries a tag other than the head
-//     while the head is valid and not ready.
-//   * reset_n: active low, asynchronous; clears every entry and pointer.
+// Circular Reorder Buffer (ROB) supporting in-order dispatch, CDB completion, and in-order commit.
 
 `include "ooo_defs.vh"
 
@@ -136,8 +117,7 @@ module rob #(
                     value[cdb_tag[b*ROB_W +: ROB_W]] <= cdb_value[b*`XLEN +: `XLEN];
                 end
 
-            // commit frees the head (tail != head unless full, and a full ROB
-            // ignores allocation, so commit and allocate never hit one entry)
+            // Retire head entry at commit.
             if (do_commit) begin
                 valid[head] <= 1'b0;
                 ready[head] <= 1'b0;

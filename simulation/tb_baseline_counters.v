@@ -1,37 +1,4 @@
-//  tb_baseline_counters - D21 cycle counts for the baseline, measured like the board
-//  (owner: C per TASKS 309; written for A). PROJECT_BLUEPRINT.md D17, D21, 4.3.
-//  Three cores run the same program side by side, each in its own copy of the
-//  top_fpga_ooo system (instr_mem, data_mem, D20/D22 MMIO, perf_counters):
-//    pipe      baseline 3-stage, RV32I only (modules/, untouched)
-//    pipe_m    baseline + in-order MUL/DIV, pipeline frozen while a unit runs
-//              (baseline_m/); identical to pipe on RV32I code
-//    pipe_ooo  the Tomasulo core
-//  plus the board tops themselves, top_fpga_ooo and top_fpga_base (CORE 0 and 1),
-//  whose U_PERF counters, result and done must equal the matching copy's: that
-//  proves this testbench counts exactly like the board (D21: edges from the first
-//  edge after reset release up to and including the done-store edge).
-//
-//  Checks, per program and core: the store stream (data, byte lanes, strobes and
-//  address; RAM addresses may differ by one constant offset, the baseline's
-//  stack quirk, evidence/INDEX.md) and the end result against the ref_model
-//  trace; done reached; pipe_m and pipe_ooo retired = trace commits; pipe_m cycles = pipe
-//  cycles on RV32I-only programs. pipe is skipped (N/A) on programs with RV32M.
-//  Known baseline bug (modules/ is never edited): after a taken branch the
-//  second wrong-path instruction still writes its register, and JAL/JALR lose
-//  their link. pipe_m fixes it (cycle-neutral, baseline_m/execute_m.v). A wrong
-//  result or store from pipe is reported as BASELINE_BUG, not TEST_FAIL, and the
-//  pipe_m = pipe cycle check is then skipped.
-//  pipe has no commit signal: its retired count is the trace's (instruction
-//  count is a property of the program); pipe_m counts dbg_retire. Baseline `exception` is
-//  only reported (known spurious pulse, tb_baseline_probe).
-//
-//  Programs: ooo_tests/programs/{base_rv32i,top_mmio,ooo_trace,rv32m_edge,
-//  pipe_m_edge}, or
-//  one program given as +hex=<file> +trace=<file> [+sw=<hex>] (paths relative to
-//  simulation/; see simulation/measure_cycles.sh).
-//  Compile with -DTOMA_SIM. Run from simulation/.
-//  Prints one PERF line per program and core, then TEST_PASS baseline_counters
-//  <n_checks> or TEST_FAIL lines.
+// Testbench comparing cycle counts and commit traces across pipe, pipe_m, and pipe_ooo cores.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

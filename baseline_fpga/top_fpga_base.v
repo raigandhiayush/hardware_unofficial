@@ -1,21 +1,4 @@
-//  top_fpga_base - Nexys A7-100T board top for the baseline cores (owner: A)
-//  Same system as top_fpga_ooo (ooo_rtl/top_fpga_ooo.v, E): same ports, pins
-//  (ooo_fpga/top_fpga_ooo.xdc), 50 MHz MMCM (D7), reset synchronizer, MMIO (D8,
-//  D20, D22), perf_counters with the D21 rule, LEDs and 7-segment display, so a
-//  program gives board numbers that compare directly with pipe_ooo (D24).
-//  Only the core differs:
-//    CORE = 1 (default): pipe_m, baseline + in-order MUL/DIV (baseline_m/)
-//    CORE = 0          : pipe, the untouched course baseline (modules/), RV32I
-//                        only, with the three bugs in evidence/INDEX.md
-//  Display: sw[15:14] = 00 result, 01 cycles, 10 retired (pipe_m: dbg_retire;
-//  pipe has no commit signal and shows 0), 11 ooo_count (always 0: in order).
-//  led[15] = done, led[14] = the core's exception output, led[13:0] = result.
-//  The baseline exception is not sticky and pulses on squashed fetches of
-//  0x00000000 (F10), so led[14] may flicker or stay lit after done.
-//  Replaces nothing: baseline_fpga/top_fpga.v (1 Hz, pc on LEDs) is kept as the
-//  course reference.
-//  Simulation: compile with -DTOMA_SIM; the MMCM is replaced by core_clk = clk.
-//  Instance names U_IMEM / U_DMEM / U_PERF match top_fpga_ooo; the core is g_core.U_CORE.
+// Nexys A7-100T board top for baseline pipelines (pipe_m and 3-stage pipe).
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 
@@ -173,7 +156,7 @@ module top_fpga_base
 		else if (dmem_we && dmem_waddr[31:2] == MMIO_DONE[31:2]) done <= 1'b1;
 	end
 
-	// read source, registered in the LA cycle and held like data_mem.rdata
+	// Registered read source matching data_mem latency.
 	always @(posedge core_clk or negedge rst_n_sync) begin
 		if (!rst_n_sync) begin
 			rd_sw   <= 1'b0;

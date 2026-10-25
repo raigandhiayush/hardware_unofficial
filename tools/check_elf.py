@@ -1,23 +1,5 @@
 #!/usr/bin/env python3
-"""check_elf.py - reject workload objects the TOMA-RV flow cannot run (owner: E, reviewer: A).
-
-PROJECT_BLUEPRINT.md 6.17, findings F2-F4. Exit status 0 = accepted, 1 = rejected,
-2 = not a readable ELF / usage error. Checks, on the object built by
-mem_generator/Makefile (gcc -c, then objcopy -O binary, so address 0 = first
-byte of .text):
-  1. ELF32, little-endian, EM_RISCV; no compressed code (EF_RISCV_RVC) and
-     soft-float ABI (ilp32).
-  2. No relocation section with entries (F3: unresolved calls to __mulsi3 etc.,
-     globals, and, with linker relaxation, local branches).
-  3. No initialised or zero-initialised writable data (.data/.bss/.sdata/.sbss):
-     data_mem never loads dmem.hex (F2).
-  4. Every word of every executable section is one of the 44 instructions
-     ooo_decode accepts (RV32I without AUIPC/FENCE/ECALL/EBREAK/CSR, plus RV32M).
-     The core would turn anything else into a NOP and raise exception (D12).
-  5. main is at offset 0 of the first executable section (the core starts at pc 0).
-
-Usage: python3 tools/check_elf.py code.elf [more.elf ...]
-"""
+"""Validates ELF binaries against TOMA-RV architectural and toolchain constraints."""
 import struct, sys
 
 EM_RISCV = 243
@@ -33,7 +15,7 @@ RELOC_NAMES = {16: "R_RISCV_BRANCH", 17: "R_RISCV_JAL", 18: "R_RISCV_CALL", 19: 
 
 
 def legal(w):
-    """Same acceptance rule as ooo_rtl/ooo_decode.v with SUPPORT_AUIPC = 0."""
+    """Checks instruction legality against RV32IM supported opcodes."""
     op, f3, f7 = w & 0x7F, (w >> 12) & 7, w >> 25
     if op in (0x37, 0x6F):                       # LUI, JAL
         return True

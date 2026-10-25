@@ -1,27 +1,4 @@
-# synth_vivado.tcl - non-project Vivado build of top_fpga_ooo (owner: B)
-# PROJECT_BLUEPRINT.md 6.16, D7. Can be run from any directory:
-#   vivado -mode batch -source ooo_fpga/synth_vivado.tcl -tclargs synth [prog.hex]  (synthesis only)
-#   vivado -mode batch -source ooo_fpga/synth_vivado.tcl -tclargs impl  [prog.hex]  (+ place/route)
-#   vivado -mode batch -source ooo_fpga/synth_vivado.tcl -tclargs bit   [prog.hex]  (+ bitstream)
-# Optional third argument, the core (D24): ooo (default, top_fpga_ooo), pipe_m or pipe
-# (baseline_fpga/top_fpga_base with CORE = 1 / 0, same pins and xdc). Pass "" as prog.hex
-# for the default program, e.g. -tclargs bit "" pipe_m. Each core builds in its own
-# directory: ooo_fpga/build (ooo), ooo_fpga/build_pipe_m, ooo_fpga/build_pipe.
-# pipe runs RV32I only: give it an RV32I program (the default top_mmio.hex uses MUL/DIV).
-# prog.hex (1024 lines, one 32-bit word each) is the program in instr_mem; it defaults
-# to ooo_tests/programs/top_mmio.hex (the program tb_top_fpga_ooo runs). Expected on
-# the board after CPU_RESET: led[15] (done) on, display = 00000003 with sw[15:14]=00,
-# cycles 000000AD (173) with 01, retired 0000005C (92) with 10.
-#
-# instr_mem (modules/memory.v, never edited) loads "../mem_generator/imem_dmem/imem.hex"
-# relative to Vivado's working directory. The script copies prog.hex to
-# build/mem_generator/imem_dmem/imem.hex and runs Vivado in build/run, so the baseline
-# mem_generator/imem_dmem/imem.hex (used by the baseline and tb_ooo_system) is untouched.
-#
-# The build stops with an error if the hex file cannot be read, if a latch is
-# inferred, or if routed setup/hold slack is negative (no bitstream is written then).
-# Reports go to ooo_fpga/build/; copy the .rpt files into evidence/ with the
-# Vivado version and commit hash (DoD).
+# Non-project Vivado flow for FPGA synthesis, implementation, and bitstream generation.
 set here  [file dirname [file normalize [info script]]]
 set repo  [file dirname $here]
 set part  xc7a100tcsg324-1

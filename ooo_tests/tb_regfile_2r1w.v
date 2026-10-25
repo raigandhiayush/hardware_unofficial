@@ -1,5 +1,4 @@
-// tb_regfile_2r1w.v - self-checking testbench for regfile_2r1w.v
-// Prints "TEST_PASS regfile_2r1w <n>" (n = checks passed) or "TEST_FAIL regfile_2r1w <n>".
+// Self-checking testbench for regfile_2r1w verifying 2R1W access and x0 behavior.
 `timescale 1ns/1ps
 module tb_regfile_2r1w;
     reg clk = 0, reset_n = 0, we = 0;

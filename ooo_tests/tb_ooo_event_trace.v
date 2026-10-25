@@ -1,23 +1,4 @@
-//  tb_ooo_event_trace - out-of-order completion evidence (owner: C, reviewer: A)
-//  TASKS 19 Oct (C): validate ooo_event (computed in the ROB, D18), count cycles
-//  with two or more active buses from dbg_cdb_valid, validate non-head
-//  completion on every bus where it can happen. Runs
-//  ooo_tests/programs/ooo_trace.hex on top_fpga_ooo, prints a per-cycle trace
-//  (TRACE lines) and writes the waveform ../evidence/waves/ooo_event_trace.vcd.
-//
-//  Checks:
-//    * result 542 (0x21e) and done; no exception
-//    * while the DIV at pc 0x10 is the unfinished ROB head, a younger entry
-//      completes on cdb_alu, on cdb_mul and on cdb_lsu, and ooo_event is 1 in
-//      exactly the cycles where some bus carries a tag other than an unfinished
-//      head (recomputed here from bus tags and the ROB head, not taken from rob.v)
-//    * perf_counters.ooo_count equals the number of ooo_event cycles counted here
-//    * at least one cycle with two or more buses active
-//  cdb_div cannot complete out of order in this configuration: one DIV unit,
-//  and no other operation takes 33 cycles, so an older unfinished entry cannot
-//  outlive a younger DIV. The test reports this case instead of requiring it.
-//  Compile with -DTOMA_SIM. Run from simulation/.
-//  Prints TEST_PASS ooo_event_trace <n_checks> or TEST_FAIL lines.
+// Testbench validating out-of-order execution completion events and CDB concurrency.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

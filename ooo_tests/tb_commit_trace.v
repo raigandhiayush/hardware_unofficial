@@ -1,15 +1,4 @@
-//  tb_commit_trace - commit-trace compare: RTL vs tools/ref_model.py (owner: E, reviewer: A)
-//  PROJECT_BLUEPRINT.md 6.17. Runs each program on top_fpga_ooo (pipe_ooo with
-//  the D8/D20/D22 MMIO decode) and compares every retired instruction with the
-//  reference model's trace ooo_tests/programs/<name>.trace: pc, rd and value,
-//  store address, byte lanes and strobes. The last trace line gives the end
-//  state (result, done, exception); for programs that end with done, retired
-//  must equal the number of commits up to and including the done store (D21).
-//  Regenerate the traces with: bash tools/build_test_programs.sh
-//  Programs 4-6 are the RV32M C workloads (mem_generator/code_<p>_d8.c), built
-//  only where a RISC-V gcc exists; a missing .hex prints SKIP and is not run.
-//  Compile with -DTOMA_SIM. Run from simulation/.
-//  Prints TEST_PASS commit_trace <n_commits_checked> or TEST_FAIL lines.
+// Testbench comparing top_fpga_ooo commit trace and MMIO results against ref_model traces.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

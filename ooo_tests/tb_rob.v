@@ -1,31 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// ---------------------------------------------------------------------------
-// tb_rob.v  --  self-checking testbench for rob
-// Owner: B   |   Reviewer: A   |   blueprint v0.3 sec. 6.7
-//
-// Inputs change just after a rising edge; checks look at the outputs between
-// edges (start-of-cycle state), so "check, step, check" pins the exact cycle.
-//
-//   T1  reset: empty, count 0, tail 0, nothing commits
-//   T2  allocate ROB_N -> full, tags in order; allocate while full ignored
-//   T3  complete in reverse order, commit still in order; a result broadcast
-//       in W commits in W+1, never in W
-//   T4  all four buses complete in one cycle; no completion lost
-//   T5  allocate + commit in the same cycle, at full (alloc ignored: full is
-//       judged at the start of the cycle) and at count 1 (count unchanged)
-//   T6  pre-completed entries (CLS_PRE value, CLS_NOP no rd) retire without
-//       any broadcast
-//   T7  JALR entry gets its link value from cdb_alu (D15)
-//   T8  read ports: not ready, then ready with the bus value
-//   T9  ooo_event: other tag while head waits = 1; head's own tag = 0;
-//       head ready = 0; empty ROB = 0
-//   T10 store kind -> cm_is_store
-//   T11 asynchronous reset mid-run
-//   T12 random traffic vs a cycle-accurate model (wrap, full, multi-bus)
-//
-// Ends with  TEST_PASS rob <n>  or  TEST_FAIL ...
-// ---------------------------------------------------------------------------
+// Self-checking testbench for rob verifying allocation, CDB completion, and in-order commit.
 module tb_rob;
 
     localparam N = `ROB_N;

@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
-"""Generate div_unit test vectors from evidence/docs/div_unit_test_cases.md (section A).
-
-Writes ooo_tests/vectors/div_unit_vectors.mem: 5 hex words per line,
-"group funct3 a b expected". Group numbers 1..21 are rows A1..A21 of the
-case list; 22 = corner grid, 23 = small exhaustive, 24 = random.
-Expected values come from this file's own RV32M model, independent of the RTL.
-Usage: python3 tools/gen_div_vectors.py   (from tomasulo-rv/)
-"""
+"""Generates div_unit test vectors and expected results in hex format."""
 import os, random
 
 M = 0xFFFFFFFF

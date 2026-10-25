@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
-"""test_check_elf.py - self-checking test for tools/check_elf.py (owner: E).
-
-No RISC-V toolchain is needed: the test writes small ELF32 RISC-V objects with
-the layout gcc -c produces (.text, .symtab, .strtab, .shstrtab, optional
-.rela.text / .data) and checks accept/reject and the exit status. If iverilog is
-installed it also runs every opcode/funct3/funct7 combination plus random words
-through ooo_rtl/ooo_decode.v and checks that check_elf.legal() accepts exactly
-what the decoder accepts.
-Usage (from tomasulo-rv/): python3 tools/test_check_elf.py
-Prints TEST_PASS check_elf <n> or TEST_FAIL lines.
-"""
+"""Self-checking test suite for tools/check_elf.py."""
 import os, random, shutil, struct, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))

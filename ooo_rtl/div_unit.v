@@ -1,30 +1,5 @@
-// div_unit.v - RV32M divider for TOMA-RV (Person E)
+// Radix-2 restoring divider for RV32M (DIV, DIVU, REM, REMU).
 `timescale 1ns/1ps
-// Radix-2 restoring divider: DIV, DIVU, REM, REMU. One operation at a time.
-// Ports follow SIGNALS_REFERENCE.md section 2.12; ROB_W comes from ooo_defs.vh.
-//
-// Timing contract (Q6, proposed by E, pending A's sign-off):
-//   * Fixed latency for every input, corner cases included:
-//     start sampled in cycle t  ->  done=1 for exactly one cycle in t+33
-//     (34-cycle occupancy t..t+33, as planned in blueprint section 6.11).
-//       t+1 .. t+32 : 32 restoring iterations; the last one also applies
-//                     the sign fix and corner-case select
-//       t+33        : done=1, result and done_tag valid
-//   * busy is a registered output: 0 in cycle t, 1 in t+1 .. t+32, and 0 in
-//     the done cycle t+33, so C's DIV RS (iss_accept = ~busy) can start the
-//     next divide in t+33.
-//   * result and done_tag hold their value after done until the next done.
-//
-// funct3 = funct3[1:0] of the M-extension divide instructions:
-//   2'b00 DIV, 2'b01 DIVU, 2'b10 REM, 2'b11 REMU
-//
-// Corner cases (RISC-V spec, M extension):
-//   x / 0        : quotient = 0xFFFFFFFF, remainder = dividend
-//   INT_MIN / -1 : quotient = INT_MIN,    remainder = 0
-//   remainder takes the sign of the dividend
-//
-// Reset: reset_n, active low, asynchronous (baseline convention).
-// Pure Verilog-2001, no vendor primitives.
 
 `include "ooo_defs.vh"
 
@@ -65,9 +40,7 @@ module div_unit #(
     wire [31:0] quo_nx = {quo[30:0], fits};
     wire [31:0] rem_nx = fits ? diff[31:0] : rem_sh[31:0];
 
-    // final sign fix, used on the last iteration.
-    // x/0: the loop already yields quo=0xFFFFFFFF and rem=|a|; skip the quotient
-    // negation so DIV stays all ones. INT_MIN/-1 falls out naturally.
+    // Final sign and corner-case adjustment.
     wire [31:0] q_fixed = div_zero ? 32'hFFFF_FFFF : (neg_q ? (~quo_nx + 32'd1) : quo_nx);
     wire [31:0] r_fixed = neg_r ? (~rem_nx + 32'd1) : rem_nx;
 

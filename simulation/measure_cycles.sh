@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
-# measure_cycles.sh - D21 cycle counts of one program on pipe (baseline), pipe_m
-# (baseline + in-order MUL/DIV) and pipe_ooo, with tb_baseline_counters.
-# Usage, from anywhere:
-#     bash simulation/measure_cycles.sh [prog.hex] [sw-hex]
-# Default prog.hex = mem_generator/imem_dmem/imem.hex (what `make <prog>_d8` writes).
-# The expected trace comes from tools/ref_model.py; the program must end with the
-# done store (D8). Prints the PERF lines and the speed-ups; exit status non-zero
-# unless TEST_PASS.
+# Runs cycle measurement comparing pipe, pipe_m, and pipe_ooo against ref_model traces.
 set -eu
 cd "$(dirname "$0")/.."                      # tomasulo-rv/
 HEX="$(realpath "${1:-mem_generator/imem_dmem/imem.hex}")"

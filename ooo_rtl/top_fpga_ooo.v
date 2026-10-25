@@ -1,28 +1,4 @@
-//  top_fpga_ooo - Nexys A7-100T board top for pipe_ooo (owner: E, reviewer: B)
-//  PROJECT_BLUEPRINT.md 6.16, SIGNALS_REFERENCE.md 2.17, decisions D7, D8,
-//  D20, D21, D22.
-//
-//  Contents: 100 -> 50 MHz MMCM (D7), reset synchronizer, instr_mem, data_mem,
-//  pipe_ooo, perf_counters, MMIO decode, 7-segment driver, LEDs.
-//
-//  MMIO (D8, D20, D22), matched on the full word address [31:2] (byte lanes
-//  come from dmem_write_byte; the LSU formats load bytes from the word):
-//    store 0x1000_0000 : result, written per byte lane from dmem_write_byte
-//    store 0x1000_0004 : any store sets done (cleared only by reset)
-//    load  0x1000_0008 : {16'd0, sw} (sw through a two-flip-flop synchronizer)
-//    any other address with [31:28] = 4'h1: store dropped, load returns 0.
-//  MMIO stores never write data_mem. The read-data mux selects on the read
-//  address registered in the LA cycle (data_mem returns data one cycle later).
-//
-//  Counters (D21): run = rst_n_sync & ~done, so the edge that latches done is
-//  the last one counted.
-//
-//  Display: sw[15:14] selects the 8-digit hex value: 00 result, 01 cycles,
-//  10 retired, 11 ooo_count. led[15] = done, led[14] = exception,
-//  led[13:0] = result[13:0].
-//
-//  Simulation: compile with -DTOMA_SIM; the MMCM is replaced by core_clk = clk.
-//  Instance names U_IMEM / U_DMEM / U_CORE / U_PERF are used by testbenches.
+// Nexys A7-100T FPGA top module integrating pipe_ooo, MMIO peripherals, and 7-segment display.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 
@@ -158,7 +134,7 @@ module top_fpga_ooo
 		else if (dmem_we && dmem_waddr[31:2] == MMIO_DONE[31:2]) done <= 1'b1;
 	end
 
-	// read source, registered in the LA cycle and held like data_mem.rdata
+	// Registered read source matching data_mem latency.
 	always @(posedge core_clk or negedge rst_n_sync) begin
 		if (!rst_n_sync) begin
 			rd_sw   <= 1'b0;

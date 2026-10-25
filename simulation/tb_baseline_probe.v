@@ -1,28 +1,5 @@
 `timescale 1ns/1ps
-// ---------------------------------------------------------------------------
-// tb_baseline_probe.v  --  self-checking run of the untouched baseline `pipe`
-// Owner: B (baseline build evidence, TASKS 14 Oct)
-//
-// Same wiring as modules/tb_pipeline.v, but it reports REAL cycle numbers
-// (tb_pipeline prints a computed "time" and stops at PC 0x44, which only fits
-// the xor program). It checks the store trace of the program currently in
-// mem_generator/imem_dmem/imem.hex (code_xor.c) against values derived from
-// the C source, then measures the loop period (programs never stop, F7).
-//
-// Known baseline quirk (reported, not a failure): `exception` pulses once per
-// loop pass, because the squashed wrong-path fetch after `ret` (PC 0x48, past
-// the program) returns 0x00000000, which IF_ID flags as illegal without
-// checking the stall/squash. Our core must only raise exception for a
-// DISPATCHED illegal instruction (D12).
-//
-// code_xor.c stack frame: sw ra (=0), sw s0 (=0), a=10, b=3, a^b=9
-// Run from simulation/:
-//   iverilog -g2012 -I ../modules -o build/tb_baseline_probe \
-//     ../modules/pipeline.v ../modules/memory.v ../modules/IF_ID.v \
-//     ../modules/execute.v ../modules/wb.v tb_baseline_probe.v
-//   vvp -n build/tb_baseline_probe
-// Ends with  TEST_PASS baseline_xor <n>  or  TEST_FAIL ...
-// ---------------------------------------------------------------------------
+// Testbench running the baseline 3-stage pipeline against reference memory traces.
 module tb_baseline_probe;
 
     reg clk = 0, reset = 0;

@@ -1,23 +1,4 @@
-//  tb_top_fpga_ooo - self-checking testbench for top_fpga_ooo (owner: E, reviewer: B)
-//  PROJECT_BLUEPRINT.md 6.16; decisions D8, D20, D21, D22; test plan T1-T9 and
-//  T2b in evidence/docs/mmio_D8_D20.md. Runs ooo_tests/programs/top_mmio.hex
-//  four times (switches 0x0000, 0xFFFF, 0xA5A5, random) with a reset between
-//  runs, and checks:
-//    T1  in reset: result, done and all counters are 0
-//    T2  word store to 0x1000_0000; T2b sb/sh honour byte lanes
-//    T3  a byte store to 0x1000_0004 sets done; counters freeze afterwards
-//    T4  loads of 0x1000_0008 return {16'd0, sw} (also lhu/lbu)
-//    T5  alternating switch / RAM / other-MMIO loads each get their own source
-//    T6  data_mem.we is never 1 for an MMIO address; aliased words unchanged
-//    T7  stores with bits [31:28] = 0 reach data_mem; result unchanged
-//    T8  bubble sort + MUL/DIV kernel: result 3, sorted array in data_mem
-//    T9  every rerun after reset gives the same result, cycles and retired
-//    D21 cycles = edges from the first edge after synchronized reset release up
-//        to and including the edge that latches done; retired = commits up to
-//        and including the done store (counted independently here)
-//    display: led, and every digit of seg/an against the selected value
-//  Compile with -DTOMA_SIM. Run from simulation/.
-//  Prints TEST_PASS top_fpga_ooo <n_checks> or TEST_FAIL lines.
+// Self-checking testbench for top_fpga_ooo verifying MMIO access, peripherals, and display outputs.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

@@ -1,11 +1,4 @@
-// tb_div_unit_vectors.v - runs div_unit.v against the value list in
-// ooo_tests/vectors/div_unit_vectors.mem (made by tools/gen_div_vectors.py from
-// evidence/docs/div_unit_test_cases.md section A). div_unit.v is not modified.
-// Prints "TEST_PASS div_unit <n>" or "TEST_FAIL div_unit ..." (CLAUDE.md format).
-// Run from tomasulo-rv/ (vvp runs in simulation/, as in run_unit_tests.sh):
-//   iverilog -g2012 -I ooo_rtl -o simulation/build/tb_div_unit_vectors ooo_rtl/div_unit.v ooo_tests/tb_div_unit_vectors.v
-//   (cd simulation && vvp -n build/tb_div_unit_vectors)
-// Another vector file: vvp v.vvp +vectors=path/to/file.mem
+// Testbench validating div_unit against precomputed vector files.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 module tb_div_unit_vectors;

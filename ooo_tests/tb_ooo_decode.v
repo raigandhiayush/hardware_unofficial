@@ -1,22 +1,4 @@
-// tb_ooo_decode.v -- self-checking testbench for ooo_decode (owner D).
-// Blueprint §6.2 test groups:
-//   (1) every baseline RV32I instruction (36) -- encoded by helper functions
-//       and also a few real machine words as they appear in code.dis;
-//   (2) all 8 RV32M encodings;
-//   (3) unsupported words (ECALL, EBREAK, FENCE, CSR, 0x00000000, AUIPC with
-//       SUPPORT_AUIPC=0, bad funct3/funct7) give illegal=1, cls=CLS_NOP;
-//   (4) negative immediates for every format.
-// Plus: 200,000 random words checked for legality against the RISC-V
-// MATCH/MASK table (riscv-opcodes style, independent of the RTL's case code),
-// and 50,000 random legal instructions whose fields/immediates are encoded by
-// the testbench and must decode back exactly.
-//
-// Field conventions checked (decided by the RTL, consistent with
-// SIGNALS_REFERENCE §2.5): unused rs1/rs2/rd fields are 0; funct3 is 0 for
-// LUI/AUIPC/JAL/JALR; imm=0 for R-type; pre_value=0 except PRE classes and
-// JALR (pc+4); br_target=0 except branches/JAL (pc+imm).
-// JALR br_target is NOT checked: the spec leaves it open (RS 'a' = imm, D16).
-// Prints TEST_PASS ooo_decode <n> or TEST_FAIL ... with expected/actual.
+// Self-checking testbench for ooo_decode covering RV32I/M decodes, illegal opcodes, and random vectors.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 
