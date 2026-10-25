@@ -165,7 +165,7 @@ IF_ID IF_ID_stage (
 );
 
 
-// Register file read and WB forwarding logic.
+// Register file read forwarding from writeback stage.
 
 assign reg_rdata1 =
 	(src1_select == 5'd0) ? 32'd0:
@@ -181,7 +181,7 @@ assign reg_rdata2 =
     	? (wb_mem_to_reg ? wb_read_data : wb_result)
     	: regs [src2_select];
 
-// Register file writeback logic.
+// Register file writeback on clock edge.
 
 integer i;
 always @(posedge clk or negedge reset) begin
@@ -275,7 +275,7 @@ execute execute (
 
 
 
-// PC update logic with branch redirection and stall handling.
+// PC update logic handling sequential fetch, branch redirect, and stall.
 
 always @(posedge clk or negedge reset) begin
 	if (!reset)

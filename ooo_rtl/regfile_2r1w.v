@@ -1,4 +1,4 @@
-// 32-bit integer register file (31 registers x1..x31, x0 tied to 0) with 2R1W ports.
+// regfile_2r1w.v - RV32 integer register file (31 registers, 2 read ports, 1 write port).
 `timescale 1ns/1ps
 
 `include "ooo_defs.vh"

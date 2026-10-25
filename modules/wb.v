@@ -43,16 +43,24 @@ module wb
 `include "opcode.vh"
 
 
-// Instruction memory read interface.
+////////////////////////////////////////////////////////////
+// assigning these variables to read from the instruction memory
+////////////////////////////////////////////////////////////
 
 assign inst_mem_address_o  = fetch_pc_i;
 assign inst_mem_is_ready_o = !stall_read_i;
 
-// Branch stall indicator.
+////////////////////////////////////////////////////////////
+// wb_stall flag for defining the first and second stall in branch instruction
+////////////////////////////////////////////////////////////
 
 assign wb_stall_o = wb_stall_first_o || wb_stall_second_o;
 
-// Instruction fetch PC update logic.
+////////////////////////////////////////////////////////////
+// instruction fetch pc update
+////////////////////////////////////////////////////////////
+
+// Drive instruction memory address from current fetch PC unless stalled.
 
 always @(posedge clk or negedge reset) begin
     if (!reset)
@@ -62,7 +70,11 @@ always @(posedge clk or negedge reset) begin
     // else: hold PC unchanged during a read stall OR a branch stall
 end
 
-// Two-cycle stall generator for branch instructions.
+////////////////////////////////////////////////////////////
+// Branch stall variable declarations
+////////////////////////////////////////////////////////////
+
+// Two-cycle branch stall generator.
 
 always @(posedge clk or negedge reset) begin
     if (!reset) begin
@@ -76,7 +88,11 @@ always @(posedge clk or negedge reset) begin
     end
 end
 
-// Data memory write preparation and byte-lane formatting.
+////////////////////////////////////////////////////////////
+// Preparing write data for store type instructions
+////////////////////////////////////////////////////////////
+
+// Format store write data and byte strobes from alignment offset.
 
 always @(posedge clk or negedge reset) begin
     if (!reset) begin
@@ -122,7 +138,11 @@ always @(posedge clk or negedge reset) begin
 //    end
 end
 
-// Load data sign-extension and byte/halfword formatting.
+////////////////////////////////////////////////////////////
+// load instruction based on the OPCODES
+////////////////////////////////////////////////////////////
+
+// Format load read data with appropriate sign/zero extension.
 
 
 always @* begin

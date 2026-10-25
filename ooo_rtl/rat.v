@@ -1,4 +1,4 @@
-// Register Alias Table (RAT) tracking in-flight renames for x1-x31.
+// rat - Register Alias Table tracking speculative register renames for x1-x31.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 
@@ -39,7 +39,7 @@ module rat
 	assign lk_busy2 = (lk_rs2 != 5'd0) & busy[lk_rs2];
 	assign lk_tag2  = (lk_rs2 != 5'd0) ? tag[lk_rs2] : {ROB_W{1'b0}};
 
-	// Synchronous update: commit clears older tags; allocate sets new tags.
+	// Update RAT state: commit clears entry unless overridden by allocate.
 	always @(posedge clk or negedge reset_n) begin
 		if (!reset_n) begin
 			busy <= 31'd0;

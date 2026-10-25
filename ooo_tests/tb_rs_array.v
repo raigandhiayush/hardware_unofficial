@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// Self-checking testbench for rs_array verifying operand wake-up, oldest-first issue, and stalls.
+// tb_rs_array.v - Self-checking testbench for reservation stations verifying allocation, wakeup, and issue.
 module tb_rs_array;
 
     reg clk, reset_n;

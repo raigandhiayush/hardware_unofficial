@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// Self-checking testbench for lsu verifying load/store ordering, alignment, and memory access.
+// tb_lsu.v - Self-checking testbench for lsu verifying load/store ordering and memory access.
 module tb_lsu;
 
     localparam W = `ROB_W;

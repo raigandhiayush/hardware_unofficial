@@ -58,13 +58,13 @@ reg         illegal_inst;
 ////////////////////////////////////////////////////////////// IF stage////////////////////////////////////////////////////////////
 
 
-// Instruction selection with NOP insertion on stall.
+// IF-stage instruction selection with NOP insertion on stall.
 
 assign instruction_o = stall_read_i ? NOP :inst_mem_read_data;  
 
 ////////////////////////////////////////////////////////////// Exception detection////////////////////////////////////////////////////////////
 
-// Exception detection for illegal or misaligned instructions.
+// Assert exception on illegal instruction or misaligned fetch.
 
 always @(posedge clk or negedge reset) begin 
     if (!reset)
@@ -76,7 +76,7 @@ always @(posedge clk or negedge reset) begin
 end
 ////////////////////////////////////////////////////////////// ID stage: immediate generation///////////////////////////////////////////////////////////
 
-// Decode 32-bit immediate values for supported instruction formats.
+// Decode 32-bit immediate based on RISC-V instruction format.
 
 always @(*) begin
 	immediate	= 32'h0;
@@ -84,19 +84,19 @@ always @(*) begin
 
 	case (instruction_i[`OPCODE])
 
-    	// JALR immediate.
+    	// JALR immediate (I-type)
     	JALR  : immediate = {{20{instruction_i[31]}}, instruction_i[31:20]};
 
-    	// B-type immediate.
+    	// BRANCH immediate (B-type)
     	BRANCH : immediate = {{19{instruction_i[31]}}, instruction_i[31], instruction_i[7],instruction_i[30:25],instruction_i[11:8],1'b0};
 
-    	// Load immediate.
+    	// LOAD immediate (I-type)
     	LOAD  : immediate = {{20{instruction_i[31]}}, instruction_i[31:20]};
 
-    	// S-type immediate.
+    	// STORE immediate (S-type)
     	STORE : immediate = {{20{instruction_i[31]}}, instruction_i[31:25], instruction_i[11:7]};
 
-    	// I-type shift and arithmetic immediate.
+    	// ARITH-I immediate (shift amount or sign-extended imm)
     	ARITHI: immediate =
     (instruction_i[`FUNC3] == SLL ||
      instruction_i[`FUNC3] == SR)
@@ -104,13 +104,13 @@ always @(*) begin
     : {{20{instruction_i[31]}}, instruction_i[31:20]};
 
 
-    	// R-type: no immediate.
+    	// ARITH-R (no immediate)
     	ARITHR: immediate = 32'h0;
 
-    	// U-type immediate.
+    	// LUI immediate (U-type)
     	LUI : immediate = {instruction_i[31:12], 12'b0};
 
-    	// J-type immediate.
+    	// JAL immediate (J-type)
     	JAL : immediate = {{11{instruction_i[31]}}, instruction_i[31], instruction_i[19:12], instruction_i[20], instruction_i[30:21], 1'b0};
 
     	default: illegal_inst = 1'b1;
@@ -119,9 +119,7 @@ end
 
 ////////////////////////////////////////////////////////////// ID → EX Register////////////////////////////////////////////////////////////
 
-// TODO-4:
-// Generate control signals based on opcode
-// alu, lui, jal, jalr, branch, mem_write, mem_to_reg, arithsubtype
+// Generate ID control signals from opcode.
 
 id_ex_reg u_id_ex (
 	.clk        	(clk),

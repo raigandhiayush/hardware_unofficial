@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// Self-checking testbench for rob verifying allocation, CDB completion, and in-order commit.
+// tb_rob.v - Self-checking testbench for reorder buffer allocation, completion, and commit.
 module tb_rob;
 
     localparam N = `ROB_N;

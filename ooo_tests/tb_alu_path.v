@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
-// Testbench verifying the ALU execution datapath: RS issue, ALU execution, and CDB wake-up.
+// tb_alu_path.v - Integration testbench for the ALU execution loop (RS -> alu_fu -> CDB).
 module tb_alu_path;
 
     // op encodings (D16): [2:0] funct3, [3] sub/sra, [4] is_branch, [5] is_jalr

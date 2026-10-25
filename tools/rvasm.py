@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Minimal RV32IM assembler emitting memory hex files for test programs."""
+"""Minimal RV32IM assembler generating imem.hex memory initialization files."""
 import re, sys, os
 
 ABI = ["zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2", "s0", "s1"] + \

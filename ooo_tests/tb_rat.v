@@ -1,4 +1,4 @@
-// Self-checking testbench for rat verifying renaming lookups, allocations, and commits.
+// tb_rat - Self-checking testbench for the Register Alias Table.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

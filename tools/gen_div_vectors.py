@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates div_unit test vectors and expected results in hex format."""
+"""Generate reference test vectors for div_unit hardware verification."""
 import os, random
 
 M = 0xFFFFFFFF

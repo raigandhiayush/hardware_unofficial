@@ -1,4 +1,4 @@
-// Testbench validating div_unit against precomputed vector files.
+// tb_div_unit_vectors.v - Vector testbench for div_unit using precomputed reference values.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 module tb_div_unit_vectors;

@@ -1,4 +1,4 @@
-// System-level testbench comparing pipe_ooo memory writes against baseline pipe execution.
+// tb_ooo_system - Integration testbench comparing pipe_ooo execution with baseline pipeline.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

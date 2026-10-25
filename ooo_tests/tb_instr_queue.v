@@ -1,4 +1,4 @@
-// Self-checking testbench for instr_queue verifying push, pop, flush, and occupancy.
+// tb_instr_queue.v - Self-checking testbench for instr_queue verifying FIFO behavior and flush.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

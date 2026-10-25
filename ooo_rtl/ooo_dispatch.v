@@ -1,4 +1,4 @@
-// Instruction dispatch, register renaming, and reservation station / ROB allocation.
+// ooo_dispatch - Instruction rename, dispatch, and reservation station allocation.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

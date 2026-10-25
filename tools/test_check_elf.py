@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-checking test suite for tools/check_elf.py."""
+"""Unit test suite for check_elf.py ELF validation and decoder compliance."""
 import os, random, shutil, struct, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))

@@ -1,4 +1,4 @@
-// Shared architectural and pipeline constants for TOMA-RV.
+// ooo_defs.vh -- Shared architecture parameters and constants for TOMA-RV.
 `ifndef OOO_DEFS_VH
 `define OOO_DEFS_VH
 

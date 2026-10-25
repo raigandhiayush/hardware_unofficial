@@ -1,4 +1,4 @@
-/* Bubble sort workload sorting a 3-element array in place. */
+/* Bubble sort test workload reporting result via MMIO. */
 #define MMIO_RESULT (*(volatile int *)0x10000000)
 #define MMIO_DONE   (*(volatile int *)0x10000004)
 
@@ -8,7 +8,8 @@ int main(void)
     int n, j;
     int arr[3];
 
-    /* Initialize elements sequentially without rodata relocations. */
+    /* element by element: an initializer list may be copied from .rodata,
+       which needs relocations (F3) */
     arr[0] = 6;
     arr[1] = 3;
     arr[2] = 9;

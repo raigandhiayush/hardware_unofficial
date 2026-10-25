@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Circular Reorder Buffer (ROB) supporting in-order dispatch, CDB completion, and in-order commit.
+// rob.v - Reorder buffer (ROB) supporting multi-CDB completion and in-order commit.
 
 `include "ooo_defs.vh"
 
@@ -117,7 +117,7 @@ module rob #(
                     value[cdb_tag[b*ROB_W +: ROB_W]] <= cdb_value[b*`XLEN +: `XLEN];
                 end
 
-            // Retire head entry at commit.
+            // Commit and free head entry.
             if (do_commit) begin
                 valid[head] <= 1'b0;
                 ready[head] <= 1'b0;

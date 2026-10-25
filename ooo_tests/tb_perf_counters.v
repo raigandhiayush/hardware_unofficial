@@ -1,4 +1,4 @@
-// Self-checking testbench for perf_counters verifying event accumulation, freeze, and overflow wrapping.
+// tb_perf_counters.v - Self-checking testbench for hardware performance counters.
 `timescale 1ns/1ps
 module tb_perf_counters;
     reg clk = 0, reset_n;           // x until time 0, then 0: a real falling edge

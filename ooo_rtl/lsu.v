@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// In-order load/store queue (LSQ) handling operand wake-up, memory access, and store commit.
+// lsu.v - In-order load/store queue (LSQ) handling memory operations and CDB broadcasts.
 
 `include "ooo_defs.vh"
 
@@ -126,7 +126,7 @@ module lsu #(
         endcase
     end
 
-    // LSU CDB arbiter: load result or store completion broadcast.
+    // ---- own bus: a load result (LW) or a store completion (SR), never both ----
     assign cdb_lsu_valid = ld_pend | sr_go;
     assign cdb_lsu_tag   = ld_pend ? ld_tag   : tag[head];
     assign cdb_lsu_value = ld_pend ? ld_value : {`XLEN{1'b0}};
@@ -186,7 +186,7 @@ module lsu #(
                 head       <= head_next;
             end
 
-            // Enqueue new request at tail.
+            // Allocate new entry at tail.
             if (do_alloc) begin
                 busy[tail]     <= 1'b1;
                 is_st[tail]    <= lq_al_store;

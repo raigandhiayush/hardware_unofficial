@@ -1,4 +1,4 @@
-// Self-checking testbench for pipe_ooo/ooo_core validating commit stream and register state.
+// tb_ooo_core - Self-checking testbench for pipe_ooo / ooo_core.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

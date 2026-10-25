@@ -1,4 +1,4 @@
-// Self-checking testbench for ooo_decode covering RV32I/M decodes, illegal opcodes, and random vectors.
+// tb_ooo_decode.v - Self-checking testbench for ooo_decode verifying instruction decoding and validation.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

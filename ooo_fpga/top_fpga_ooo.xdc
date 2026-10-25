@@ -1,4 +1,4 @@
-## Nexys A7-100T constraints for top_fpga_ooo.
+## Nexys A7-100T FPGA board constraints for top_fpga_ooo.
 
 ## 100 MHz clock; the 50 MHz core clock is derived by the MMCM (D7) automatically
 set_property -dict { PACKAGE_PIN E3    IOSTANDARD LVCMOS33 } [get_ports { clk }]

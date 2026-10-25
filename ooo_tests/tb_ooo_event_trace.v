@@ -1,4 +1,4 @@
-// Testbench validating out-of-order execution completion events and CDB concurrency.
+// tb_ooo_event_trace - Verification testbench capturing out-of-order execution events and traces.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

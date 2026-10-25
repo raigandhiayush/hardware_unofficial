@@ -66,7 +66,7 @@ wire [32:0] ex_result_subu;
 
 ////////////////////////////////////////////////////////////// Operand selection///////////////////////////////////////////////////////
 
-// Select ALU operands from register file or immediate.
+// Select ALU operands (register or immediate).
 
 assign alu_operand1 = reg_rdata1;
 assign alu_operand2 = immediate_sel
@@ -75,7 +75,7 @@ assign alu_operand2 = immediate_sel
 ////////////////////////////////////////////////////////////// Subtractions////////////////////////////////////////////////////////////
 
 
-// Signed and unsigned subtraction results for branch comparisons.
+// Signed and unsigned subtraction for branch comparison.
 
 assign ex_result_subs =
 	{alu_operand1[31], alu_operand1} -
@@ -91,7 +91,7 @@ assign branch_stall  = wb_branch_nxt_i || wb_branch_i;
 ////////////////////////////////////////////////////////////// Next PC logic////////////////////////////////////////////////////////////
 
 
-// Compute next PC and resolve branch/jump targets.
+// Next PC computation and branch resolution.
 
 always @(*) begin
 	next_pc  	= fetch_pc + 4;
@@ -158,7 +158,7 @@ end
 
 ////////////////////////////////////////////////////////////// ALU result logic////////////////////////////////////////////////////////////
 
-// Compute execute-stage result for ALU, control, and memory operations.
+// Compute execute-stage result based on operation class.
 
 
 always @(*) begin
@@ -254,7 +254,7 @@ module ex_mem_wb_reg (
 	output reg [2:0]  ex_mem_alu_operation
 );
 
-// EX/MEM to WB pipeline register.
+// EX/MEM to WB pipeline register update on clock edge.
 
 always @(posedge clk or negedge reset_n) begin
 	if (!reset_n) begin

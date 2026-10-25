@@ -1,12 +1,5 @@
-# Programs selected bitstream onto the Nexys A7 FPGA over USB-JTAG.
-set here [file dirname [file normalize [info script]]]
-set core [expr {[llength $argv] > 0 ? [lindex $argv 0] : "ooo"}]
-switch $core {
-	ooo     { set bit $here/build/top_fpga_ooo.bit }
-	pipe_m  { set bit $here/build_pipe_m/top_fpga_base.bit }
-	pipe    { set bit $here/build_pipe/top_fpga_base.bit }
-	default { error "core must be ooo, pipe_m or pipe (got '$core')" }
-}
+# Program top_fpga_ooo bitstream onto Nexys A7 FPGA over USB-JTAG.
+set bit [file dirname [file normalize [info script]]]/build/top_fpga_ooo.bit
 if {![file readable $bit]} { error "no bitstream at $bit; run synth_vivado.tcl first" }
 
 open_hw_manager

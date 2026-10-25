@@ -1,4 +1,4 @@
-// Self-checking testbench for top_fpga_ooo verifying MMIO access, peripherals, and display outputs.
+// tb_top_fpga_ooo - Self-checking testbench for FPGA top level covering MMIO, peripherals, and counters.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

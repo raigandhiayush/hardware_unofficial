@@ -1,4 +1,4 @@
-/* Simple addition workload verifying ALU add and MMIO completion. */
+/* Addition test workload reporting result via MMIO. */
 #define MMIO_RESULT (*(volatile int *)0x10000000)
 #define MMIO_DONE   (*(volatile int *)0x10000004)
 

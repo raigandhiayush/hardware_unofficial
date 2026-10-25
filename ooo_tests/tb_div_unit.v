@@ -1,4 +1,4 @@
-// Self-checking testbench for div_unit verifying timing, operations, and corner cases.
+// tb_div_unit.v - Self-checking testbench for div_unit verifying timing and edge cases.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 module tb_div_unit;
@@ -24,7 +24,9 @@ module tb_div_unit;
     integer lat_min = 1000, lat_max = 0;
     always @(posedge clk) cyc <= cyc + 1;
 
-    // RISC-V signed and unsigned division reference model.
+    // RISC-V reference model
+    // Signed ops go through signed regs: inside ?: with unsigned operands
+    // Verilog would silently evaluate $signed(x)/$signed(y) as unsigned.
     function [31:0] ref_div;
         input [1:0] f; input [31:0] x, y;
         reg signed [31:0] sx, sy, sq, sr;

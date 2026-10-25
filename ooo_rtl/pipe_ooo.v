@@ -1,4 +1,4 @@
-// Pipeline interface wrapper around ooo_core.
+// pipe_ooo - Baseline pipeline wrapper around ooo_core.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

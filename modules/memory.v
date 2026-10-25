@@ -4,16 +4,16 @@ module instr_mem (
 	output reg  [31:0] instr
 );
 
-	// Instruction memory array (1024 x 32-bit words, 4 KB).
+	// 4 KB instruction memory (1024 words)
 	(* ram_style = "block" *)
 	reg [31:0] imem [0:1023];
 
-	// Initialize instruction memory from hex file.
+	// Initialize instruction memory from hex file
 	initial begin
     	$readmemh("../mem_generator/imem_dmem/imem.hex", imem);
 	end
 
-	// Synchronous instruction fetch indexed by word address.
+	// Synchronous instruction fetch using word-aligned PC
 	always @(posedge clk) begin
     	instr <= imem[pc[11:2]];	// word address
 	end
@@ -22,9 +22,7 @@ endmodule
 
 
 
-//====================================
-// Data Memory (DMEM) - FPGA-safe
-//====================================
+// Data Memory (DMEM)
 module data_mem (
 	input     	clk,
 
@@ -40,21 +38,15 @@ module data_mem (
 	input  [3:0]  wstrb
 );
 
-	// Declare data memory array (word-addressable, 4 KB total)
-	// TODO-DMEM-1: Declare dmem
+	// 4 KB data memory (1024 words)
 	reg [31:0] dmem [0:1023];
 	// Decode byte address to word index
 	wire [9:0] rindex = raddr[11:2];
 	wire [9:0] windex = waddr[11:2];
 
-	// Simulation / FPGA init
-	// TODO-DMEM-2: Initialize data memory from dmem.hex file
+	// Data memory initialization
 
-	// -------------------------
-	// WRITE + READ (SYNC)
-	// -------------------------
-
-	// Synchronous read/write with byte strobes and forwarding.
+	// Synchronous write and read logic with byte masking and forwarding.
 
 	always @(posedge clk) begin
     	// ---- WRITE ----

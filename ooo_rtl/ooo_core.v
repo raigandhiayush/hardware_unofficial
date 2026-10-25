@@ -1,4 +1,4 @@
-// Out-of-order core top module.
+// ooo_core - Out-of-order core top module.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

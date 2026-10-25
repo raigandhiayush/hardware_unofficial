@@ -1,4 +1,4 @@
-// Self-checking testbench for mul_unit verifying RV32M multiply variants and latency.
+// tb_mul_unit.v - Self-checking testbench for mul_unit verifying pipeline latency and RV32M operations.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

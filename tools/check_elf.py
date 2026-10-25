@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validates ELF binaries against TOMA-RV architectural and toolchain constraints."""
+"""Validates RISC-V ELF binaries against TOMA-RV architectural and execution constraints."""
 import struct, sys
 
 EM_RISCV = 243
@@ -15,7 +15,7 @@ RELOC_NAMES = {16: "R_RISCV_BRANCH", 17: "R_RISCV_JAL", 18: "R_RISCV_CALL", 19: 
 
 
 def legal(w):
-    """Checks instruction legality against RV32IM supported opcodes."""
+    """Check if instruction word is supported by ooo_decode."""
     op, f3, f7 = w & 0x7F, (w >> 12) & 7, w >> 25
     if op in (0x37, 0x6F):                       # LUI, JAL
         return True

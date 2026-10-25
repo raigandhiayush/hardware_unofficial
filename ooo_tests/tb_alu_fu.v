@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Self-checking testbench for alu_fu covering ALU operations, branches, and JALR.
+// tb_alu_fu.v - Self-checking testbench for alu_fu arithmetic, branches, and jumps.
 module tb_alu_fu;
 
     reg  [7:0]  op;
@@ -28,7 +28,9 @@ module tb_alu_fu;
 
     integer n_pass, n_fail;
 
-    // Output comparison helper.
+    // -----------------------------------------------------------------------
+    // the one place that actually compares things
+    // -----------------------------------------------------------------------
     task check;
         input [8*24:1] name;
         input [7:0]    t_op;
@@ -76,7 +78,10 @@ module tb_alu_fu;
         end
     endtask
 
-    // Reference model for randomized testing.
+    // -----------------------------------------------------------------------
+    // reference model for the random section. SRA is written differently
+    // from the DUT on purpose (shift + fill mask), so the two don't share a bug.
+    // -----------------------------------------------------------------------
     function [31:0] ref_alu;
         input [7:0]  f_op;
         input [31:0] x, y;

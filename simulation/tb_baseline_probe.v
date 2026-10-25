@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Testbench running the baseline 3-stage pipeline against reference memory traces.
+// tb_baseline_probe.v - Self-checking testbench for baseline pipeline execution and cycle timing.
 module tb_baseline_probe;
 
     reg clk = 0, reset = 0;

@@ -1,5 +1,6 @@
-// 32-bit performance counters for execution cycles, retired instructions, and pipeline stalls.
+// perf_counters.v - Hardware performance counters for TOMA-RV.
 `timescale 1ns/1ps
+// 32-bit event counters active while run=1.
 
 module perf_counters (
     input  wire        clk,

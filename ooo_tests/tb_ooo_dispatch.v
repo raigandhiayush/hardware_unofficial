@@ -1,4 +1,4 @@
-// Self-checking testbench for ooo_dispatch verifying rename, bypass, operand muxing, and stalls.
+// tb_ooo_dispatch - Self-checking testbench for instruction dispatch and reservation station allocation.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

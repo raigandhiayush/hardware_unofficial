@@ -1,4 +1,4 @@
-// Radix-2 restoring divider for RV32M (DIV, DIVU, REM, REMU).
+// div_unit.v - RV32M radix-2 restoring divider with fixed 34-cycle latency.
 `timescale 1ns/1ps
 
 `include "ooo_defs.vh"
@@ -40,7 +40,7 @@ module div_unit #(
     wire [31:0] quo_nx = {quo[30:0], fits};
     wire [31:0] rem_nx = fits ? diff[31:0] : rem_sh[31:0];
 
-    // Final sign and corner-case adjustment.
+    // Final sign correction and corner-case handling.
     wire [31:0] q_fixed = div_zero ? 32'hFFFF_FFFF : (neg_q ? (~quo_nx + 32'd1) : quo_nx);
     wire [31:0] r_fixed = neg_r ? (~rem_nx + 32'd1) : rem_nx;
 
