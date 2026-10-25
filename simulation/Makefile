@@ -1,7 +1,7 @@
 # --- Variables ---
 INC_DIR  = ../ooo_rtl
 BFLAGS   = -i $(INC_DIR) -f filelist.txt
-TOP_MOD  = top_fpga_ooo
+TOP_MOD  = tb_ooo_system
 SNAPSHOT = riscv_sim
 MEM_GEN  = ../mem_generator
 

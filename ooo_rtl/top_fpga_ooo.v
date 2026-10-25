@@ -47,29 +47,29 @@ module top_fpga_ooo
 	wire                        core_clk;
 	wire                        locked;
 
-`ifdef TOMA_SIM
-	assign core_clk = clk;
-	assign locked   = 1'b1;
-`else
-	wire                        clk_fb, clk_fb_buf, clk_50;
+// `ifdef TOMA_SIM
+// 	assign core_clk = clk;
+// 	assign locked   = 1'b1;
+// `else
+// 	wire                        clk_fb, clk_fb_buf, clk_50;
 
-	MMCME2_BASE #(
-		.CLKIN1_PERIOD      (10.0),             // 100 MHz in
-		.DIVCLK_DIVIDE      (1),
-		.CLKFBOUT_MULT_F    (10.0),             // VCO 1000 MHz
-		.CLKOUT0_DIVIDE_F   (20.0)              // 50 MHz out
-	) u_mmcm (
-		.CLKIN1             (clk),
-		.CLKFBIN            (clk_fb_buf),
-		.CLKFBOUT           (clk_fb),
-		.CLKOUT0            (clk_50),
-		.LOCKED             (locked),
-		.PWRDWN             (1'b0),
-		.RST                (1'b0)
-	);
-	BUFG u_bufg_fb  (.I(clk_fb), .O(clk_fb_buf));
-	BUFG u_bufg_clk (.I(clk_50), .O(core_clk));
-`endif
+// 	MMCME2_BASE #(
+// 		.CLKIN1_PERIOD      (10.0),             // 100 MHz in
+// 		.DIVCLK_DIVIDE      (1),
+// 		.CLKFBOUT_MULT_F    (10.0),             // VCO 1000 MHz
+// 		.CLKOUT0_DIVIDE_F   (20.0)              // 50 MHz out
+// 	) u_mmcm (
+// 		.CLKIN1             (clk),
+// 		.CLKFBIN            (clk_fb_buf),
+// 		.CLKFBOUT           (clk_fb),
+// 		.CLKOUT0            (clk_50),
+// 		.LOCKED             (locked),
+// 		.PWRDWN             (1'b0),
+// 		.RST                (1'b0)
+// 	);
+// 	BUFG u_bufg_fb  (.I(clk_fb), .O(clk_fb_buf));
+// 	BUFG u_bufg_clk (.I(clk_50), .O(core_clk));
+// `endif
 
 	// ---- reset synchronizer: asynchronous assert, synchronous release ---------
 	wire                        rst_n_raw = reset & locked;

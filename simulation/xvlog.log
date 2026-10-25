@@ -1,0 +1,35 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/alu_fu.v" into library work
+INFO: [VRFC 10-311] analyzing module alu_fu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/div_unit.v" into library work
+INFO: [VRFC 10-311] analyzing module div_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/instr_queue.v" into library work
+INFO: [VRFC 10-311] analyzing module instr_queue
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/lsu.v" into library work
+INFO: [VRFC 10-311] analyzing module lsu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/mul_unit.v" into library work
+INFO: [VRFC 10-311] analyzing module mul_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/ooo_core.v" into library work
+INFO: [VRFC 10-311] analyzing module ooo_core
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/ooo_decode.v" into library work
+INFO: [VRFC 10-311] analyzing module ooo_decode
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/ooo_dispatch.v" into library work
+INFO: [VRFC 10-311] analyzing module ooo_dispatch
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/ooo_frontend.v" into library work
+INFO: [VRFC 10-311] analyzing module ooo_frontend
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/perf_counters.v" into library work
+INFO: [VRFC 10-311] analyzing module perf_counters
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/pipe_ooo.v" into library work
+INFO: [VRFC 10-311] analyzing module pipe_ooo
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/rat.v" into library work
+INFO: [VRFC 10-311] analyzing module rat
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/regfile_2r1w.v" into library work
+INFO: [VRFC 10-311] analyzing module regfile_2r1w
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/rob.v" into library work
+INFO: [VRFC 10-311] analyzing module rob
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/rs_array.v" into library work
+INFO: [VRFC 10-311] analyzing module rs_array
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/top_fpga_ooo.v" into library work
+INFO: [VRFC 10-311] analyzing module top_fpga_ooo
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/RAJAT/Desktop/HDL_Project/hardware_unofficial/ooo_rtl/memory.v" into library work
+INFO: [VRFC 10-311] analyzing module instr_mem
+INFO: [VRFC 10-311] analyzing module data_mem
