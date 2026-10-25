@@ -13,11 +13,12 @@ CFLAGS  = -march=rv32i -mabi=ilp32
 
 
 #////Source for c code file ///////////////////////////
-SRC_ADDITION     = code_addition.c
-SRC_SORT     = code_sort.c
-SRC_NEGATIVE = code_negative.c
-SRC_XOR = code_xor.c
+SRC_ADDITION     = code_addition_d8.c
+SRC_SORT     = code_sort_d8.c
+SRC_NEGATIVE = code_negative_d8.c
+SRC_XOR = code_xor_d8.c
 SRC_DIV = code_div_d8.c
+SRC_MUL = code_mul_d8.c
 
 TARGET   = code.elf
 
@@ -27,41 +28,6 @@ TARGET   = code.elf
 # ////////////// Copying and converting the text file into binary files
 #/////// Python script to convert the binary files into the required hex files
 
-addition: $(SRC_ADDITION)
-	$(CC) -c  $(SRC_ADDITION) -o $(TARGET) $(CFLAGS)
-	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
-	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
-	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python bin2hex.py
-
-sort: $(SRC_SORT)
-	$(CC) -c  $(SRC_SORT) -o $(TARGET) $(CFLAGS)
-	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
-	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
-	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python bin2hex.py
-
-negative: $(SRC_NEGATIVE)
-	$(CC) -c  $(SRC_NEGATIVE) -o $(TARGET) $(CFLAGS)
-	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
-	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
-	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python bin2hex.py
-
-xor : $(SRC_XOR)
-	$(CC) -c $(SRC_XOR) -o $(TARGET) $(CFLAGS)
-	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
-	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
-	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python bin2hex.py
-
-div : $(SRC_DIV)
-	$(CC) -c $(SRC_DIV) -o $(TARGET) $(CFLAGS)
-	$(OBJCOPY) -O binary $(TARGET) ./imem_dmem/imem.bin
-	$(OBJCOPY) -j .data -O binary $(TARGET) ./imem_dmem/dmem.bin
-	$(OBJDUMP) -d $(TARGET) > ./imem_dmem/code.dis
-	cd imem_dmem && python bin2hex.py
-
 #//////////////////////////////////////////////////////
 #///// D8 workloads (PROJECT_BLUEPRINT.md 6.17; owner D, reviewer E)
 #///// make <prog>_d8     : -march=rv32i  (baseline and OoO, comparison D17)
@@ -69,7 +35,6 @@ div : $(SRC_DIV)
 #///// -mno-relax lets the assembler resolve local branches, so the object
 #///// has no relocations; tools/check_elf.py rejects the build otherwise (F3).
 #///// Only .text goes into imem (the core starts at pc 0 = main).
-D8_PROGS  = addition sort negative xor
 D8_CFLAGS = -mabi=ilp32 -mno-relax -O0
 CHECK_ELF = python ../tools/check_elf.py
 
