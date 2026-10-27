@@ -1,5 +1,28 @@
 `timescale 1ns/1ps
-// lsu.v - In-order load/store queue (LSQ) handling memory operations and CDB broadcasts.
+// lsu.v - in-order load/store queue for TOMA-RV (Person B)
+// Spec: PROJECT_BLUEPRINT v0.3 sec. 6.12, rules 7 and 11 of sec. 3.6, D10,
+// D13, D14; ports: SIGNALS_REFERENCE v0.3 sec. 2.14.
+//
+// Contract:
+//   * LSQ_N entries in program order (FIFO). Full is judged on the count at
+//     the start of the cycle (rule 2). Only the head entry ever acts.
+//   * Wake-up: every waiting operand of every entry compares its tag with all
+//     NCDB buses and captures the matching value at the clock edge (D14).
+//     Wake-up in the allocation cycle is not needed (dispatch bypasses).
+//   * Load at the head, base ready (cycle LA): dmem_re with base + imm; the
+//     entry leaves the queue. Next cycle (LW) the word from data_mem is
+//     formatted and broadcast on cdb_lsu. Because stores stay in the queue
+//     until they commit, a load at the head has no older uncommitted store
+//     (rule 11: a store committing in c lets the load start in c+1).
+//   * Store at the head, base and data ready (cycle SR): broadcast a dummy 0
+//     on cdb_lsu, then wait. When cm_valid & cm_is_store & cm_tag == its tag,
+//     drive dmem_we that cycle and leave the queue (D10).
+//   * Own-bus rule (D13): at most one operation starts per cycle; a store
+//     whose SR would land on the LW cycle of the previous load waits a cycle.
+//   * Byte lanes / load formatting as in baseline wb.v: SB/SH replicate the
+//     data across the word; LB/LH sign-extend, LBU/LHU zero-extend.
+//   * reset_n: active low, asynchronous; clears the queue and the load in
+//     flight.
 
 `include "ooo_defs.vh"
 
@@ -186,7 +209,8 @@ module lsu #(
                 head       <= head_next;
             end
 
-            // Allocate new entry at tail.
+            // the tail slot is free whenever the queue is not full, so it never
+            // collides with the head being popped
             if (do_alloc) begin
                 busy[tail]     <= 1'b1;
                 is_st[tail]    <= lq_al_store;

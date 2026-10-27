@@ -1,6 +1,26 @@
-// perf_counters.v - Hardware performance counters for TOMA-RV.
+// perf_counters.v - performance counters for TOMA-RV (Person E)
 `timescale 1ns/1ps
-// 32-bit event counters active while run=1.
+// Ports follow SIGNALS_REFERENCE.md section 2.16; behaviour follows
+// PROJECT_BLUEPRINT.md section 6.15.
+//
+// Contract:
+//   * Every counter is a 32-bit register that adds 1 on a rising clk edge
+//     when run=1 and its event input is 1 in that cycle:
+//       cycles           : every cycle while run=1
+//       retired          : commit_valid
+//       ooo_count        : ooo_event
+//       rob_stall_cycles : stall_rob
+//       rs_stall_cycles  : stall_rs
+//       hold_cycles      : hold
+//   * run=0 freezes all six counters (they keep their value).
+//   * reset_n is active low and asynchronous (baseline convention, same as
+//     div_unit and regfile_2r1w): clears all six counters to 0.
+//   * Outputs are the register values (no combinational path from inputs).
+//   * At 0xFFFFFFFF a counter wraps to 0 (plain 32-bit add), as decided in
+//     PROJECT_BLUEPRINT.md D21. The top drives run = rst_n_sync & ~done (D21).
+//
+// No ooo_defs.vh constant is used, so the file does not include it.
+// Pure Verilog-2001, no vendor primitives.
 
 module perf_counters (
     input  wire        clk,

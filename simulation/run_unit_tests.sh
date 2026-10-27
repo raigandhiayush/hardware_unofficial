@@ -40,6 +40,7 @@ TESTS=(
   "tb_ooo_system|a|blueprint 6.14, pipe_ooo vs baseline pipe on imem.hex|-I modules $CORE_SRCS modules/pipeline.v modules/memory.v modules/IF_ID.v modules/execute.v modules/wb.v ooo_tests/tb_ooo_system.v"
   "tb_top_fpga_ooo|e|blueprint 6.16, D8, D20-D22, MMIO test plan T1-T9|-DTOMA_SIM $TOP_SRCS ooo_tests/tb_top_fpga_ooo.v"
   "tb_commit_trace|e|blueprint 6.17 reference model + commit-trace compare|-DTOMA_SIM $TOP_SRCS ooo_tests/tb_commit_trace.v"
+  "tb_baseline_counters|c|D17, D21, D24, blueprint 4.3: pipe / pipe_m / pipe_ooo cycle counts, cross-checked with top_fpga_ooo and top_fpga_base|-DTOMA_SIM -I modules $TOP_SRCS baseline_fpga/top_fpga_base.v modules/pipeline.v modules/IF_ID.v modules/execute.v modules/wb.v baseline_m/pipeline_m.v baseline_m/IF_ID_m.v baseline_m/execute_m.v simulation/tb_baseline_counters.v"
   "tb_ooo_event_trace|c|TASKS 19 Oct: ooo_event, non-head completion per bus, 2+ bus cycles|-DTOMA_SIM $TOP_SRCS ooo_tests/tb_ooo_event_trace.v"
   "check_elf|e|blueprint 6.17 tools/check_elf.py (synthetic ELFs + ooo_decode cross-check)|py:tools/test_check_elf.py"
   "rvasm|a|tools/rvasm.py encodings vs gcc (code.dis)|py:tools/rvasm.py --selftest"

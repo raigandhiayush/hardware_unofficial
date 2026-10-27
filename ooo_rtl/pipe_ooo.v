@@ -1,4 +1,5 @@
-// pipe_ooo - Baseline pipeline wrapper around ooo_core.
+//  pipe_ooo - baseline `pipe` port wrapper around ooo_core (owner: A, reviewer: B)
+//  PROJECT_BLUEPRINT.md 6.14, SIGNALS_REFERENCE.md 2.1, decision D18.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

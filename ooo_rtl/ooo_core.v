@@ -1,4 +1,5 @@
-// ooo_core - Out-of-order core top module.
+//  ooo_core - top of the out-of-order core (owner: A, reviewers: B, C)
+//  PROJECT_BLUEPRINT.md 6.14, SIGNALS_REFERENCE.md 2.2, decisions D14, D18, D19.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 

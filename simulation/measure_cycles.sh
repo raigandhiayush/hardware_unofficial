@@ -2,7 +2,9 @@
 # Runs cycle measurement comparing pipe, pipe_m, and pipe_ooo against ref_model traces.
 set -eu
 cd "$(dirname "$0")/.."                      # tomasulo-rv/
-HEX="$(realpath "${1:-mem_generator/imem_dmem/imem.hex}")"
+# usage: simulation/measure_cycles.sh [program.hex] [sw, hex]; the program must end with the
+# D8 done store (the original mem_generator/imem_dmem/imem.hex never does)
+HEX="$(realpath "${1:-ooo_tests/programs/xor_d8.hex}")"
 SW="${2:-0}"
 mkdir -p simulation/build
 TRACE="$PWD/simulation/build/measure.trace"

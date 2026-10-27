@@ -1,0 +1,56 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-26 20:34:20 IST
+Owner (module): C   Run by: A
+Module: baseline_counters
+Specification: D17, D21, D24, blueprint 4.3: pipe / pipe_m / pipe_ooo cycle counts, cross-checked with top_fpga_ooo and top_fpga_base
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_baseline_counters -DTOMA_SIM -I modules ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v modules/memory.v baseline_fpga/top_fpga_base.v modules/pipeline.v modules/IF_ID.v modules/execute.v modules/wb.v baseline_m/pipeline_m.v baseline_m/IF_ID_m.v baseline_m/execute_m.v simulation/tb_baseline_counters.v && (cd simulation && vvp -n build/tb_baseline_counters)
+Working directory: tomasulo-rv
+Commit: 53f64cd +uncommitted changes
+Exit status: 0
+Simulated time: 33480000 ps (10 ns clock => 3348 cycles)
+Wall time: 1s
+Test result: PASS
+Summary: TEST_PASS baseline_counters 564
+---
+PERF ../ooo_tests/programs/top_mmio.hex core=pipe_m result=00000003 done=1 exception=0 cycles=147 retired=92 CPI=1.598
+PERF ../ooo_tests/programs/top_mmio.hex core=pipe_ooo result=00000003 done=1 exception=0 cycles=173 retired=92 CPI=1.880
+PERF ../ooo_tests/programs/ooo_trace.hex core=pipe N/A (program uses RV32M; the baseline is RV32I only, D17)
+PERF ../ooo_tests/programs/ooo_trace.hex core=pipe_m result=0000021e done=1 exception=0 cycles=55 retired=14 CPI=3.929
+PERF ../ooo_tests/programs/ooo_trace.hex core=pipe_ooo result=0000021e done=1 exception=0 cycles=52 retired=14 CPI=3.714
+PERF ../ooo_tests/programs/rv32m_edge.hex core=pipe N/A (program uses RV32M; the baseline is RV32I only, D17)
+PERF ../ooo_tests/programs/rv32m_edge.hex core=pipe_m result=4000000e done=1 exception=0 cycles=554 retired=74 CPI=7.486
+PERF ../ooo_tests/programs/rv32m_edge.hex core=pipe_ooo result=4000000e done=1 exception=0 cycles=526 retired=74 CPI=7.108
+PERF ../ooo_tests/programs/pipe_m_edge.hex core=pipe N/A (program uses RV32M; the baseline is RV32I only, D17)
+PERF ../ooo_tests/programs/pipe_m_edge.hex core=pipe_m result=b903a8f9 done=1 exception=0 cycles=310 retired=47 CPI=6.596
+PERF ../ooo_tests/programs/pipe_m_edge.hex core=pipe_ooo result=b903a8f9 done=1 exception=0 cycles=279 retired=47 CPI=5.936
+PERF ../ooo_tests/programs/addition_d8.hex core=pipe result=00000066 done=1 exception=1 cycles=22 retired=18(trace) CPI=1.222
+PERF ../ooo_tests/programs/addition_d8.hex core=pipe_m result=00000066 done=1 exception=0 cycles=22 retired=18 CPI=1.222
+PERF ../ooo_tests/programs/addition_d8.hex core=pipe_ooo result=00000066 done=1 exception=0 cycles=25 retired=18 CPI=1.389
+PERF ../ooo_tests/programs/sort_d8.hex core=pipe result=00000003 done=1 exception=1 cycles=147 retired=127(trace) CPI=1.157
+PERF ../ooo_tests/programs/sort_d8.hex core=pipe_m result=00000003 done=1 exception=0 cycles=147 retired=127 CPI=1.157
+PERF ../ooo_tests/programs/sort_d8.hex core=pipe_ooo result=00000003 done=1 exception=0 cycles=187 retired=127 CPI=1.472
+PERF ../ooo_tests/programs/negative_d8.hex core=pipe result=ffffffd2 done=1 exception=1 cycles=22 retired=18(trace) CPI=1.222
+PERF ../ooo_tests/programs/negative_d8.hex core=pipe_m result=ffffffd2 done=1 exception=0 cycles=22 retired=18 CPI=1.222
+PERF ../ooo_tests/programs/negative_d8.hex core=pipe_ooo result=ffffffd2 done=1 exception=0 cycles=25 retired=18 CPI=1.389
+PERF ../ooo_tests/programs/xor_d8.hex core=pipe result=00000009 done=1 exception=1 cycles=22 retired=18(trace) CPI=1.222
+PERF ../ooo_tests/programs/xor_d8.hex core=pipe_m result=00000009 done=1 exception=0 cycles=22 retired=18 CPI=1.222
+PERF ../ooo_tests/programs/xor_d8.hex core=pipe_ooo result=00000009 done=1 exception=0 cycles=25 retired=18 CPI=1.389
+PERF ../ooo_tests/programs/mul_d8.hex core=pipe N/A (program uses RV32M; the baseline is RV32I only, D17)
+PERF ../ooo_tests/programs/mul_d8.hex core=pipe_m result=000013b0 done=1 exception=0 cycles=108 retired=78 CPI=1.385
+PERF ../ooo_tests/programs/mul_d8.hex core=pipe_ooo result=000013b0 done=1 exception=0 cycles=140 retired=78 CPI=1.795
+PERF ../ooo_tests/programs/div_d8.hex core=pipe N/A (program uses RV32M; the baseline is RV32I only, D17)
+PERF ../ooo_tests/programs/div_d8.hex core=pipe_m result=00003b26 done=1 exception=0 cycles=516 retired=102 CPI=5.059
+PERF ../ooo_tests/programs/div_d8.hex core=pipe_ooo result=00003b26 done=1 exception=0 cycles=552 retired=102 CPI=5.412
+PERF ../ooo_tests/programs/rv32m_d8.hex core=pipe N/A (program uses RV32M; the baseline is RV32I only, D17)
+PERF ../ooo_tests/programs/rv32m_d8.hex core=pipe_m result=0000007f done=1 exception=0 cycles=273 retired=119 CPI=2.294
+PERF ../ooo_tests/programs/rv32m_d8.hex core=pipe_ooo result=0000007f done=1 exception=0 cycles=277 retired=119 CPI=2.328
+PERF ../ooo_tests/programs/mul_stream.hex core=pipe N/A (program uses RV32M; the baseline is RV32I only, D17)
+PERF ../ooo_tests/programs/mul_stream.hex core=pipe_m result=000708f8 done=1 exception=0 cycles=120 retired=52 CPI=2.308
+PERF ../ooo_tests/programs/mul_stream.hex core=pipe_ooo result=000708f8 done=1 exception=0 cycles=59 retired=52 CPI=1.135
+PERF ../ooo_tests/programs/muldiv_stream.hex core=pipe N/A (program uses RV32M; the baseline is RV32I only, D17)
+PERF ../ooo_tests/programs/muldiv_stream.hex core=pipe_m result=00018ae9 done=1 exception=0 cycles=248 retired=56 CPI=4.429
+PERF ../ooo_tests/programs/muldiv_stream.hex core=pipe_ooo result=00018ae9 done=1 exception=0 cycles=178 retired=56 CPI=3.179
+TEST_PASS baseline_counters 564
+simulation/tb_baseline_counters.v:398: $finish called at 33480000 (1ps)
+---

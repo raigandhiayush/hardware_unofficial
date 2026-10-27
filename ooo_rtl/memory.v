@@ -4,16 +4,19 @@ module instr_mem (
 	output reg  [31:0] instr
 );
 
-	// 4 KB instruction memory (1024 words)
+	// 1024 words = 4 KB
+	// Declare instruction memory array (word-addressable, 4 KB total)
 	(* ram_style = "block" *)
 	reg [31:0] imem [0:1023];
 
-	// Initialize instruction memory from hex file
+	// FPGA ROM initialization
+	// Initialize instruction memory from hex file (simulation / FPGA)
 	initial begin
-    	$readmemh("../mem_generator/imem_dmem/imem.hex", imem);
+    	$readmemh("imem.hex", imem);
 	end
 
-	// Synchronous instruction fetch using word-aligned PC
+	// Synchronous instruction fetch
+	// Use word-aligned PC (pc[11:2]) to index memory
 	always @(posedge clk) begin
     	instr <= imem[pc[11:2]];	// word address
 	end
@@ -22,7 +25,9 @@ endmodule
 
 
 
-// Data Memory (DMEM)
+//====================================
+// Data Memory (DMEM) - FPGA-safe
+//====================================
 module data_mem (
 	input     	clk,
 
@@ -38,15 +43,24 @@ module data_mem (
 	input  [3:0]  wstrb
 );
 
-	// 4 KB data memory (1024 words)
+	// Declare data memory array (word-addressable, 4 KB total)
+	// TODO-DMEM-1: Declare dmem
 	reg [31:0] dmem [0:1023];
 	// Decode byte address to word index
 	wire [9:0] rindex = raddr[11:2];
 	wire [9:0] windex = waddr[11:2];
 
-	// Data memory initialization
+	// Simulation / FPGA init
+	// TODO-DMEM-2: Initialize data memory from dmem.hex file
 
-	// Synchronous write and read logic with byte masking and forwarding.
+	// -------------------------
+	// WRITE + READ (SYNC)
+	// -------------------------
+
+	// Synchronous write and read logic
+	// - Support byte-wise writes using wstrb
+	// - Provide 1-cycle read latency
+	// - Handle same-cycle read-after-write using byte-level forwarding
 
 	always @(posedge clk) begin
     	// ---- WRITE ----

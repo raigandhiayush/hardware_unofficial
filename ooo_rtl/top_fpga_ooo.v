@@ -1,4 +1,28 @@
-// top_fpga_ooo - Nexys A7 FPGA top module integrating processor core, memory, and MMIO.
+//  top_fpga_ooo - Nexys A7-100T board top for pipe_ooo (owner: E, reviewer: B)
+//  PROJECT_BLUEPRINT.md 6.16, SIGNALS_REFERENCE.md 2.17, decisions D7, D8,
+//  D20, D21, D22.
+//
+//  Contents: 100 -> 50 MHz MMCM (D7), reset synchronizer, instr_mem, data_mem,
+//  pipe_ooo, perf_counters, MMIO decode, 7-segment driver, LEDs.
+//
+//  MMIO (D8, D20, D22), matched on the full word address [31:2] (byte lanes
+//  come from dmem_write_byte; the LSU formats load bytes from the word):
+//    store 0x1000_0000 : result, written per byte lane from dmem_write_byte
+//    store 0x1000_0004 : any store sets done (cleared only by reset)
+//    load  0x1000_0008 : {16'd0, sw} (sw through a two-flip-flop synchronizer)
+//    any other address with [31:28] = 4'h1: store dropped, load returns 0.
+//  MMIO stores never write data_mem. The read-data mux selects on the read
+//  address registered in the LA cycle (data_mem returns data one cycle later).
+//
+//  Counters (D21): run = rst_n_sync & ~done, so the edge that latches done is
+//  the last one counted.
+//
+//  Display: sw[15:14] selects the 8-digit hex value: 00 result, 01 cycles,
+//  10 retired, 11 ooo_count. led[15] = done, led[14] = exception,
+//  led[13:0] = result[13:0].
+//
+//  Simulation: compile with -DTOMA_SIM; the MMCM is replaced by core_clk = clk.
+//  Instance names U_IMEM / U_DMEM / U_CORE / U_PERF are used by testbenches.
 `timescale 1ns/1ps
 `include "ooo_defs.vh"
 
@@ -19,35 +43,35 @@ module top_fpga_ooo
 	localparam [31: 0] MMIO_DONE   = 32'h1000_0004;
 	localparam [31: 0] MMIO_SW     = 32'h1000_0008;
 
-	// Clock generation
+	// ---- clock (D7) -------------------------------------------------------
 	wire                        core_clk;
 	wire                        locked;
 
-// `ifdef TOMA_SIM
-// 	assign core_clk = clk;
-// 	assign locked   = 1'b1;
-// `else
-// 	wire                        clk_fb, clk_fb_buf, clk_50;
+`ifdef TOMA_SIM
+	assign core_clk = clk;
+	assign locked   = 1'b1;
+`else
+	wire                        clk_fb, clk_fb_buf, clk_50;
 
-// 	MMCME2_BASE #(
-// 		.CLKIN1_PERIOD      (10.0),             // 100 MHz in
-// 		.DIVCLK_DIVIDE      (1),
-// 		.CLKFBOUT_MULT_F    (10.0),             // VCO 1000 MHz
-// 		.CLKOUT0_DIVIDE_F   (20.0)              // 50 MHz out
-// 	) u_mmcm (
-// 		.CLKIN1             (clk),
-// 		.CLKFBIN            (clk_fb_buf),
-// 		.CLKFBOUT           (clk_fb),
-// 		.CLKOUT0            (clk_50),
-// 		.LOCKED             (locked),
-// 		.PWRDWN             (1'b0),
-// 		.RST                (1'b0)
-// 	);
-// 	BUFG u_bufg_fb  (.I(clk_fb), .O(clk_fb_buf));
-// 	BUFG u_bufg_clk (.I(clk_50), .O(core_clk));
-// `endif
+	MMCME2_BASE #(
+		.CLKIN1_PERIOD      (10.0),             // 100 MHz in
+		.DIVCLK_DIVIDE      (1),
+		.CLKFBOUT_MULT_F    (10.0),             // VCO 1000 MHz
+		.CLKOUT0_DIVIDE_F   (20.0)              // 50 MHz out
+	) u_mmcm (
+		.CLKIN1             (clk),
+		.CLKFBIN            (clk_fb_buf),
+		.CLKFBOUT           (clk_fb),
+		.CLKOUT0            (clk_50),
+		.LOCKED             (locked),
+		.PWRDWN             (1'b0),
+		.RST                (1'b0)
+	);
+	BUFG u_bufg_fb  (.I(clk_fb), .O(clk_fb_buf));
+	BUFG u_bufg_clk (.I(clk_50), .O(core_clk));
+`endif
 
-	// Reset synchronizer
+	// ---- reset synchronizer: asynchronous assert, synchronous release ---------
 	wire                        rst_n_raw = reset & locked;
 	reg     [ 1: 0]             rst_sync;
 	wire                        rst_n_sync = rst_sync[1];
@@ -57,7 +81,7 @@ module top_fpga_ooo
 		else            rst_sync <= {rst_sync[0], 1'b1};
 	end
 
-	// Core and memory instances
+	// ---- core and memories --------------------------------------------------
 	wire    [31: 0]             imem_addr, imem_data;
 	wire                        dmem_re, dmem_we;
 	wire    [31: 0]             dmem_raddr, dmem_rdata, dmem_waddr, dmem_wdata;
@@ -104,7 +128,7 @@ module top_fpga_ooo
 	data_mem  U_DMEM (.clk(core_clk), .re(dmem_re), .raddr(dmem_raddr), .rdata(ram_rdata),
 	                  .we(dmem_we & ~w_mmio), .waddr(dmem_waddr), .wdata(dmem_wdata), .wstrb(dmem_wstrb));
 
-	// MMIO decode and registers
+	// ---- MMIO (D8, D20, D22) ------------------------------------------------
 	reg     [31: 0]             result;
 	reg                         done;
 	reg     [15: 0]             sw_meta, sw_sync;
@@ -134,7 +158,7 @@ module top_fpga_ooo
 		else if (dmem_we && dmem_waddr[31:2] == MMIO_DONE[31:2]) done <= 1'b1;
 	end
 
-	// Registered read mux
+	// read source, registered in the LA cycle and held like data_mem.rdata
 	always @(posedge core_clk or negedge rst_n_sync) begin
 		if (!rst_n_sync) begin
 			rd_sw   <= 1'b0;
@@ -149,7 +173,7 @@ module top_fpga_ooo
 	                    rd_zero ? 32'd0 :
 	                              ram_rdata;
 
-	// Performance counters
+	// ---- performance counters (D21) ------------------------------------------
 	wire    [31: 0]             cycles, retired, ooo_count;
 
 	perf_counters U_PERF (
@@ -169,7 +193,7 @@ module top_fpga_ooo
 		.hold_cycles         ()
 	);
 
-	// Display and LED driver
+	// ---- LEDs and 7-segment display -----------------------------------------
 	assign led = {done, exception, result[13:0]};
 
 	reg     [31: 0]             disp;
@@ -203,4 +227,4 @@ module top_fpga_ooo
 	assign seg = ~{1'b0, font};                         // DP off
 	assign an  = ~(8'd1 << digit);
 
-endmodule
+endmodule 

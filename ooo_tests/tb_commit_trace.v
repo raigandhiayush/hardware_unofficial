@@ -4,7 +4,7 @@
 
 module tb_commit_trace;
 
-	localparam NPROG   = 4;
+	localparam NPROG   = 13;
 	localparam TIMEOUT = 20000;
 
 	reg                 clk = 1'b0;
@@ -27,6 +27,16 @@ module tb_commit_trace;
 		p_hex[1] = "../ooo_tests/programs/top_mmio.hex";    p_trace[1] = "../ooo_tests/programs/top_mmio.trace";     p_sw[1] = 16'hA5A5;
 		p_hex[2] = "../ooo_tests/programs/ooo_trace.hex";   p_trace[2] = "../ooo_tests/programs/ooo_trace.trace";    p_sw[2] = 16'h0000;
 		p_hex[3] = "../ooo_tests/programs/rv32m_edge.hex";  p_trace[3] = "../ooo_tests/programs/rv32m_edge.trace";   p_sw[3] = 16'h0000;
+		p_hex[4] = "../ooo_tests/programs/mul_d8.hex";      p_trace[4] = "../ooo_tests/programs/mul_d8.trace";       p_sw[4] = 16'h0000;
+		p_hex[5] = "../ooo_tests/programs/div_d8.hex";      p_trace[5] = "../ooo_tests/programs/div_d8.trace";       p_sw[5] = 16'h0000;
+		p_hex[6] = "../ooo_tests/programs/rv32m_d8.hex";    p_trace[6] = "../ooo_tests/programs/rv32m_d8.trace";     p_sw[6] = 16'h0000;
+		p_hex[7] = "../ooo_tests/programs/addition_d8.hex"; p_trace[7] = "../ooo_tests/programs/addition_d8.trace";  p_sw[7] = 16'h0000;
+		p_hex[8] = "../ooo_tests/programs/sort_d8.hex";     p_trace[8] = "../ooo_tests/programs/sort_d8.trace";      p_sw[8] = 16'h0000;
+		p_hex[9] = "../ooo_tests/programs/negative_d8.hex"; p_trace[9] = "../ooo_tests/programs/negative_d8.trace";  p_sw[9] = 16'h0000;
+		p_hex[10] = "../ooo_tests/programs/xor_d8.hex";     p_trace[10] = "../ooo_tests/programs/xor_d8.trace";      p_sw[10] = 16'h0000;
+		// constructed best cases for the pipelined MUL / MUL in a DIV shadow (A, 26 Oct; D17: not typical)
+		p_hex[11] = "../ooo_tests/programs/mul_stream.hex"; p_trace[11] = "../ooo_tests/programs/mul_stream.trace";  p_sw[11] = 16'h0000;
+		p_hex[12] = "../ooo_tests/programs/muldiv_stream.hex"; p_trace[12] = "../ooo_tests/programs/muldiv_stream.trace"; p_sw[12] = 16'h0000;
 	end
 
 	// ---- expected trace ----------------------------------------------------
@@ -100,11 +110,17 @@ module tb_commit_trace;
 	end
 
 	// ---- run every program -------------------------------------------------
-	integer p, cyc, last;
+	integer p, cyc, last, n_skip;
 	initial begin
-		n_fail = 0; n_checked = 0; active = 0; idx = 0; n_exp = 0;
+		n_fail = 0; n_checked = 0; active = 0; idx = 0; n_exp = 0; n_skip = 0;
 		#1;
 		for (p = 0; p < NPROG; p = p + 1) begin
+			fd = $fopen(p_hex[p], "r");
+			if (fd == 0) begin
+				n_skip = n_skip + 1;
+				$display("SKIP commit_trace %0s: not built (no RISC-V gcc)", p_hex[p]);
+			end else begin
+			$fclose(fd);
 			reset = 1'b0;
 			sw    = p_sw[p];
 			read_trace(p_trace[p]);
@@ -140,7 +156,9 @@ module tb_commit_trace;
 			$display("%0s: %0d commits compared, result=%h done=%b exception=%b cycles=%0d retired=%0d ooo_count=%0d, %0d failures",
 			         p_hex[p], idx, DUT.result, DUT.done, DUT.exception, DUT.U_PERF.cycles, DUT.U_PERF.retired,
 			         DUT.U_PERF.ooo_count, n_fail - n_prog_fail);
+			end
 		end
+		if (n_skip != 0) $display("commit_trace: %0d of %0d programs skipped", n_skip, NPROG);
 		if (n_fail == 0) $display("TEST_PASS commit_trace %0d", n_checked);
 		else             $display("TEST_FAIL commit_trace %0d failures", n_fail);
 		$finish;
