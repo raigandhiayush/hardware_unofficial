@@ -1,19 +1,19 @@
 === TOMA-RV Test Evidence ===
-Date: 2026-10-27 18:42:34 IST
+Date: 2026-10-27 19:33:50 IST
 Owner (module): A   Run by: A
 Module: ooo_system
 Specification: blueprint 6.14, pipe_ooo vs baseline pipe on imem.hex
 Tool: Icarus Verilog version 12.0 (stable) ()
-Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_ooo_system -I modules ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v modules/pipeline.v modules/memory.v modules/IF_ID.v modules/execute.v modules/wb.v ooo_tests/tb_ooo_system.v && (cd simulation && vvp -n build/tb_ooo_system)
+Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_ooo_system -I modules ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v ooo_rtl/l1_dcache.v modules/pipeline.v modules/memory.v modules/IF_ID.v modules/execute.v modules/wb.v ooo_tests/tb_ooo_system.v && (cd simulation && vvp -n build/tb_ooo_system)
 Working directory: tomasulo-rv
-Commit: 53f64cd +uncommitted changes
+Commit: none (uncommitted working tree) +uncommitted changes
 Exit status: 0
 Simulated time: 6096000 ps (10 ns clock => 609 cycles)
 Wall time: 0s
 Test result: PASS
-Summary: TEST_PASS ooo_system 130
+Summary: TEST_PASS ooo_system 129
 ---
-600 cycles: baseline 150 stores, pipe_ooo 130 stores and 466 commits; address offset 00000020
-TEST_PASS ooo_system 130
+600 cycles: baseline 150 stores, pipe_ooo 129 stores and 458 commits; address offset 00000020
+TEST_PASS ooo_system 129
 ooo_tests/tb_ooo_system.v:91: $finish called at 6096000 (1ps)
 ---

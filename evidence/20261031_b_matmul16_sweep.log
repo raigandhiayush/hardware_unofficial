@@ -1,0 +1,51 @@
+=== TOMA-RV Test Evidence: matmul16 (16x16 matrix multiply) ===
+Date: 2026-10-31 08:28:09 UTC
+Run by: B
+Tool: Icarus Verilog version 12.0 (stable) ()
+Commit: none (not a git repository)
+Trace: python3 -I tools/ref_model.py ooo_tests/programs/matmul16.hex --max 1000000 (198009 commits, result 0x660; all 256 C entries matched an independent calculation)
+Checker: scratch copy of ooo_tests/tb_commit_trace.v with NPROG=1, TIMEOUT=60000000, MAXL=200000 (the repo version is limited to 4096 trace lines; this program is not in run_unit_tests.sh)
+pipe_m: top_fpga_base CORE=1, result and cycles only, no commit compare
+Config names: s0/s1 = SPEC_EN, nc/wb/wt = no cache/write-back/write-through, m0/m10 = MEM_WAIT; chaos = default + SPEC_CHAOS
+--- chaos
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=337934 retired=198009 ooo_count=12171, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=70030 hits=64220 misses=5810 stall_cycles=101100 branches=4930 mispredicts=3255
+TEST_PASS commit_trace 198009
+--- default
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=312704 retired=198009 ooo_count=8529, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=67272 hits=61473 misses=5799 stall_cycles=100875 branches=4930 mispredicts=295
+TEST_PASS commit_trace 198009
+--- pipe_m
+pipe_m result=00000660 done=1 cycles=216065 retired=198009
+--- s0_nc_m0
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=243588 retired=198009 ooo_count=8739, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=4930 mispredicts=0
+TEST_PASS commit_trace 198009
+--- s0_nc_m10
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=817446 retired=198009 ooo_count=17157, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=4930 mispredicts=0
+TEST_PASS commit_trace 198009
+--- s0_wb_m10
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=342146 retired=198009 ooo_count=12153, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=66983 hits=61184 misses=5799 stall_cycles=100875 branches=4930 mispredicts=0
+TEST_PASS commit_trace 198009
+--- s1_nc_m0
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=218243 retired=198009 ooo_count=4358, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=4930 mispredicts=295
+TEST_PASS commit_trace 198009
+--- s1_nc_m10
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=786552 retired=198009 ooo_count=21780, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=4930 mispredicts=295
+TEST_PASS commit_trace 198009
+--- s1_wb_m0
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=244528 retired=198009 ooo_count=8528, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=67272 hits=61473 misses=5799 stall_cycles=32699 branches=4930 mispredicts=295
+TEST_PASS commit_trace 198009
+--- s1_wt_m0
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=239940 retired=198009 ooo_count=9527, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=67271 hits=60375 misses=6896 stall_cycles=28110 branches=4930 mispredicts=295
+TEST_PASS commit_trace 198009
+--- s1_wt_m10
+../ooo_tests/programs/matmul16.hex: 198009 commits compared, result=00000660 done=1 exception=0 cycles=301754 retired=198009 ooo_count=9527, 0 failures
+../ooo_tests/programs/matmul16.hex: dcache accesses=67271 hits=60375 misses=6896 stall_cycles=89924 branches=4930 mispredicts=295
+TEST_PASS commit_trace 198009

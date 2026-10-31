@@ -10,10 +10,17 @@
 //     NCDB buses and captures the matching value at the clock edge (D14).
 //     Wake-up in the allocation cycle is not needed (dispatch bypasses).
 //   * Load at the head, base ready (cycle LA): dmem_re with base + imm; the
-//     entry leaves the queue. Next cycle (LW) the word from data_mem is
-//     formatted and broadcast on cdb_lsu. Because stores stay in the queue
-//     until they commit, a load at the head has no older uncommitted store
-//     (rule 11: a store committing in c lets the load start in c+1).
+//     entry leaves the queue. The word is formatted and broadcast on cdb_lsu in
+//     the first cycle with dmem_rvalid = 1 (LW): LA+1 on a cache hit or with no
+//     cache, later on a cache miss. Because stores stay in the queue until they
+//     commit, a load at the head has no older uncommitted store (rule 11: a
+//     store committing in c lets the load start in c+1).
+//   * Memory stall (L1 data cache): no load starts (LA) and no store starts
+//     (SR) while dmem_stall = 1. A store's commit write cannot wait for the
+//     cache, so starting SR only when the cache is idle is what guarantees the
+//     cache is idle at commit (nothing else uses it while the store is the
+//     head). With no cache, tie dmem_stall = 0 and dmem_rvalid = 1: the LSU then
+//     behaves exactly as before the cache was added.
 //   * Store at the head, base and data ready (cycle SR): broadcast a dummy 0
 //     on cdb_lsu, then wait. When cm_valid & cm_is_store & cm_tag == its tag,
 //     drive dmem_we that cycle and leave the queue (D10).
@@ -55,12 +62,16 @@ module lsu #(
     output wire [`XLEN-1:0]         cdb_lsu_value,
     // commit (ROB)
     input  wire                     cm_valid,
-    input  wire [ROB_W-1:0]         cm_tag,
+    input  wire [ROB_W-1:0]         cm_tag,         // also the ROB head
     input  wire                     cm_is_store,
+    // mispredict recovery: ROB entries being removed
+    input  wire [(1<<ROB_W)-1:0]    squash,
     // data memory
     output wire                     dmem_re,
     output wire [`XLEN-1:0]         dmem_raddr,
     input  wire [`XLEN-1:0]         dmem_rdata,
+    input  wire                     dmem_stall,     // cache busy: start nothing
+    input  wire                     dmem_rvalid,    // dmem_rdata holds the load's word
     output wire                     dmem_we,
     output wire [`XLEN-1:0]         dmem_waddr,
     output reg  [`XLEN-1:0]         dmem_wdata,
@@ -105,9 +116,15 @@ module lsu #(
     wire [`XLEN-1:0]  h_addr  = vj[head] + imm[head];
     wire [1:0]        h_off   = h_addr[1:0];
 
-    wire la_go     = h_busy & ~h_st & ~qj_valid[head];
+    // With speculation a load may be on the wrong path. Reading RAM is harmless,
+    // but an MMIO load waits until it is the oldest instruction in the machine.
+    wire spec      = (`SPEC_EN != 0);
+    wire h_mmio    = (h_addr[31:28] == 4'h1);
+    wire la_go     = h_busy & ~h_st & ~qj_valid[head] & ~dmem_stall
+                   & ~(spec & squash[tag[head]])
+                   & ~(spec & h_mmio & (tag[head] != cm_tag));
     wire sr_go     = h_busy &  h_st & ~sr_done[head] & ~qj_valid[head] & ~qk_valid[head]
-                   & ~ld_pend;                                   // D13
+                   & ~ld_pend & ~dmem_stall;                     // D13
     wire st_commit = h_busy &  h_st &  sr_done[head] & cm_valid & cm_is_store
                    & (cm_tag == tag[head]);
     wire do_pop    = la_go | st_commit;
@@ -150,9 +167,22 @@ module lsu #(
     end
 
     // ---- own bus: a load result (LW) or a store completion (SR), never both ----
-    assign cdb_lsu_valid = ld_pend | sr_go;
+    wire   ld_done       = ld_pend & dmem_rvalid;
+    assign cdb_lsu_valid = ld_done | sr_go;
     assign cdb_lsu_tag   = ld_pend ? ld_tag   : tag[head];
     assign cdb_lsu_value = ld_pend ? ld_value : {`XLEN{1'b0}};
+
+    // ---- mispredict recovery: squashed entries are a suffix of the queue ----------
+    integer q;
+    reg  [QW:0] n_sq;
+    always @(*) begin
+        n_sq = 0;
+        for (q = 0; q < LSQ_N; q = q + 1)
+            if (spec && busy[q] && squash[tag[q]]) n_sq = n_sq + 1'b1;
+    end
+    localparam [QW:0] LSQ_C = LSQ_N;
+    wire [QW:0] tail_ext = {1'b0, tail} + LSQ_C - n_sq;
+    wire [QW:0] tail_rew = (tail_ext >= LSQ_C) ? tail_ext - LSQ_C : tail_ext;
 
     // ---- state -------------------------------------------------------------------
     integer i, b;
@@ -194,13 +224,14 @@ module lsu #(
                         end
                     end
 
-            // load in flight: LA this cycle -> LW next cycle
-            ld_pend <= la_go;
+            // load in flight: from LA until its word arrives (LW)
             if (la_go) begin
-                ld_tag <= tag[head];
-                ld_f3  <= f3[head];
-                ld_off <= h_off;
-            end
+                ld_pend <= 1'b1;
+                ld_tag  <= tag[head];
+                ld_f3   <= f3[head];
+                ld_off  <= h_off;
+            end else if (ld_done)
+                ld_pend <= 1'b0;
 
             if (sr_go) sr_done[head] <= 1'b1;
 
@@ -229,6 +260,18 @@ module lsu #(
 
             if (do_alloc && !do_pop)      count <= count + 1'b1;
             else if (!do_alloc && do_pop) count <= count - 1'b1;
+
+            // Dispatch sends nothing in a flush cycle, so there is no allocation.
+            // A squashed load in flight just forgets its result; if the cache or
+            // memory is still working on it, dmem_stall holds the next operation.
+            if (n_sq != 0) begin
+                for (q = 0; q < LSQ_N; q = q + 1)
+                    if (busy[q] && squash[tag[q]]) busy[q] <= 1'b0;
+                tail  <= tail_rew[QW-1:0];
+                count <= count - n_sq - (do_pop ? 1'b1 : 1'b0);
+            end
+            if (spec && ld_pend && squash[ld_tag] && !la_go)
+                ld_pend <= 1'b0;
         end
     end
 

@@ -1,0 +1,18 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-30 16:21:15 IST
+Owner (module): A   Run by: A
+Module: mem_wait
+Specification: mem_wait: exact timing, burst, write buffer, ordering, random vs golden
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl  -o simulation/build/tb_mem_wait  modules/memory.v ooo_rtl/mem_wait.v ooo_tests/tb_mem_wait.v && (cd simulation && vvp -n build/tb_mem_wait)
+Working directory: tomasulo-rv
+Commit: none (uncommitted working tree)
+Exit status: 0
+Simulated time: 401170000 ps (10 ns clock => 40117 cycles)
+Wall time: 1s
+Test result: PASS
+Summary: TEST_PASS mem_wait 9031
+---
+TEST_PASS mem_wait 9031
+ooo_tests/tb_mem_wait.v:118: $finish called at 401170000 (1ps)
+---

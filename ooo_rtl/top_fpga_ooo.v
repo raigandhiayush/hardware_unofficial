@@ -18,8 +18,13 @@
 //  the last one counted.
 //
 //  Display: sw[15:14] selects the 8-digit hex value: 00 result, 01 cycles,
-//  10 retired, 11 ooo_count. led[15] = done, led[14] = exception,
-//  led[13:0] = result[13:0].
+//  10 retired, 11 ooo_count; with sw[13] = 1 the L1 data cache counters
+//  instead: 00 accesses, 01 hits, 10 misses, 11 stall cycles. With sw[12] = 1
+//  (over all of those) sw[14] picks branch prediction: 0 branches, 1 mispredicts.
+//
+//  Data memory access time: mem_wait sits between the core and data_mem (MEM_WAIT
+//  in ooo_defs.vh; 0 = data_mem as is). MMIO never goes through it.
+//  led[15] = done, led[14] = exception, led[13:0] = result[13:0].
 //
 //  Simulation: compile with -DTOMA_SIM; the MMCM is replaced by core_clk = clk.
 //  Instance names U_IMEM / U_DMEM / U_CORE / U_PERF are used by testbenches.
@@ -89,6 +94,12 @@ module top_fpga_ooo
 	wire    [31: 0]             ram_rdata;
 	wire                        exception;
 	wire                        dbg_commit_valid, dbg_ooo_event, dbg_stall_rob, dbg_stall_rs, dbg_hold;
+	wire                        dbg_dc_access, dbg_dc_hit, dbg_dc_miss, dbg_dc_stall;
+	wire                        dbg_br_commit, dbg_br_mispred;
+	wire                        mem_read_valid, mem_write_valid;
+	wire                        ram_re, ram_we;
+	wire    [31: 0]             ram_raddr, ram_waddr, ram_wdata;
+	wire    [ 3: 0]             ram_wstrb;
 
 	pipe_ooo U_CORE (
 		.clk                 (core_clk),
@@ -99,8 +110,8 @@ module top_fpga_ooo
 		.inst_mem_is_valid   (1'b1),
 		.inst_mem_read_data  (imem_data),
 		.dmem_read_data_temp (dmem_rdata),
-		.dmem_write_valid    (1'b1),
-		.dmem_read_valid     (1'b1),
+		.dmem_write_valid    (mem_write_valid),
+		.dmem_read_valid     (mem_read_valid),
 		.inst_mem_address    (imem_addr),
 		.dmem_read_ready     (dmem_re),
 		.dmem_read_address   (dmem_raddr),
@@ -118,15 +129,27 @@ module top_fpga_ooo
 		.dbg_stall_rob       (dbg_stall_rob),
 		.dbg_stall_rs        (dbg_stall_rs),
 		.dbg_hold            (dbg_hold),
-		.dbg_cdb_valid       ()
+		.dbg_cdb_valid       (),
+		.dbg_dc_access       (dbg_dc_access),
+		.dbg_dc_hit          (dbg_dc_hit),
+		.dbg_dc_miss         (dbg_dc_miss),
+		.dbg_dc_stall        (dbg_dc_stall),
+		.dbg_br_commit       (dbg_br_commit),
+		.dbg_br_mispred      (dbg_br_mispred)
 	);
 
 	wire                        w_mmio = (dmem_waddr[31:28] == 4'h1);
 	wire                        r_mmio = (dmem_raddr[31:28] == 4'h1);
 
 	instr_mem U_IMEM (.clk(core_clk), .pc(imem_addr), .instr(imem_data));
-	data_mem  U_DMEM (.clk(core_clk), .re(dmem_re), .raddr(dmem_raddr), .rdata(ram_rdata),
-	                  .we(dmem_we & ~w_mmio), .waddr(dmem_waddr), .wdata(dmem_wdata), .wstrb(dmem_wstrb));
+	mem_wait  U_MEMW (.clk(core_clk), .reset_n(rst_n_sync),
+	                  .re(dmem_re & ~r_mmio), .raddr(dmem_raddr),
+	                  .we(dmem_we & ~w_mmio), .waddr(dmem_waddr), .wdata(dmem_wdata), .wstrb(dmem_wstrb),
+	                  .read_valid(mem_read_valid), .write_valid(mem_write_valid),
+	                  .ram_re(ram_re), .ram_raddr(ram_raddr),
+	                  .ram_we(ram_we), .ram_waddr(ram_waddr), .ram_wdata(ram_wdata), .ram_wstrb(ram_wstrb));
+	data_mem  U_DMEM (.clk(core_clk), .re(ram_re), .raddr(ram_raddr), .rdata(ram_rdata),
+	                  .we(ram_we), .waddr(ram_waddr), .wdata(ram_wdata), .wstrb(ram_wstrb));
 
 	// ---- MMIO (D8, D20, D22) ------------------------------------------------
 	reg     [31: 0]             result;
@@ -175,6 +198,8 @@ module top_fpga_ooo
 
 	// ---- performance counters (D21) ------------------------------------------
 	wire    [31: 0]             cycles, retired, ooo_count;
+	wire    [31: 0]             dc_access, dc_hit, dc_miss, dc_stall;
+	wire    [31: 0]             br_count, br_mispred;
 
 	perf_counters U_PERF (
 		.clk                 (core_clk),
@@ -185,12 +210,24 @@ module top_fpga_ooo
 		.stall_rob           (dbg_stall_rob),
 		.stall_rs            (dbg_stall_rs),
 		.hold                (dbg_hold),
+		.dc_access           (dbg_dc_access),
+		.dc_hit              (dbg_dc_hit),
+		.dc_miss             (dbg_dc_miss),
+		.dc_stall            (dbg_dc_stall),
+		.br_commit           (dbg_br_commit),
+		.br_mispred          (dbg_br_mispred),
 		.cycles              (cycles),
 		.retired             (retired),
 		.ooo_count           (ooo_count),
 		.rob_stall_cycles    (),
 		.rs_stall_cycles     (),
-		.hold_cycles         ()
+		.hold_cycles         (),
+		.dcache_access_count (dc_access),
+		.dcache_hit_count    (dc_hit),
+		.dcache_miss_count   (dc_miss),
+		.dcache_stall_cycles (dc_stall),
+		.branch_count        (br_count),
+		.mispredict_count    (br_mispred)
 	);
 
 	// ---- LEDs and 7-segment display -----------------------------------------
@@ -198,11 +235,16 @@ module top_fpga_ooo
 
 	reg     [31: 0]             disp;
 	always @(*) begin
-		case (sw_sync[15:14])
-			2'b00:   disp = result;
-			2'b01:   disp = cycles;
-			2'b10:   disp = retired;
-			default: disp = ooo_count;
+		if (sw_sync[12]) disp = sw_sync[14] ? br_mispred : br_count;
+		else case (sw_sync[15:13])
+			3'b000:  disp = result;
+			3'b010:  disp = cycles;
+			3'b100:  disp = retired;
+			3'b110:  disp = ooo_count;
+			3'b001:  disp = dc_access;
+			3'b011:  disp = dc_hit;
+			3'b101:  disp = dc_miss;
+			default: disp = dc_stall;
 		endcase
 	end
 

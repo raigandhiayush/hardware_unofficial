@@ -11,10 +11,14 @@ module instr_queue #(
     input  wire        push,
     input  wire [`XLEN-1:0] in_pc,
     input  wire [`XLEN-1:0] in_inst,
+    input  wire        in_pred,
+    input  wire [`XLEN-1:0] in_target,
     input  wire        pop,
     output wire        out_valid,
     output wire [`XLEN-1:0] out_pc,
     output wire [`XLEN-1:0] out_inst,
+    output wire        out_pred,
+    output wire [`XLEN-1:0] out_target,
     output wire [CW-1:0] count,
     output wire [CW-1:0] free_slots
 );
@@ -24,6 +28,8 @@ module instr_queue #(
 
     reg [`XLEN-1:0] pc_mem   [0:DEPTH-1];
     reg [`XLEN-1:0] inst_mem [0:DEPTH-1];
+    reg             pred_mem [0:DEPTH-1];
+    reg [`XLEN-1:0] target_mem [0:DEPTH-1];
     reg [PW-1:0] head;
     reg [PW-1:0] tail;
     reg [CW-1:0]   cnt;
@@ -58,12 +64,16 @@ module instr_queue #(
         if (do_push) begin
             pc_mem[tail]   <= in_pc;
             inst_mem[tail] <= in_inst;
+            pred_mem[tail]   <= in_pred;
+            target_mem[tail] <= in_target;
         end
     end
 
     assign out_valid  = ~empty;
     assign out_pc     = empty ? {`XLEN{1'b0}} : pc_mem[head];
     assign out_inst   = empty ? {`XLEN{1'b0}} : inst_mem[head];
+    assign out_pred   = empty ? 1'b0 : pred_mem[head];
+    assign out_target = empty ? {`XLEN{1'b0}} : target_mem[head];
     assign count      = cnt;
     assign free_slots = DEPTH_C - cnt;
 

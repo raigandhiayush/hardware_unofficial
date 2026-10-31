@@ -16,11 +16,12 @@ XVLOG = xvlog
 XELAB = xelab
 XSIM  = xsim
 
-.PHONY: help clean sort addition negative xor board_test
+.PHONY: help clean sort addition negative xor board_test dcache_test
 
 help:
 	@echo "Usage: make <program_name>  baseline tb_pipeline on the original C code (e.g. make addition)"
 	@echo "       make board_test      tb_top_fpga_ooo on top_mmio.hex (expect TEST_PASS top_fpga_ooo)"
+	@echo "       make dcache_test     tb_l1_dcache standalone L1 data cache test (expect TEST_PASS l1_dcache)"
 	@echo "       make ooo_<prog>      D8 C workload on pipe / pipe_m / pipe_ooo with cycle counts"
 	@echo "                            <prog> = addition sort negative xor mul div rv32m"
 
@@ -36,6 +37,12 @@ xor sort addition negative:
 
 	# 3. Run Simulation (log to stdout to see display)
 	$(XSIM) $(SNAPSHOT) -runall -log stdout
+
+# L1 data cache unit test (three configurations against golden + cache-state models)
+dcache_test:
+	$(XVLOG) -i ../ooo_rtl ../modules/memory.v ../ooo_rtl/l1_dcache.v ../ooo_rtl/mem_wait.v ../ooo_tests/tb_l1_dcache.v
+	$(XELAB) -top tb_l1_dcache -snapshot l1_dcache -debug typical
+	$(XSIM) l1_dcache -runall -log stdout
 
 # OoO board-level self-test (top_mmio.hex, MMIO tests T1-T9)
 board_test:
@@ -54,7 +61,7 @@ ooo_%:
 	$(PY) ../tools/ref_model.py $(MEM_GEN)/imem_dmem/imem.hex -o build/measure.trace
 
 	# 3. Vivado Simulation Flow
-	$(XVLOG) $(BFLAGS)
+	$(XVLOG) -d MEM_WAIT=0 -d DC_WB=0 $(BFLAGS)
 	$(XELAB) -top tb_baseline_counters -snapshot ooo_cycles -debug typical
 	$(XSIM) ooo_cycles -runall -log stdout -testplusarg hex=../mem_generator/imem_dmem/imem.hex -testplusarg trace=build/measure.trace
 

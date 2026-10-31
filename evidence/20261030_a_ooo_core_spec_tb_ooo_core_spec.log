@@ -1,0 +1,21 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-30 16:20:02 IST
+Owner (module): A   Run by: A
+Module: ooo_core_spec
+Specification: random RV32IM vs ISA model with speculation on
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl  -o simulation/build/tb_ooo_core_spec  -DMEM_WAIT=0 -DDC_WB=0 ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v ooo_rtl/l1_dcache.v ooo_rtl/bpred.v ooo_rtl/mem_wait.v modules/memory.v ooo_tests/tb_ooo_core.v && (cd simulation && vvp -n build/tb_ooo_core_spec)
+Working directory: tomasulo-rv
+Commit: none (uncommitted working tree)
+Exit status: 0
+Simulated time: 367530000 ps (10 ns clock => 36753 cycles)
+Wall time: 12s
+Test result: PASS
+Summary: TEST_PASS ooo_core 113274
+---
+directed: 39 commits, 485 checks, 0 failures
+random: 60 programs of 300 instructions
+totals: 15161 commits, 2807 ooo_event cycles, 1675 cycles with >=2 buses, 13262 rob-full stalls, 1412 rs-full stalls
+TEST_PASS ooo_core 113274
+ooo_tests/tb_ooo_core.v:451: $finish called at 367530000 (1ps)
+---

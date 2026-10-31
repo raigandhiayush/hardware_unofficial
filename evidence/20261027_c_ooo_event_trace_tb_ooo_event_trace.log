@@ -1,12 +1,12 @@
 === TOMA-RV Test Evidence ===
-Date: 2026-10-27 18:42:35 IST
+Date: 2026-10-27 19:33:51 IST
 Owner (module): C   Run by: A
 Module: ooo_event_trace
-Specification: TASKS 19 Oct: ooo_event, non-head completion per bus, 2+ bus cycles
+Specification: TASKS 19 Oct: ooo_event, non-head completion per bus, 2+ bus cycles; cycle-exact scenario of ooo_trace.s, built for fixed 1-cycle loads, so run without the data cache (DC_EN=0); the cached core's multi-bus cycles are counted by tb_ooo_core
 Tool: Icarus Verilog version 12.0 (stable) ()
-Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_ooo_event_trace -DTOMA_SIM ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v modules/memory.v ooo_tests/tb_ooo_event_trace.v && (cd simulation && vvp -n build/tb_ooo_event_trace)
+Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_ooo_event_trace -DTOMA_SIM -DDC_EN=0 ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v ooo_rtl/l1_dcache.v modules/memory.v ooo_tests/tb_ooo_event_trace.v && (cd simulation && vvp -n build/tb_ooo_event_trace)
 Working directory: tomasulo-rv
-Commit: 53f64cd +uncommitted changes
+Commit: none (uncommitted working tree) +uncommitted changes
 Exit status: 0
 Simulated time: 600000 ps (10 ns clock => 60 cycles)
 Wall time: 0s

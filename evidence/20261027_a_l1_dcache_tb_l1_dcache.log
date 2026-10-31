@@ -1,0 +1,21 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-27 19:33:46 IST
+Owner (module): A   Run by: A
+Module: l1_dcache
+Specification: L1 data cache: 3 configs (2-way WB, 2-way WT, direct-mapped WB 8-word) vs golden memory + cache-state model, real data_mem
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl -o simulation/build/tb_l1_dcache modules/memory.v ooo_rtl/l1_dcache.v ooo_tests/tb_l1_dcache.v && (cd simulation && vvp -n build/tb_l1_dcache)
+Working directory: tomasulo-rv
+Commit: none (uncommitted working tree) +uncommitted changes
+Exit status: 0
+Simulated time: 638630000 ps (10 ns clock => 63863 cycles)
+Wall time: 2s
+Test result: PASS
+Summary: TEST_PASS l1_dcache 354695
+---
+H1: WAYS=2 SETS=8 WORDS=4 WB=0: 6060 ops (364 MMIO), hits=1434 misses=4262 write-backs=0, bus reads=13181 writes=1460, 85654 checks, 0 failures
+H0: WAYS=2 SETS=8 WORDS=4 WB=1: 6060 ops (388 MMIO), hits=1429 misses=4243 write-backs=1286, bus reads=17266 writes=5238, 105438 checks, 0 failures
+H2: WAYS=1 SETS=4 WORDS=8 WB=1: 6060 ops (400 MMIO), hits=744 misses=4916 write-backs=1399, bus reads=39641 writes=11279, 163600 checks, 0 failures
+TEST_PASS l1_dcache 354695
+ooo_tests/tb_l1_dcache.v:391: $finish called at 638630000 (1ps)
+---

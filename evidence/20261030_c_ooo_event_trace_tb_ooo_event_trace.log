@@ -1,0 +1,33 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-30 16:19:49 IST
+Owner (module): C   Run by: A
+Module: ooo_event_trace
+Specification: TASKS 19 Oct: ooo_event, non-head completion per bus, 2+ bus cycles; cycle-exact scenario of ooo_trace.s, built for fixed 1-cycle loads, so run without the data cache (DC_EN=0); the cached core's multi-bus cycles are counted by tb_ooo_core
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: iverilog -g2012 -I ooo_rtl -DSPEC_EN=0 -DMEM_WAIT=0 -DDC_WB=0 -o simulation/build/tb_ooo_event_trace -DTOMA_SIM -DDC_EN=0 ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v ooo_rtl/pipe_ooo.v ooo_rtl/ooo_core.v ooo_rtl/ooo_frontend.v ooo_rtl/instr_queue.v ooo_rtl/ooo_decode.v ooo_rtl/ooo_dispatch.v ooo_rtl/rat.v ooo_rtl/regfile_2r1w.v ooo_rtl/rob.v ooo_rtl/rs_array.v ooo_rtl/alu_fu.v ooo_rtl/mul_unit.v ooo_rtl/div_unit.v ooo_rtl/lsu.v ooo_rtl/l1_dcache.v ooo_rtl/bpred.v ooo_rtl/mem_wait.v modules/memory.v ooo_tests/tb_ooo_event_trace.v && (cd simulation && vvp -n build/tb_ooo_event_trace)
+Working directory: tomasulo-rv
+Commit: none (uncommitted working tree)
+Exit status: 0
+Simulated time: 600000 ps (10 ns clock => 60 cycles)
+Wall time: 1s
+Test result: PASS
+Summary: TEST_PASS ooo_event_trace 61
+---
+VCD info: dumpfile ../evidence/waves/ooo_event_trace.vcd opened for output.
+TRACE cyc=  5 head=1 pc=00000004 busy=1 | alu t1=1000 | mul -0=0 | div -0=0 | lsu -0=0 | ooo_event=0            
+TRACE cyc=  6 head=1 pc=00000004 busy=0 | alu t2=7 | mul -0=0 | div -0=0 | lsu -0=0 | ooo_event=0            
+TRACE cyc=  7 head=2 pc=00000008 busy=0 | alu -1=0 | mul -0=0 | div -0=0 | lsu t3=0 | ooo_event=0            
+TRACE cyc=  9 head=4 pc=00000010 busy=1 | alu t5=8 | mul -0=0 | div -0=0 | lsu -0=0 | ooo_event=1            
+TRACE cyc= 12 head=4 pc=00000010 busy=1 | alu -0=0 | mul t6=49 | div -0=0 | lsu t7=7 | ooo_event=1  [2+ buses]
+TRACE cyc= 13 head=4 pc=00000010 busy=1 | alu t0=57 | mul -0=0 | div -0=0 | lsu -0=0 | ooo_event=1            
+TRACE cyc= 15 head=4 pc=00000010 busy=1 | alu -3=0 | mul t1=343 | div -0=0 | lsu -0=0 | ooo_event=1            
+TRACE cyc= 41 head=4 pc=00000010 busy=1 | alu -3=0 | mul -0=0 | div t4=142 | lsu -0=0 | ooo_event=0            
+TRACE cyc= 42 head=4 pc=00000010 busy=0 | alu t2=199 | mul -0=0 | div -4=0 | lsu -0=0 | ooo_event=0            
+TRACE cyc= 43 head=5 pc=00000014 busy=0 | alu t3=542 | mul -0=0 | div -4=0 | lsu -0=0 | ooo_event=0            
+TRACE cyc= 44 head=6 pc=00000018 busy=0 | alu -3=0 | mul -0=0 | div -4=0 | lsu t4=0 | ooo_event=0            
+TRACE cyc= 51 head=5 pc=00000034 busy=1 | alu -3=0 | mul -0=0 | div -4=0 | lsu t5=0 | ooo_event=0            
+SUMMARY cycles=52 retired=14 ooo_event cycles=4 (ooo_count=4), 2+ bus cycles=1, non-head completions under the DIV: alu=2 mul=2 div=0 (not possible, see header) lsu=1
+Waveform: evidence/waves/ooo_event_trace.vcd
+TEST_PASS ooo_event_trace 61
+ooo_tests/tb_ooo_event_trace.v:95: $finish called at 600000 (1ps)
+---

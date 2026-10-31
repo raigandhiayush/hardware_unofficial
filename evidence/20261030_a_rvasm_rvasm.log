@@ -1,0 +1,18 @@
+=== TOMA-RV Test Evidence ===
+Date: 2026-10-30 16:20:57 IST
+Owner (module): A   Run by: A
+Module: rvasm
+Specification: tools/rvasm.py encodings vs gcc (code.dis)
+Tool: Icarus Verilog version 12.0 (stable) ()
+Command: python3 -I tools/rvasm.py --selftest
+Working directory: tomasulo-rv
+Commit: none (uncommitted working tree)
+Exit status: 0
+Simulated time: ? ps (10 ns clock => 0 cycles)
+Wall time: 0s
+Test result: PASS
+Summary: TEST_PASS rvasm 18
+---
+rvasm selftest: 18 instructions from /home/ayush-raigandhi/Desktop/Tomasulo-RV/tomasulo-rv-spec/mem_generator/imem_dmem/code.dis, 0 mismatches
+TEST_PASS rvasm 18
+---

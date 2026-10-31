@@ -1,0 +1,1387 @@
+=== TOMA-RV Test Evidence: speculation x cache x memory wait sweep ===
+Date: 2026-10-30 16:21:16 IST
+Run by: A
+Tool: Icarus Verilog version 12.0 (stable) ()
+Commit: none (tomasulo-rv-spec is not a git repository)
+Command per config: iverilog -g2012 -DTOMA_SIM -DSPEC_EN=<s> -DMEM_WAIT=<w> [-DDC_EN=0 | -DDC_WB=0 | -DDC_WB=1] -I ooo_rtl -o X ooo_rtl/top_fpga_ooo.v ooo_rtl/perf_counters.v $CORE_SRCS modules/memory.v ooo_tests/tb_commit_trace.v; cd simulation; vvp -n X
+Note: run before DC_WB's default changed; every run names the policy (wt = -DDC_WB unset, then default 0; wb = -DDC_WB=1).
+--- s0_nc_m0
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=262 retired=202 ooo_count=23, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=173 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=4, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=140 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=552 retired=102 ooo_count=7, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=277 retired=119 ooo_count=6, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=25 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=187 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=25 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=25 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2725 retired=1335 ooo_count=112, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2588 retired=1326 ooo_count=89, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5709 retired=1588 ooo_count=215, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6808 retired=1923 ooo_count=310, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4308 retired=1520 ooo_count=233, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4502 retired=1452 ooo_count=183, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3393 retired=1215 ooo_count=59, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3670 retired=1428 ooo_count=93, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=517 retired=310 ooo_count=15, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_nc_m10
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=1129 retired=202 ooo_count=45, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=258 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=428 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=1004 retired=102 ooo_count=4, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=656 retired=119 ooo_count=11, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=84 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=605 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=84 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=84 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=3196 retired=1335 ooo_count=201, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=3546 retired=1326 ooo_count=159, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=6124 retired=1588 ooo_count=281, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=8058 retired=1923 ooo_count=371, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4664 retired=1520 ooo_count=340, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4748 retired=1452 ooo_count=237, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3628 retired=1215 ooo_count=108, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=4203 retired=1428 ooo_count=197, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=888 retired=310 ooo_count=22, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_nc_m20
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=2019 retired=202 ooo_count=45, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=358 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=60 retired=14 ooo_count=3, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=708 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=1454 retired=102 ooo_count=4, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=1046 retired=119 ooo_count=12, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=144 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=1025 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=144 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=144 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=4069 retired=1335 ooo_count=192, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=4980 retired=1326 ooo_count=158, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=7279 retired=1588 ooo_count=257, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=9958 retired=1923 ooo_count=371, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=5414 retired=1520 ooo_count=346, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=5339 retired=1452 ooo_count=228, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=4489 retired=1215 ooo_count=137, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=5252 retired=1428 ooo_count=246, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=1347 retired=310 ooo_count=23, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_nc_m2
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=417 retired=202 ooo_count=23, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=185 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=204 retired=78 ooo_count=1, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=645 retired=102 ooo_count=3, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=345 retired=119 ooo_count=8, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=36 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=270 retired=127 ooo_count=2, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=36 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=36 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2725 retired=1335 ooo_count=152, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2693 retired=1326 ooo_count=133, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5776 retired=1588 ooo_count=241, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=7020 retired=1923 ooo_count=324, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4409 retired=1520 ooo_count=289, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4519 retired=1452 ooo_count=219, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3393 retired=1215 ooo_count=95, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3722 retired=1428 ooo_count=107, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=576 retired=310 ooo_count=16, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_nc_m5
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=684 retired=202 ooo_count=23, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=209 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=288 retired=78 ooo_count=1, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=779 retired=102 ooo_count=4, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=461 retired=119 ooo_count=7, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=395 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2882 retired=1335 ooo_count=192, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2964 retired=1326 ooo_count=162, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5881 retired=1588 ooo_count=277, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=7378 retired=1923 ooo_count=339, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4474 retired=1520 ooo_count=289, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4575 retired=1452 ooo_count=238, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3430 retired=1215 ooo_count=94, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3890 retired=1428 ooo_count=147, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=677 retired=310 ooo_count=17, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wb_m0
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=272 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=206 retired=92 ooo_count=6, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=35 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=25 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=147 retired=78 ooo_count=8, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=39 misses=2 stall_cycles=10 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=564 retired=102 ooo_count=8, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=53 misses=3 stall_cycles=15 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=291 retired=119 ooo_count=7, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=15 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=34 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=200 retired=127 ooo_count=2, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=52 misses=3 stall_cycles=15 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=34 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=34 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2725 retired=1335 ooo_count=112, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=242 misses=16 stall_cycles=86 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2588 retired=1326 ooo_count=89, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=80 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5709 retired=1588 ooo_count=215, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=278 misses=16 stall_cycles=80 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6808 retired=1923 ooo_count=310, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=411 misses=16 stall_cycles=80 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4308 retired=1520 ooo_count=233, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=80 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4502 retired=1452 ooo_count=183, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=220 misses=16 stall_cycles=89 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3393 retired=1215 ooo_count=59, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=96 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3670 retired=1428 ooo_count=93, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=267 misses=16 stall_cycles=80 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=525 retired=310 ooo_count=20, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=101 misses=2 stall_cycles=10 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wb_m10
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=292 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=257 retired=92 ooo_count=6, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=86 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=15 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=35 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=167 retired=78 ooo_count=8, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=39 misses=2 stall_cycles=30 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=594 retired=102 ooo_count=9, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=53 misses=3 stall_cycles=45 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=321 retired=119 ooo_count=7, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=45 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=220 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=52 misses=3 stall_cycles=35 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2726 retired=1335 ooo_count=117, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=242 misses=16 stall_cycles=96 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2589 retired=1326 ooo_count=94, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=90 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5710 retired=1588 ooo_count=220, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=278 misses=16 stall_cycles=90 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6809 retired=1923 ooo_count=315, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=411 misses=16 stall_cycles=90 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4309 retired=1520 ooo_count=238, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=90 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4503 retired=1452 ooo_count=188, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=220 misses=16 stall_cycles=99 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3394 retired=1215 ooo_count=64, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=106 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3671 retired=1428 ooo_count=98, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=267 misses=16 stall_cycles=90 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=535 retired=310 ooo_count=21, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=101 misses=2 stall_cycles=20 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wb_m20
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=312 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=50 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=307 retired=92 ooo_count=6, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=136 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=25 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=45 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=187 retired=78 ooo_count=8, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=39 misses=2 stall_cycles=50 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=624 retired=102 ooo_count=9, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=53 misses=3 stall_cycles=75 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=351 retired=119 ooo_count=7, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=75 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=74 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=50 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=240 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=52 misses=3 stall_cycles=55 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=74 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=50 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=74 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=50 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2736 retired=1335 ooo_count=118, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=242 misses=16 stall_cycles=106 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2599 retired=1326 ooo_count=95, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=100 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5720 retired=1588 ooo_count=221, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=278 misses=16 stall_cycles=100 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6819 retired=1923 ooo_count=316, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=411 misses=16 stall_cycles=100 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4319 retired=1520 ooo_count=239, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=100 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4513 retired=1452 ooo_count=189, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=220 misses=16 stall_cycles=109 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3404 retired=1215 ooo_count=65, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=116 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3681 retired=1428 ooo_count=99, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=267 misses=16 stall_cycles=100 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=545 retired=310 ooo_count=21, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=101 misses=2 stall_cycles=30 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wb_m2
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=276 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=14 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=217 retired=92 ooo_count=6, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=46 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=7 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=27 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=151 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=39 misses=2 stall_cycles=14 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=570 retired=102 ooo_count=8, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=53 misses=3 stall_cycles=21 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=297 retired=119 ooo_count=7, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=21 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=38 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=14 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=204 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=52 misses=3 stall_cycles=19 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=38 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=14 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=38 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=14 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2725 retired=1335 ooo_count=113, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=242 misses=16 stall_cycles=88 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2588 retired=1326 ooo_count=90, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=82 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5709 retired=1588 ooo_count=216, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=278 misses=16 stall_cycles=82 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6808 retired=1923 ooo_count=311, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=411 misses=16 stall_cycles=82 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4308 retired=1520 ooo_count=234, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=82 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4502 retired=1452 ooo_count=184, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=220 misses=16 stall_cycles=91 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3393 retired=1215 ooo_count=60, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=98 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3670 retired=1428 ooo_count=94, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=267 misses=16 stall_cycles=82 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=527 retired=310 ooo_count=21, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=101 misses=2 stall_cycles=12 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wb_m5
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=282 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=20 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=232 retired=92 ooo_count=6, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=61 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=157 retired=78 ooo_count=8, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=39 misses=2 stall_cycles=20 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=579 retired=102 ooo_count=9, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=53 misses=3 stall_cycles=30 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=306 retired=119 ooo_count=7, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=30 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=44 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=20 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=210 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=52 misses=3 stall_cycles=25 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=44 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=20 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=44 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=20 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2725 retired=1335 ooo_count=115, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=242 misses=16 stall_cycles=91 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2588 retired=1326 ooo_count=92, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=85 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5709 retired=1588 ooo_count=218, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=278 misses=16 stall_cycles=85 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6808 retired=1923 ooo_count=313, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=411 misses=16 stall_cycles=85 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4308 retired=1520 ooo_count=236, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=85 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4502 retired=1452 ooo_count=186, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=220 misses=16 stall_cycles=94 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3393 retired=1215 ooo_count=62, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=101 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3670 retired=1428 ooo_count=96, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=267 misses=16 stall_cycles=85 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=530 retired=310 ooo_count=21, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=101 misses=2 stall_cycles=15 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wt_m0
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=272 retired=202 ooo_count=22, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=106 misses=6 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=188 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=16 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=145 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=37 misses=4 stall_cycles=5 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=562 retired=102 ooo_count=7, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=48 misses=8 stall_cycles=10 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=286 retired=119 ooo_count=7, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=10 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=30 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=196 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=46 misses=9 stall_cycles=10 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=30 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=30 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2713 retired=1335 ooo_count=156, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=80 misses=178 stall_cycles=86 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2606 retired=1326 ooo_count=120, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=80 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5699 retired=1588 ooo_count=252, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=118 misses=176 stall_cycles=80 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6817 retired=1923 ooo_count=330, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=280 misses=147 stall_cycles=80 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4301 retired=1520 ooo_count=266, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=184 misses=80 stall_cycles=80 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4499 retired=1452 ooo_count=207, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=144 misses=92 stall_cycles=89 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3385 retired=1215 ooo_count=96, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=118 misses=144 stall_cycles=96 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3673 retired=1428 ooo_count=128, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=173 misses=110 stall_cycles=80 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=527 retired=310 ooo_count=15, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=93 misses=10 stall_cycles=10 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wt_m10
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=634 retired=201 ooo_count=22, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=106 misses=6 stall_cycles=382 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=236 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=64 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=23 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=180 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=37 misses=4 stall_cycles=40 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=614 retired=102 ooo_count=7, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=48 misses=8 stall_cycles=63 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=402 retired=119 ooo_count=8, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=130 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=67 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=42 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=249 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=46 misses=9 stall_cycles=63 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=67 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=42 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=67 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=42 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=3138 retired=1335 ooo_count=236, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=80 misses=178 stall_cycles=680 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2901 retired=1326 ooo_count=146, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=481 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5741 retired=1588 ooo_count=253, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=118 misses=176 stall_cycles=208 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6933 retired=1923 ooo_count=336, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=280 misses=147 stall_cycles=285 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4351 retired=1520 ooo_count=276, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=184 misses=80 stall_cycles=170 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4596 retired=1452 ooo_count=209, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=144 misses=92 stall_cycles=223 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3498 retired=1215 ooo_count=109, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=118 misses=144 stall_cycles=344 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3745 retired=1428 ooo_count=138, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=173 misses=110 stall_cycles=209 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=540 retired=310 ooo_count=18, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=93 misses=10 stall_cycles=25 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wt_m20
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=1174 retired=200 ooo_count=31, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=111 hits=105 misses=6 stall_cycles=924 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=296 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=124 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=64 retired=14 ooo_count=3, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=43 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=15 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=233 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=37 misses=4 stall_cycles=93 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=674 retired=102 ooo_count=7, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=48 misses=8 stall_cycles=123 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=532 retired=119 ooo_count=9, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=260 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=107 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=82 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=326 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=46 misses=9 stall_cycles=142 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=107 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=82 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=107 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=82 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=3974 retired=1335 ooo_count=223, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=80 misses=178 stall_cycles=1883 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=3665 retired=1326 ooo_count=150, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=1421 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=6020 retired=1588 ooo_count=261, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=118 misses=176 stall_cycles=616 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=7418 retired=1923 ooo_count=327, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=280 misses=147 stall_cycles=1544 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4430 retired=1520 ooo_count=276, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=184 misses=80 stall_cycles=269 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4791 retired=1452 ooo_count=216, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=144 misses=92 stall_cycles=448 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3841 retired=1215 ooo_count=147, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=118 misses=144 stall_cycles=813 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=4049 retired=1428 ooo_count=175, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=173 misses=110 stall_cycles=705 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=562 retired=310 ooo_count=19, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=93 misses=10 stall_cycles=51 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wt_m2
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=281 retired=202 ooo_count=22, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=106 misses=6 stall_cycles=19 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=192 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=20 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=7 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=148 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=37 misses=4 stall_cycles=8 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=567 retired=102 ooo_count=7, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=48 misses=8 stall_cycles=15 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=298 retired=119 ooo_count=7, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=22 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=35 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=202 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=46 misses=9 stall_cycles=16 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=35 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=35 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2715 retired=1335 ooo_count=160, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=80 misses=178 stall_cycles=100 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2624 retired=1326 ooo_count=124, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=112 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5699 retired=1588 ooo_count=253, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=118 misses=176 stall_cycles=99 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6830 retired=1923 ooo_count=335, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=280 misses=147 stall_cycles=120 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4303 retired=1520 ooo_count=274, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=184 misses=80 stall_cycles=98 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4505 retired=1452 ooo_count=212, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=144 misses=92 stall_cycles=111 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3388 retired=1215 ooo_count=101, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=118 misses=144 stall_cycles=117 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3679 retired=1428 ooo_count=136, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=173 misses=110 stall_cycles=105 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=529 retired=310 ooo_count=15, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=93 misses=10 stall_cycles=12 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s0_wt_m5
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=364 retired=202 ooo_count=13, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=106 misses=6 stall_cycles=102 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=206 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=34 branches=10 mispredicts=0
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=13 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=160 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=41 hits=37 misses=4 stall_cycles=20 branches=7 mispredicts=0
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=584 retired=102 ooo_count=7, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=56 hits=48 misses=8 stall_cycles=33 branches=6 mispredicts=0
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=337 retired=119 ooo_count=8, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=63 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=47 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=22 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=219 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=55 hits=46 misses=9 stall_cycles=33 branches=10 mispredicts=0
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=47 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=22 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=47 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=22 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2833 retired=1335 ooo_count=225, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=258 hits=80 misses=178 stall_cycles=328 branches=279 mispredicts=0
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2668 retired=1326 ooo_count=124, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=174 branches=270 mispredicts=0
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5705 retired=1588 ooo_count=255, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=118 misses=176 stall_cycles=134 branches=352 mispredicts=0
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6861 retired=1923 ooo_count=334, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=427 hits=280 misses=147 stall_cycles=180 branches=433 mispredicts=0
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4316 retired=1520 ooo_count=276, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=184 misses=80 stall_cycles=125 branches=308 mispredicts=0
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4524 retired=1452 ooo_count=211, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=236 hits=144 misses=92 stall_cycles=144 branches=296 mispredicts=0
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3405 retired=1215 ooo_count=105, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=262 hits=118 misses=144 stall_cycles=153 branches=239 mispredicts=0
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3700 retired=1428 ooo_count=136, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=283 hits=173 misses=110 stall_cycles=144 branches=303 mispredicts=0
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=532 retired=310 ooo_count=15, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=103 hits=93 misses=10 stall_cycles=15 branches=71 mispredicts=0
+TEST_PASS commit_trace 13065
+--- s1_nc_m0
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=262 retired=202 ooo_count=23, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=182 retired=92 ooo_count=3, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=119 retired=78 ooo_count=2, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=536 retired=102 ooo_count=3, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=276 retired=119 ooo_count=13, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=25 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=186 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=25 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=25 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=1998 retired=1335 ooo_count=64, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=31
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2001 retired=1326 ooo_count=92, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=51
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4909 retired=1588 ooo_count=213, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5865 retired=1923 ooo_count=307, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=86
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3510 retired=1520 ooo_count=223, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3870 retired=1452 ooo_count=177, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=62
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2654 retired=1215 ooo_count=102, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=40
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2760 retired=1428 ooo_count=91, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=431 retired=310 ooo_count=15, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_nc_m10
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=1129 retired=202 ooo_count=44, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=270 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=422 retired=78 ooo_count=9, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=998 retired=102 ooo_count=4, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=607 retired=119 ooo_count=19, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=84 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=630 retired=127 ooo_count=5, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=84 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=84 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2515 retired=1335 ooo_count=136, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=33
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2847 retired=1326 ooo_count=162, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=50
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5468 retired=1588 ooo_count=246, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=61
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6939 retired=1923 ooo_count=389, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=87
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3703 retired=1520 ooo_count=298, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=39
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4048 retired=1452 ooo_count=245, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=60
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2880 retired=1215 ooo_count=99, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=41
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3346 retired=1428 ooo_count=181, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=58
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=839 retired=310 ooo_count=60, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=25
+TEST_PASS commit_trace 13065
+--- s1_nc_m20
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=2019 retired=202 ooo_count=44, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=370 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=60 retired=14 ooo_count=3, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=722 retired=78 ooo_count=9, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=1468 retired=102 ooo_count=4, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=957 retired=119 ooo_count=20, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=144 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=1100 retired=127 ooo_count=5, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=144 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=144 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=3648 retired=1335 ooo_count=210, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=34
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=4288 retired=1326 ooo_count=165, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=50
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=6721 retired=1588 ooo_count=265, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=61
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=9251 retired=1923 ooo_count=398, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=87
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=4218 retired=1520 ooo_count=297, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=38
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4516 retired=1452 ooo_count=229, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=60
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3920 retired=1215 ooo_count=126, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=42
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=4514 retired=1428 ooo_count=213, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=1313 retired=310 ooo_count=56, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=25
+TEST_PASS commit_trace 13065
+--- s1_nc_m2
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=417 retired=202 ooo_count=22, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=194 retired=92 ooo_count=3, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=185 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=629 retired=102 ooo_count=3, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=333 retired=119 ooo_count=17, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=36 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=270 retired=127 ooo_count=2, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=36 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=36 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2018 retired=1335 ooo_count=82, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=31
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2073 retired=1326 ooo_count=132, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=52
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4973 retired=1588 ooo_count=230, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6038 retired=1923 ooo_count=360, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=86
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3519 retired=1520 ooo_count=237, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3872 retired=1452 ooo_count=195, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=59
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2668 retired=1215 ooo_count=112, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=40
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2829 retired=1428 ooo_count=145, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=476 retired=310 ooo_count=35, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_nc_m5
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=684 retired=202 ooo_count=23, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=220 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=272 retired=78 ooo_count=7, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=763 retired=102 ooo_count=4, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=433 retired=119 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=395 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2192 retired=1335 ooo_count=117, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=279 mispredicts=32
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2288 retired=1326 ooo_count=166, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=270 mispredicts=50
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5104 retired=1588 ooo_count=254, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=352 mispredicts=61
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6295 retired=1923 ooo_count=378, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=433 mispredicts=87
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3540 retired=1520 ooo_count=259, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=308 mispredicts=39
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3922 retired=1452 ooo_count=229, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=296 mispredicts=61
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2711 retired=1215 ooo_count=123, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=239 mispredicts=41
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3020 retired=1428 ooo_count=162, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=303 mispredicts=57
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=590 retired=310 ooo_count=42, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wb_m0
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=272 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=211 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=35 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=25 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=126 retired=78 ooo_count=3, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=42 misses=2 stall_cycles=10 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=548 retired=102 ooo_count=4, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=57 misses=3 stall_cycles=15 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=290 retired=119 ooo_count=14, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=15 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=34 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=199 retired=127 ooo_count=2, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=58 misses=3 stall_cycles=15 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=34 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=34 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2023 retired=1335 ooo_count=93, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=86 branches=279 mispredicts=31
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2026 retired=1326 ooo_count=121, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=80 branches=270 mispredicts=51
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4934 retired=1588 ooo_count=243, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=296 hits=280 misses=16 stall_cycles=80 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5890 retired=1923 ooo_count=335, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=429 hits=413 misses=16 stall_cycles=80 branches=433 mispredicts=86
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3535 retired=1520 ooo_count=252, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=80 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3895 retired=1452 ooo_count=206, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=221 misses=16 stall_cycles=89 branches=296 mispredicts=62
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2679 retired=1215 ooo_count=130, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=266 hits=250 misses=16 stall_cycles=96 branches=239 mispredicts=40
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2785 retired=1428 ooo_count=120, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=268 misses=16 stall_cycles=80 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=438 retired=310 ooo_count=19, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=105 misses=3 stall_cycles=15 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wb_m10
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=292 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=262 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=86 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=15 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=35 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=146 retired=78 ooo_count=3, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=42 misses=2 stall_cycles=30 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=578 retired=102 ooo_count=5, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=57 misses=3 stall_cycles=45 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=320 retired=119 ooo_count=14, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=45 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=219 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=58 misses=3 stall_cycles=35 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=54 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2031 retired=1335 ooo_count=100, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=96 branches=279 mispredicts=31
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2034 retired=1326 ooo_count=128, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=90 branches=270 mispredicts=51
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4942 retired=1588 ooo_count=250, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=296 hits=280 misses=16 stall_cycles=90 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5898 retired=1923 ooo_count=342, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=429 hits=413 misses=16 stall_cycles=90 branches=433 mispredicts=86
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3543 retired=1520 ooo_count=259, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=90 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3903 retired=1452 ooo_count=213, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=221 misses=16 stall_cycles=99 branches=296 mispredicts=62
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2687 retired=1215 ooo_count=137, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=266 hits=250 misses=16 stall_cycles=106 branches=239 mispredicts=40
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2793 retired=1428 ooo_count=127, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=268 misses=16 stall_cycles=90 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=448 retired=310 ooo_count=20, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=105 misses=3 stall_cycles=25 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wb_m20
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=312 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=50 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=312 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=136 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=25 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=45 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=166 retired=78 ooo_count=3, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=42 misses=2 stall_cycles=50 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=608 retired=102 ooo_count=5, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=57 misses=3 stall_cycles=75 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=350 retired=119 ooo_count=14, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=75 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=74 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=50 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=239 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=58 misses=3 stall_cycles=55 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=74 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=50 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=74 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=50 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2041 retired=1335 ooo_count=100, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=106 branches=279 mispredicts=31
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2044 retired=1326 ooo_count=128, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=100 branches=270 mispredicts=51
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4952 retired=1588 ooo_count=250, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=296 hits=280 misses=16 stall_cycles=100 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5908 retired=1923 ooo_count=342, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=429 hits=413 misses=16 stall_cycles=100 branches=433 mispredicts=86
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3553 retired=1520 ooo_count=259, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=100 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3913 retired=1452 ooo_count=213, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=221 misses=16 stall_cycles=109 branches=296 mispredicts=62
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2697 retired=1215 ooo_count=137, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=266 hits=250 misses=16 stall_cycles=116 branches=239 mispredicts=40
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2803 retired=1428 ooo_count=127, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=268 misses=16 stall_cycles=100 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=458 retired=310 ooo_count=20, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=105 misses=3 stall_cycles=35 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wb_m2
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=276 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=14 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=222 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=46 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=7 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=27 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=130 retired=78 ooo_count=2, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=42 misses=2 stall_cycles=14 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=554 retired=102 ooo_count=4, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=57 misses=3 stall_cycles=21 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=296 retired=119 ooo_count=14, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=21 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=38 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=14 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=203 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=58 misses=3 stall_cycles=19 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=38 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=14 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=38 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=14 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2023 retired=1335 ooo_count=93, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=88 branches=279 mispredicts=31
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2026 retired=1326 ooo_count=121, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=82 branches=270 mispredicts=51
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4934 retired=1588 ooo_count=243, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=296 hits=280 misses=16 stall_cycles=82 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5890 retired=1923 ooo_count=335, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=429 hits=413 misses=16 stall_cycles=82 branches=433 mispredicts=86
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3535 retired=1520 ooo_count=252, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=82 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3895 retired=1452 ooo_count=206, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=221 misses=16 stall_cycles=91 branches=296 mispredicts=62
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2679 retired=1215 ooo_count=130, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=266 hits=250 misses=16 stall_cycles=98 branches=239 mispredicts=40
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2785 retired=1428 ooo_count=120, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=268 misses=16 stall_cycles=82 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=440 retired=310 ooo_count=20, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=105 misses=3 stall_cycles=17 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wb_m5
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=282 retired=202 ooo_count=24, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=110 misses=2 stall_cycles=20 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=237 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=17 misses=5 stall_cycles=61 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=1 misses=1 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=539 retired=74 ooo_count=21, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=14 misses=5 stall_cycles=30 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=136 retired=78 ooo_count=3, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=42 misses=2 stall_cycles=20 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=563 retired=102 ooo_count=5, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=57 misses=3 stall_cycles=30 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=305 retired=119 ooo_count=14, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=36 misses=3 stall_cycles=30 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=44 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=20 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=209 retired=127 ooo_count=3, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=58 misses=3 stall_cycles=25 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=44 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=20 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=44 retired=18 ooo_count=1, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=5 misses=2 stall_cycles=20 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2026 retired=1335 ooo_count=96, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=262 hits=246 misses=16 stall_cycles=91 branches=279 mispredicts=31
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2029 retired=1326 ooo_count=124, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=272 misses=16 stall_cycles=85 branches=270 mispredicts=51
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4937 retired=1588 ooo_count=246, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=296 hits=280 misses=16 stall_cycles=85 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5893 retired=1923 ooo_count=338, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=429 hits=413 misses=16 stall_cycles=85 branches=433 mispredicts=86
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3538 retired=1520 ooo_count=255, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=264 hits=248 misses=16 stall_cycles=85 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3898 retired=1452 ooo_count=209, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=221 misses=16 stall_cycles=94 branches=296 mispredicts=62
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2682 retired=1215 ooo_count=133, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=266 hits=250 misses=16 stall_cycles=101 branches=239 mispredicts=40
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2788 retired=1428 ooo_count=123, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=268 misses=16 stall_cycles=85 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=443 retired=310 ooo_count=20, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=105 misses=3 stall_cycles=20 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wt_m0
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=272 retired=202 ooo_count=22, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=106 misses=6 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=189 retired=92 ooo_count=4, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=16 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=124 retired=78 ooo_count=2, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=40 misses=4 stall_cycles=5 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=542 retired=102 ooo_count=2, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=52 misses=8 stall_cycles=10 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=285 retired=119 ooo_count=14, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=10 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=30 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=195 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=52 misses=9 stall_cycles=10 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=30 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=30 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2023 retired=1335 ooo_count=71, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=262 hits=84 misses=178 stall_cycles=86 branches=279 mispredicts=32
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2033 retired=1326 ooo_count=104, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=80 branches=270 mispredicts=52
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4930 retired=1588 ooo_count=219, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=296 hits=120 misses=176 stall_cycles=80 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5887 retired=1923 ooo_count=317, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=429 hits=303 misses=126 stall_cycles=80 branches=433 mispredicts=87
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3539 retired=1520 ooo_count=228, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=265 hits=185 misses=80 stall_cycles=80 branches=308 mispredicts=38
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3896 retired=1452 ooo_count=184, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=145 misses=92 stall_cycles=89 branches=296 mispredicts=64
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2677 retired=1215 ooo_count=111, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=266 hits=125 misses=141 stall_cycles=96 branches=239 mispredicts=41
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2793 retired=1428 ooo_count=99, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=188 misses=96 stall_cycles=80 branches=303 mispredicts=57
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=437 retired=310 ooo_count=18, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=97 misses=11 stall_cycles=15 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wt_m10
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=634 retired=201 ooo_count=20, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=106 misses=6 stall_cycles=382 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=238 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=65 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=23 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=5 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=159 retired=78 ooo_count=2, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=40 misses=4 stall_cycles=40 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=594 retired=102 ooo_count=2, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=52 misses=8 stall_cycles=63 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=401 retired=119 ooo_count=15, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=130 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=67 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=42 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=248 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=52 misses=9 stall_cycles=63 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=67 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=42 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=67 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=42 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2491 retired=1335 ooo_count=158, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=260 hits=82 misses=178 stall_cycles=801 branches=279 mispredicts=33
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2319 retired=1326 ooo_count=115, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=474 branches=270 mispredicts=52
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5018 retired=1588 ooo_count=220, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=118 misses=176 stall_cycles=262 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5980 retired=1923 ooo_count=321, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=428 hits=302 misses=126 stall_cycles=292 branches=433 mispredicts=87
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3594 retired=1520 ooo_count=230, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=265 hits=185 misses=80 stall_cycles=170 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3981 retired=1452 ooo_count=189, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=145 misses=92 stall_cycles=242 branches=296 mispredicts=63
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2862 retired=1215 ooo_count=127, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=265 hits=121 misses=144 stall_cycles=423 branches=239 mispredicts=41
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2878 retired=1428 ooo_count=104, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=188 misses=96 stall_cycles=221 branches=303 mispredicts=58
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=460 retired=310 ooo_count=21, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=97 misses=11 stall_cycles=40 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wt_m20
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=1174 retired=200 ooo_count=29, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=111 hits=105 misses=6 stall_cycles=924 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=298 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=125 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=64 retired=14 ooo_count=3, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=43 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=15 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=237 retired=78 ooo_count=2, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=40 misses=4 stall_cycles=118 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=654 retired=102 ooo_count=2, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=52 misses=8 stall_cycles=123 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=531 retired=119 ooo_count=16, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=260 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=107 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=82 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=326 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=52 misses=9 stall_cycles=142 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=107 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=82 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=107 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=82 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=3423 retired=1335 ooo_count=253, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=259 hits=81 misses=178 stall_cycles=1895 branches=279 mispredicts=34
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=3126 retired=1326 ooo_count=134, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=1556 branches=270 mispredicts=53
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=5406 retired=1588 ooo_count=243, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=294 hits=118 misses=176 stall_cycles=933 branches=352 mispredicts=61
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=6644 retired=1923 ooo_count=421, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=428 hits=302 misses=126 stall_cycles=1772 branches=433 mispredicts=81
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3670 retired=1520 ooo_count=230, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=265 hits=185 misses=80 stall_cycles=268 branches=308 mispredicts=37
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=4163 retired=1452 ooo_count=193, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=145 misses=92 stall_cycles=487 branches=296 mispredicts=61
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=3213 retired=1215 ooo_count=142, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=265 hits=124 misses=141 stall_cycles=942 branches=239 mispredicts=42
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=3355 retired=1428 ooo_count=162, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=188 misses=96 stall_cycles=956 branches=303 mispredicts=56
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=502 retired=310 ooo_count=21, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=97 misses=11 stall_cycles=84 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wt_m2
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=281 retired=202 ooo_count=22, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=106 misses=6 stall_cycles=19 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=193 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=20 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=7 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=127 retired=78 ooo_count=2, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=40 misses=4 stall_cycles=8 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=547 retired=102 ooo_count=2, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=52 misses=8 stall_cycles=15 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=297 retired=119 ooo_count=14, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=22 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=35 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=201 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=52 misses=9 stall_cycles=16 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=35 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=35 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=10 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2033 retired=1335 ooo_count=71, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=262 hits=84 misses=178 stall_cycles=108 branches=279 mispredicts=32
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2055 retired=1326 ooo_count=103, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=112 branches=270 mispredicts=52
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4936 retired=1588 ooo_count=220, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=296 hits=120 misses=176 stall_cycles=99 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5901 retired=1923 ooo_count=318, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=429 hits=303 misses=126 stall_cycles=119 branches=433 mispredicts=87
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3549 retired=1520 ooo_count=227, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=265 hits=185 misses=80 stall_cycles=98 branches=308 mispredicts=38
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3906 retired=1452 ooo_count=186, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=145 misses=92 stall_cycles=115 branches=296 mispredicts=64
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2687 retired=1215 ooo_count=111, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=266 hits=125 misses=141 stall_cycles=123 branches=239 mispredicts=41
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2807 retired=1428 ooo_count=101, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=188 misses=96 stall_cycles=107 branches=303 mispredicts=57
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=441 retired=310 ooo_count=19, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=97 misses=11 stall_cycles=19 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065
+--- s1_wt_m5
+../mem_generator/imem_dmem/imem.hex: 200 commits compared, result=00000000 done=0 exception=0 cycles=364 retired=202 ooo_count=13, 0 failures
+../mem_generator/imem_dmem/imem.hex: dcache accesses=112 hits=106 misses=6 stall_cycles=102 branches=0 mispredicts=0
+../ooo_tests/programs/top_mmio.hex: 92 commits compared, result=00000003 done=1 exception=0 cycles=208 retired=92 ooo_count=5, 0 failures
+../ooo_tests/programs/top_mmio.hex: dcache accesses=22 hits=8 misses=14 stall_cycles=35 branches=10 mispredicts=6
+../ooo_tests/programs/ooo_trace.hex: 14 commits compared, result=0000021e done=1 exception=0 cycles=52 retired=14 ooo_count=5, 0 failures
+../ooo_tests/programs/ooo_trace.hex: dcache accesses=2 hits=0 misses=2 stall_cycles=13 branches=0 mispredicts=0
+../ooo_tests/programs/rv32m_edge.hex: 74 commits compared, result=4000000e done=1 exception=0 cycles=526 retired=74 ooo_count=18, 0 failures
+../ooo_tests/programs/rv32m_edge.hex: dcache accesses=19 hits=0 misses=19 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/mul_d8.hex: 78 commits compared, result=000013b0 done=1 exception=0 cycles=139 retired=78 ooo_count=2, 0 failures
+../ooo_tests/programs/mul_d8.hex: dcache accesses=44 hits=40 misses=4 stall_cycles=20 branches=7 mispredicts=2
+../ooo_tests/programs/div_d8.hex: 102 commits compared, result=00003b26 done=1 exception=0 cycles=564 retired=102 ooo_count=2, 0 failures
+../ooo_tests/programs/div_d8.hex: dcache accesses=60 hits=52 misses=8 stall_cycles=33 branches=6 mispredicts=2
+../ooo_tests/programs/rv32m_d8.hex: 119 commits compared, result=0000007f done=1 exception=0 cycles=336 retired=119 ooo_count=15, 0 failures
+../ooo_tests/programs/rv32m_d8.hex: dcache accesses=39 hits=27 misses=12 stall_cycles=63 branches=7 mispredicts=0
+../ooo_tests/programs/addition_d8.hex: 18 commits compared, result=00000066 done=1 exception=0 cycles=47 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/addition_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=22 branches=0 mispredicts=0
+../ooo_tests/programs/sort_d8.hex: 127 commits compared, result=00000003 done=1 exception=0 cycles=218 retired=127 ooo_count=0, 0 failures
+../ooo_tests/programs/sort_d8.hex: dcache accesses=61 hits=52 misses=9 stall_cycles=33 branches=10 mispredicts=7
+../ooo_tests/programs/negative_d8.hex: 18 commits compared, result=ffffffd2 done=1 exception=0 cycles=47 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/negative_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=22 branches=0 mispredicts=0
+../ooo_tests/programs/xor_d8.hex: 18 commits compared, result=00000009 done=1 exception=0 cycles=47 retired=18 ooo_count=0, 0 failures
+../ooo_tests/programs/xor_d8.hex: dcache accesses=7 hits=3 misses=4 stall_cycles=22 branches=0 mispredicts=0
+../ooo_tests/programs/mul_stream.hex: 52 commits compared, result=000708f8 done=1 exception=0 cycles=59 retired=52 ooo_count=0, 0 failures
+../ooo_tests/programs/mul_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/muldiv_stream.hex: 56 commits compared, result=00018ae9 done=1 exception=0 cycles=178 retired=56 ooo_count=19, 0 failures
+../ooo_tests/programs/muldiv_stream.hex: dcache accesses=0 hits=0 misses=0 stall_cycles=0 branches=0 mispredicts=0
+../ooo_tests/programs/spec_stress_0.hex: 1335 commits compared, result=f9032e86 done=1 exception=0 cycles=2178 retired=1335 ooo_count=145, 0 failures
+../ooo_tests/programs/spec_stress_0.hex: dcache accesses=261 hits=83 misses=178 stall_cycles=338 branches=279 mispredicts=32
+../ooo_tests/programs/spec_stress_1.hex: 1326 commits compared, result=0003b7d4 done=1 exception=0 cycles=2096 retired=1326 ooo_count=104, 0 failures
+../ooo_tests/programs/spec_stress_1.hex: dcache accesses=288 hits=167 misses=121 stall_cycles=174 branches=270 mispredicts=52
+../ooo_tests/programs/spec_stress_2.hex: 1588 commits compared, result=00e13794 done=1 exception=0 cycles=4946 retired=1588 ooo_count=220, 0 failures
+../ooo_tests/programs/spec_stress_2.hex: dcache accesses=296 hits=120 misses=176 stall_cycles=136 branches=352 mispredicts=60
+../ooo_tests/programs/spec_stress_3.hex: 1923 commits compared, result=00002114 done=1 exception=0 cycles=5926 retired=1923 ooo_count=319, 0 failures
+../ooo_tests/programs/spec_stress_3.hex: dcache accesses=429 hits=303 misses=126 stall_cycles=179 branches=433 mispredicts=87
+../ooo_tests/programs/spec_stress_4.hex: 1520 commits compared, result=d21b9c62 done=1 exception=0 cycles=3565 retired=1520 ooo_count=230, 0 failures
+../ooo_tests/programs/spec_stress_4.hex: dcache accesses=265 hits=185 misses=80 stall_cycles=125 branches=308 mispredicts=38
+../ooo_tests/programs/spec_stress_5.hex: 1452 commits compared, result=000122a2 done=1 exception=0 cycles=3924 retired=1452 ooo_count=188, 0 failures
+../ooo_tests/programs/spec_stress_5.hex: dcache accesses=237 hits=145 misses=92 stall_cycles=154 branches=296 mispredicts=63
+../ooo_tests/programs/spec_stress_6.hex: 1215 commits compared, result=ec65032e done=1 exception=0 cycles=2707 retired=1215 ooo_count=115, 0 failures
+../ooo_tests/programs/spec_stress_6.hex: dcache accesses=266 hits=125 misses=141 stall_cycles=180 branches=239 mispredicts=41
+../ooo_tests/programs/spec_stress_7.hex: 1428 commits compared, result=00011fab done=1 exception=0 cycles=2831 retired=1428 ooo_count=102, 0 failures
+../ooo_tests/programs/spec_stress_7.hex: dcache accesses=284 hits=188 misses=96 stall_cycles=149 branches=303 mispredicts=58
+../ooo_tests/programs/base_rv32i.hex: 310 commits compared, result=00004082 done=1 exception=0 cycles=447 retired=310 ooo_count=19, 0 failures
+../ooo_tests/programs/base_rv32i.hex: dcache accesses=108 hits=97 misses=11 stall_cycles=25 branches=71 mispredicts=24
+TEST_PASS commit_trace 13065

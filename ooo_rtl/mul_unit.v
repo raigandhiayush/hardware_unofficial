@@ -9,6 +9,7 @@ module mul_unit (
     input  wire [`XLEN-1:0] a,
     input  wire [`XLEN-1:0] b,
     input  wire [`ROB_W-1:0] tag,
+    input  wire [(1<<`ROB_W)-1:0] squash,   // ROB entries being removed
     output wire             done,
     output wire [`ROB_W-1:0] done_tag,
     output wire [`XLEN-1:0] result
@@ -40,9 +41,11 @@ module mul_unit (
             s2_valid <= 1'b0;
             s2_tag   <= {`ROB_W{1'b0}};
         end else begin
-            s1_valid <= start;
+            if (start && squash[tag]) s1_valid <= 1'b0;
+            else                      s1_valid <= start;
             s1_tag   <= start ? tag : {`ROB_W{1'b0}};
-            s2_valid <= s1_valid;
+            if (s1_valid && squash[s1_tag]) s2_valid <= 1'b0;
+            else                            s2_valid <= s1_valid;
             s2_tag   <= s1_tag;
         end
     end

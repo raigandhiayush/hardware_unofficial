@@ -4,8 +4,8 @@
 
 module tb_commit_trace;
 
-	localparam NPROG   = 13;
-	localparam TIMEOUT = 20000;
+	localparam NPROG   = 22;
+	localparam TIMEOUT = 100000;
 
 	reg                 clk = 1'b0;
 	reg                 reset = 1'b0;
@@ -37,6 +37,16 @@ module tb_commit_trace;
 		// constructed best cases for the pipelined MUL / MUL in a DIV shadow (A, 26 Oct; D17: not typical)
 		p_hex[11] = "../ooo_tests/programs/mul_stream.hex"; p_trace[11] = "../ooo_tests/programs/mul_stream.trace";  p_sw[11] = 16'h0000;
 		p_hex[12] = "../ooo_tests/programs/muldiv_stream.hex"; p_trace[12] = "../ooo_tests/programs/muldiv_stream.trace"; p_sw[12] = 16'h0000;
+		// branch speculation stress (tools/gen_spec_programs.py)
+		p_hex[13] = "../ooo_tests/programs/spec_stress_0.hex"; p_trace[13] = "../ooo_tests/programs/spec_stress_0.trace"; p_sw[13] = 16'h0000;
+		p_hex[14] = "../ooo_tests/programs/spec_stress_1.hex"; p_trace[14] = "../ooo_tests/programs/spec_stress_1.trace"; p_sw[14] = 16'h0000;
+		p_hex[15] = "../ooo_tests/programs/spec_stress_2.hex"; p_trace[15] = "../ooo_tests/programs/spec_stress_2.trace"; p_sw[15] = 16'h0000;
+		p_hex[16] = "../ooo_tests/programs/spec_stress_3.hex"; p_trace[16] = "../ooo_tests/programs/spec_stress_3.trace"; p_sw[16] = 16'h0000;
+		p_hex[17] = "../ooo_tests/programs/spec_stress_4.hex"; p_trace[17] = "../ooo_tests/programs/spec_stress_4.trace"; p_sw[17] = 16'h0000;
+		p_hex[18] = "../ooo_tests/programs/spec_stress_5.hex"; p_trace[18] = "../ooo_tests/programs/spec_stress_5.trace"; p_sw[18] = 16'h0000;
+		p_hex[19] = "../ooo_tests/programs/spec_stress_6.hex"; p_trace[19] = "../ooo_tests/programs/spec_stress_6.trace"; p_sw[19] = 16'h0000;
+		p_hex[20] = "../ooo_tests/programs/spec_stress_7.hex"; p_trace[20] = "../ooo_tests/programs/spec_stress_7.trace"; p_sw[20] = 16'h0000;
+		p_hex[21] = "../ooo_tests/programs/base_rv32i.hex"; p_trace[21] = "../ooo_tests/programs/base_rv32i.trace"; p_sw[21] = 16'h0000;
 	end
 
 	// ---- expected trace ----------------------------------------------------
@@ -71,6 +81,21 @@ module tb_commit_trace;
 		end
 	endtask
 
+`ifdef SPEC_CHAOS
+	// A prediction is only a hint: scribble over the predictor while programs run.
+	// False hits on non-branches, wrong targets and random counters may cost cycles
+	// but must never change a committed result.
+	integer ch_i;
+	always @(negedge clk) if (active && ($random & 3) == 0) begin
+		ch_i = $random & (`BTB_N - 1);
+		DUT.U_CORE.core.g_bpred.bp.btb_valid[ch_i]  = 1'b1;
+		DUT.U_CORE.core.g_bpred.bp.btb_uncond[ch_i] = $random;
+		DUT.U_CORE.core.g_bpred.bp.btb_tag[ch_i]    = $random;
+		DUT.U_CORE.core.g_bpred.bp.btb_target[ch_i] = $random & 32'h0000_0FFC;
+		DUT.U_CORE.core.g_bpred.bp.bht[$random & (`BHT_N - 1)] = $random;
+	end
+`endif
+
 	// ---- commit monitor ----------------------------------------------------
 	wire                c_valid    = DUT.U_CORE.dbg_commit_valid;
 	wire    [31: 0]     c_pc       = DUT.U_CORE.dbg_commit_pc;
@@ -78,10 +103,13 @@ module tb_commit_trace;
 	wire                c_has_rd   = DUT.U_CORE.dbg_commit_has_rd;
 	wire    [31: 0]     c_value    = DUT.U_CORE.dbg_commit_value;
 	wire                c_is_store = DUT.U_CORE.dbg_commit_is_store;
-	wire                m_we       = DUT.U_CORE.dmem_write_ready;
-	wire    [31: 0]     m_waddr    = DUT.U_CORE.dmem_write_address;
-	wire    [31: 0]     m_wdata    = DUT.U_CORE.dmem_write_data;
-	wire    [ 3: 0]     m_wstrb    = DUT.U_CORE.dmem_write_byte;
+	// A committed store must appear in its commit cycle. With no data cache or a
+	// write-through cache that is the core's memory write port; a write-back
+	// cache keeps stores in the cache, so there it is the LSU -> cache request.
+	wire                m_we       = (`DC_EN && `DC_WB) ? DUT.U_CORE.core.lsu_we    : DUT.U_CORE.dmem_write_ready;
+	wire    [31: 0]     m_waddr    = (`DC_EN && `DC_WB) ? DUT.U_CORE.core.lsu_waddr : DUT.U_CORE.dmem_write_address;
+	wire    [31: 0]     m_wdata    = (`DC_EN && `DC_WB) ? DUT.U_CORE.core.lsu_wdata : DUT.U_CORE.dmem_write_data;
+	wire    [ 3: 0]     m_wstrb    = (`DC_EN && `DC_WB) ? DUT.U_CORE.core.lsu_wstrb : DUT.U_CORE.dmem_write_byte;
 
 	integer             idx, n_fail, n_checked, n_prog_fail, j;
 	reg                 active;
@@ -156,6 +184,10 @@ module tb_commit_trace;
 			$display("%0s: %0d commits compared, result=%h done=%b exception=%b cycles=%0d retired=%0d ooo_count=%0d, %0d failures",
 			         p_hex[p], idx, DUT.result, DUT.done, DUT.exception, DUT.U_PERF.cycles, DUT.U_PERF.retired,
 			         DUT.U_PERF.ooo_count, n_fail - n_prog_fail);
+			$display("%0s: dcache accesses=%0d hits=%0d misses=%0d stall_cycles=%0d branches=%0d mispredicts=%0d",
+			         p_hex[p], DUT.U_PERF.dcache_access_count, DUT.U_PERF.dcache_hit_count,
+			         DUT.U_PERF.dcache_miss_count, DUT.U_PERF.dcache_stall_cycles,
+			         DUT.U_PERF.branch_count, DUT.U_PERF.mispredict_count);
 			end
 		end
 		if (n_skip != 0) $display("commit_trace: %0d of %0d programs skipped", n_skip, NPROG);

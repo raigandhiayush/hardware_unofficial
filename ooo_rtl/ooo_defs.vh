@@ -68,6 +68,7 @@
 `define OP_BR_BIT    4          // conditional branch
 `define OP_JALR_BIT  5          // JALR
 `define OP_MD_HI     1          // MUL/DIV sub-operation = op[`OP_MD_HI:0]
+`define OP_PRED_BIT  6          // conditional branch was predicted taken (SPEC_EN)
 
 // ---- MUL / DIV sub-operation (funct3[1:0]) --------------------------------
 `define MUL_MUL      2'b00
@@ -95,5 +96,45 @@
 `define MMIO_DONE    32'h1000_0004   // store: set done
 `define MMIO_SWITCH  32'h1000_0008   // load : read switches
 // MMIO decode = addr[31:28] == 4'h1; MMIO stores never write data_mem (D20)
+
+// ---- L1 data cache (l1_dcache.v, instantiated in ooo_core) -----------------
+// Defaults; each can be overridden on the command line (iverilog -DDC_WB=1)
+// for configuration sweeps.
+`ifndef DC_EN
+`define DC_EN        1          // 0 = no cache: LSU talks to data_mem directly
+`endif
+`ifndef DC_WAYS
+`define DC_WAYS      2          // 1 (direct-mapped) or 2 (2-way, LRU bit per set)
+`endif
+`ifndef DC_SETS
+`define DC_SETS      8          // sets per way (power of 2)
+`endif
+`ifndef DC_WORDS
+`define DC_WORDS     4          // 32-bit words per line: 4 (16 B) or 8 (32 B)
+`endif
+`ifndef DC_WB
+`define DC_WB        1          // 1 = write-back, write-allocate (dirty bit per line)
+`endif                          // 0 = write-through, no-write-allocate
+`define DC_MEM_AW    12         // byte-address bits decoded by data_mem (4 KB, aliases above)
+
+// ---- Branch speculation -----------------------------------------------------
+`ifndef SPEC_EN
+`define SPEC_EN      1          // 0 = no speculation: dispatch holds after each branch
+`endif
+`ifndef BTB_N
+`define BTB_N        16         // branch target buffer entries (power of 2)
+`endif
+`ifndef BHT_N
+`define BHT_N        64         // 2-bit counters (power of 2)
+`endif
+`define BR_CKPT_N    `RS_ALU_N  // RAT checkpoints; an unresolved branch holds an ALU RS
+
+// ---- Data memory access time (mem_wait.v, board top) -------------------------
+`ifndef MEM_WAIT
+`define MEM_WAIT     10         // extra cycles for a non-sequential access; 0 = data_mem as is
+`endif
+`ifndef MEM_WBUF_N
+`define MEM_WBUF_N   4          // write buffer entries
+`endif
 
 `endif // OOO_DEFS_VH

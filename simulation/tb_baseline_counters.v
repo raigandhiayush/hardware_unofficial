@@ -106,8 +106,12 @@ module tbc_sys #(
 		.clk(clk), .reset_n(reset), .run(reset & ~done),
 		.commit_valid(commit_valid), .ooo_event(ooo_event),
 		.stall_rob(1'b0), .stall_rs(1'b0), .hold(1'b0),
+		.dc_access(1'b0), .dc_hit(1'b0), .dc_miss(1'b0), .dc_stall(1'b0),
+		.br_commit(1'b0), .br_mispred(1'b0),
 		.cycles(), .retired(), .ooo_count(),
-		.rob_stall_cycles(), .rs_stall_cycles(), .hold_cycles()
+		.rob_stall_cycles(), .rs_stall_cycles(), .hold_cycles(),
+		.dcache_access_count(), .dcache_hit_count(), .dcache_miss_count(), .dcache_stall_cycles(),
+		.branch_count(), .mispredict_count()
 	);
 
 endmodule
@@ -366,6 +370,16 @@ module tb_baseline_counters;
 						         c == 0 ? "(trace)" : "", $itor(c_cycles[c]) / $itor(c_ret[c]));
 						n_checks = n_checks + 1;
 					end
+				end
+				// L1 data cache of pipe_ooo (board-top copy; MMIO is not counted)
+				$display("DCACHE %0s core=pipe_ooo accesses=%0d hits=%0d misses=%0d stall_cycles=%0d hit_rate=%0.1f%%",
+				         p_hex[p], TOP.U_PERF.dcache_access_count, TOP.U_PERF.dcache_hit_count,
+				         TOP.U_PERF.dcache_miss_count, TOP.U_PERF.dcache_stall_cycles,
+				         TOP.U_PERF.dcache_access_count == 0 ? 0.0 :
+				         100.0 * $itor(TOP.U_PERF.dcache_hit_count) / $itor(TOP.U_PERF.dcache_access_count));
+				if (TOP.U_PERF.dcache_hit_count + TOP.U_PERF.dcache_miss_count !== TOP.U_PERF.dcache_access_count) begin
+					n_fail = n_fail + 1;
+					$display("TEST_FAIL baseline_counters %0s: dcache hits + misses != accesses", p_hex[p]);
 				end
 				if (TOP.U_PERF.cycles !== c_cycles[2]) begin
 					n_fail = n_fail + 1;

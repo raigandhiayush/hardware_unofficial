@@ -38,6 +38,7 @@ module div_unit #(
     input  wire [`XLEN-1:0]  a,         // dividend (rs1)
     input  wire [`XLEN-1:0]  b,         // divisor  (rs2)
     input  wire [ROB_W-1:0]  tag,
+    input  wire [(1<<ROB_W)-1:0] squash, // ROB entries being removed
     output reg               busy,
     output reg               done,
     output reg  [`XLEN-1:0]  result,
@@ -88,8 +89,12 @@ module div_unit #(
             done_tag <= {ROB_W{1'b0}};
         end else begin
             done <= 1'b0;
-            if (!busy) begin
-                if (start) begin
+            if (busy && squash[op_tag]) begin
+                busy <= 1'b0;                   // abort: the divider is free next cycle
+            end else if (!busy) begin
+                if (start && squash[tag]) begin
+                    // squashed in the cycle it would start
+                end else if (start) begin
                     busy     <= 1'b1;
                     count    <= 5'd0;
                     quo      <= a_abs;

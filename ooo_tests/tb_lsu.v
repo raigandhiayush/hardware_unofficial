@@ -54,6 +54,7 @@ module tb_lsu;
         .cdb_lsu_valid(lsu_v), .cdb_lsu_tag(lsu_t), .cdb_lsu_value(lsu_val),
         .cm_valid(cm_valid), .cm_tag(cm_tag), .cm_is_store(cm_is_store),
         .dmem_re(re), .dmem_raddr(raddr), .dmem_rdata(rdata),
+        .dmem_stall(1'b0), .dmem_rvalid(1'b1),          // no cache: original LSU timing
         .dmem_we(we), .dmem_waddr(waddr), .dmem_wdata(wdata), .dmem_wstrb(wstrb)
     );
 
